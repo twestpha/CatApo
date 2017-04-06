@@ -21,7 +21,6 @@ public class AbilityCastComponent : MonoBehaviour {
         for(int i = 0; i < abilities.Count; ++i){
             abilities[i] = UnityEngine.Object.Instantiate(abilities[i]);
             abilities[i].SetSelfActor(gameObject.GetComponent<Actor>());
-            abilities[i].Validate();
             abilities[i].Start();
         }
 	}
@@ -29,16 +28,10 @@ public class AbilityCastComponent : MonoBehaviour {
 	void Update(){
         for(int i = 0; i < abilities.Count; ++i){
             if(Input.GetKeyDown(abilityHotkeys[i])){
-                abilities[i].Cast();
+                abilities[i].Notify();
             }
 
             abilities[i].Update();
         }
 	}
-
-    void LateUpdate(){
-        foreach(Ability ability in abilities){
-            ability.LateUpdate();
-        }
-    }
 }
