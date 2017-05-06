@@ -5,17 +5,20 @@ using UnityEngine;
 [CreateAssetMenu()]
 [System.Serializable]
 public class AbilityEffect : ScriptableObject {
+    // Ability Effect is the result of a cast ability. This is a sort of metaprogram
 
     // Readability replacements for accessor
     protected const bool AssignToLeft = true;
     protected const bool AssignToRight = false;
 
-    // This have to match the entries in Actor
+    // This have to match the entries in Actor, or at least have an get/set
     public enum Attribute {
         Health,
         Speed,
         Cooldown,
         State,
+        PositionX,
+        PositionZ,
     }
 
     public enum Operation {
@@ -42,7 +45,7 @@ public class AbilityEffect : ScriptableObject {
     private IEnumerator coroutine;
 
     // Implementation of the ability effects
-    static public void ApplyWithSettings(Actor target_, Attribute attribute_, Operation operation_, Behavior behavior_, float value_, float duration_){
+    static public void ApplyWithSettings(ref Actor target_, Attribute attribute_, Operation operation_, Behavior behavior_, float value_, float duration_){
         // Get previous value
         float previousValue = 0.0f;
         AttributeAccessor(ref target_, attribute_, ref previousValue, AssignToRight);
@@ -83,7 +86,7 @@ public class AbilityEffect : ScriptableObject {
     public void Apply(Actor target){
         targetActor = target;
 
-        ApplyWithSettings(target, attribute, operation, behavior, value, duration);
+        ApplyWithSettings(ref target, attribute, operation, behavior, value, duration);
 
         if(behavior == Behavior.Restore){
             targetActor.StartCoroutine(RestoreAfterTime(duration));
@@ -108,6 +111,6 @@ public class AbilityEffect : ScriptableObject {
             Debug.LogError("Can't undo a \"Replace\" operation."); break;
         }
 
-        ApplyWithSettings(targetActor, attribute, newop, Behavior.Keep, value, duration);
+        ApplyWithSettings(ref targetActor, attribute, newop, Behavior.Keep, value, duration);
     }
 }

@@ -20,25 +20,26 @@ public class AbilityPlacement : ScriptableObject {
         Target,        // Must click on enemy hero or unit
         Skillshot,     // Click on terrain and spell is cast that direction from hero
         Location,      // Place spell where effects occur around it
-        ConstrainedLocation // Place spell, limited distance from player
+        ConstrainedLocation, // Place spell, limited distance from player
         Summon,        // create creature or persistent actor
     }
 
+    private GameObject player;
     private Ability parent;
-    // This should be it's own fucking thing or at least descended from placement... fucking confusing
     public PlacementType type;
     public GameObject splat;
     private Projector splatProjector;
     // how to describe arbitrary shape? need some type. Use radius for now...
+    // probably list of dimenions: 1-> radius, 2->oriented box, etc
     public float splatSize;
-
-    // Some sort of filtering targets
 
     public void Start(){
         splat = Object.Instantiate(splat);
         splatProjector = splat.GetComponent<Projector>();
         splatProjector.enabled = false;
         splatProjector.orthographicSize	= splatSize;
+
+        player = GameObject.FindWithTag("Player");
     }
 
     public void SetParent(Ability ability){
@@ -54,7 +55,7 @@ public class AbilityPlacement : ScriptableObject {
 
             if(parent.state == Ability.AbilityState.Notified){
                 splatProjector.enabled = true;
-            } else if(parent.state == Ability.AbilityState.Casted){
+            } else if(parent.state == Ability.AbilityState.Casted || parent.state == Ability.AbilityState.Idle){
                 splatProjector.enabled = false;
             }
         break;
@@ -64,12 +65,24 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     public Actor[] GetTargetsInCast(){
-        Actor[] targets = new Actor[1];
+        Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
+        Actor[] targets = new Actor[maxTargets];
+        int targetCount = 0;
 
         switch(type){
         // Location placement
         case PlacementType.Location:
-            targets[0] = parent.selfActor;
+            for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
+                Vector3 targetpos = actors[i].transform.position;
+                Vector3 splatpos = splat.transform.position;
+
+                targetpos.y = 0.0f;
+                splatpos.y = 0.0f;
+
+                if((targetpos - splatpos).magnitude <= splatSize){
+                    targets[++targetCount] = actors[i];
+                }
+            }
         break;
         default:
         break;
@@ -79,10 +92,11 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     private Vector3 MousePositionOnPlayerPlane(){
+        // Why the fuck is it misplacing the splat? hmmm
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        // Fix when player is implemented properly
-        Plane plane = new Plane(Vector3.up, Vector3.zero);
+        Vector3 offset = new Vector3(0.0f, player.transform.position.y, 0.0f);
+        Plane plane = new Plane(Vector3.up - offset, Vector3.zero);
         float rayDistance;
 
         if(plane.Raycast(ray, out rayDistance)){

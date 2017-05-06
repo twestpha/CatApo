@@ -6,6 +6,8 @@ using UnityEngine.Assertions;
 [CreateAssetMenu()]
 [System.Serializable]
 public class Ability : ScriptableObject {
+    // Defines an ability; abilities modify the world and the actors in it
+    // when the actor who owns the ability casts it
 
     public enum AbilitySource {
         Talent,
@@ -30,7 +32,14 @@ public class Ability : ScriptableObject {
     public float cooldown;
     private float currentCooldown;
 
+    [Header("Effects and Timing")]
     public List<AbilityEffect> effects;
+    public List<float> effectsTiming;
+
+    [Header("GameObjects and Timing")]
+    public List<GameObject> gameObjects;
+    public List<float> gameObjectTiming;
+
 
     // Default Methods
     public void Start(){
@@ -45,6 +54,8 @@ public class Ability : ScriptableObject {
 
         // Assert on the data
         Assert.IsTrue(placement, "Ability \"" + abilityName + "\" is missing an AbilityPlacement.");
+        Assert.IsTrue(effects.Count == effectsTiming.Count, "Effects list for \"" + abilityName + "\" needs to match timing list length");
+        Assert.IsTrue(gameObjects.Count == gameObjectTiming.Count, "GameObjects list for \"" + abilityName + "\" needs to match timing list length");
 
         // Run start on necessary parts
         placement.Start();
@@ -78,12 +89,21 @@ public class Ability : ScriptableObject {
     }
 
     public void Cast(){
+        // Only sticks around for one frame
+        if(state == AbilityState.Casted){
+            state = AbilityState.Idle;
+        }
+
         if(currentCooldown > cooldown){
             Actor[] targets = placement.GetTargetsInCast();
 
             currentCooldown = 0.0f;
 
             foreach(Actor actor in targets){
+                if(!actor){
+                    continue;
+                }
+
                 foreach(AbilityEffect effect in effects){
                     effect.Apply(actor);
                 }
