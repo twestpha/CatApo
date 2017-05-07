@@ -29,9 +29,10 @@ public class AbilityPlacement : ScriptableObject {
     public PlacementType type;
     public GameObject splat;
     private Projector splatProjector;
-    // how to describe arbitrary shape? need some type. Use radius for now...
-    // probably list of dimenions: 1-> radius, 2->oriented box, etc
     public float splatSize;
+    [Header("Dimensions of Placement")]
+    public float width; // Always use this for 1 dimensional placements
+    public float height;
 
     public void Start(){
         splat = Object.Instantiate(splat);
@@ -48,13 +49,33 @@ public class AbilityPlacement : ScriptableObject {
 
     public void Update(){
         switch(type){
+        // Skillshot placement
+        case PlacementType.Skillshot:{
+            Vector3 mousePosition = MousePositionOnPlayerPlane();
+            Vector3 playerpos = player.transform.position;
+            playerpos.y = 0.0f;
+
+            Vector3 mouseDirNorm = (mousePosition - playerpos);
+            mouseDirNorm.Normalize();
+
+            Vector3 splatPos = mouseDirNorm * splatSize;
+            splatPos.y = splatHeight;
+            splat.transform.position = splatPos;
+
+            splat.transform.rotation = Quaternion.LookRotation(mouseDirNorm) * Quaternion.Euler(90.0f, 0.0f, 0.0f);
+
+            // Debug drawing
+            Debug.DrawRay(playerpos, mouseDirNorm);
+
+            splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
+        } break;
         // Location placement
-        case PlacementType.Location:
+        case PlacementType.Location:{
             Vector3 mousePosition = MousePositionOnPlayerPlane();
             splat.transform.position = new Vector3(mousePosition.x, splatHeight, mousePosition.z);
 
             splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
-        break;
+        } break;
         default:
         break;
         }
@@ -74,7 +95,7 @@ public class AbilityPlacement : ScriptableObject {
                 targetpos.y = 0.0f;
                 castPosition.y = 0.0f;
 
-                if((targetpos - castPosition).magnitude <= splatSize){
+                if((targetpos - castPosition).magnitude <= width){
                     targets[++targetCount] = actors[i];
                 }
             }
@@ -87,11 +108,10 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     private Vector3 MousePositionOnPlayerPlane(){
-        // Why the fuck is it misplacing the splat?
+        // Fix when player starts working proper
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        Vector3 offset = new Vector3(0.0f, player.transform.position.y, 0.0f);
-        Plane plane = new Plane(Vector3.up - offset, Vector3.zero);
+        Plane plane = new Plane(Vector3.up, Vector3.zero);
         float rayDistance;
 
         if(plane.Raycast(ray, out rayDistance)){

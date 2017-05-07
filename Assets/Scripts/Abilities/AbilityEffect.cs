@@ -22,6 +22,7 @@ public class AbilityEffect : ScriptableObject {
     }
 
     public enum Operation {
+        None,
         Replace,
         Add,
         Subtract,
@@ -61,8 +62,10 @@ public class AbilityEffect : ScriptableObject {
             finalValue = previousValue * value_; break;
         case Operation.Divide:
             finalValue = previousValue / value_; break;
-        default:
+        case Operation.Replace:
             finalValue = value_; break;
+        default:
+            return; // nop
         }
 
         // push that back to target value
