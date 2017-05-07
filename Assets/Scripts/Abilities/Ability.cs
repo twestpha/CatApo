@@ -28,6 +28,8 @@ public class Ability : ScriptableObject {
 
     public AbilitySource source;
     public AbilityPlacement placement;
+    public bool includeSelf;
+    public bool channeled; // TODO
 
     public float cooldown;
     private float currentCooldown;
@@ -104,7 +106,7 @@ public class Ability : ScriptableObject {
 
                     effectsIndex++;
                     foreach(Actor actor in targets){
-                        if(!actor){
+                        if(!actor || (!includeSelf && actor == selfActor)){
                             continue;
                         }
 

@@ -30,9 +30,10 @@ public class AbilityPlacement : ScriptableObject {
     public GameObject splat;
     private Projector splatProjector;
     public float splatSize;
-    [Header("Dimensions of Placement")]
-    public float width; // Always use this for 1 dimensional placements
-    public float height;
+    [Header("Placement Dimensions")]
+    public float radius = -1.0f;
+    public float width = -1.0f;
+    public float distance = -1.0f;
 
     public void Start(){
         splat = Object.Instantiate(splat);
@@ -64,9 +65,6 @@ public class AbilityPlacement : ScriptableObject {
 
             splat.transform.rotation = Quaternion.LookRotation(mouseDirNorm) * Quaternion.Euler(90.0f, 0.0f, 0.0f);
 
-            // Debug drawing
-            Debug.DrawRay(playerpos, mouseDirNorm);
-
             splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
         } break;
         // Location placement
@@ -87,19 +85,40 @@ public class AbilityPlacement : ScriptableObject {
         int targetCount = 0;
 
         switch(type){
+        // Skillshot placement
+        case PlacementType.Skillshot:{
+            Vector3 skillShotDirection = (splat.transform.position - player.transform.position);
+            skillShotDirection.y = 0.0f;
+            skillShotDirection.Normalize();
+
+            for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
+                Vector3 targetDirection = actors[i].transform.position - player.transform.position;
+                float dot = Vector3.Dot(targetDirection, skillShotDirection);
+                Vector3 closestPoint = player.transform.position + (dot * skillShotDirection);
+                Vector3 crossBar = actors[i].transform.position - closestPoint;
+
+                Debug.DrawRay(player.transform.position, targetDirection, Color.red, 1.0f);
+                Debug.DrawRay(player.transform.position, dot * skillShotDirection, Color.white, 1.0f);
+                Debug.DrawRay(closestPoint, crossBar, Color.blue, 1.0f);
+
+                if(dot < distance && crossBar.magnitude < width / 2.0f){
+                    targets[++targetCount] = actors[i];
+                }
+            }
+        } break;
         // Location placement
-        case PlacementType.Location:
+        case PlacementType.Location:{
             for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
                 Vector3 targetpos = actors[i].transform.position;
 
                 targetpos.y = 0.0f;
                 castPosition.y = 0.0f;
 
-                if((targetpos - castPosition).magnitude <= width){
+                if((targetpos - castPosition).magnitude <= radius){
                     targets[++targetCount] = actors[i];
                 }
             }
-        break;
+        } break;
         default:
         break;
         }
