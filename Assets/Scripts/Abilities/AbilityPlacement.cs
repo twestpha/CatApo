@@ -53,18 +53,14 @@ public class AbilityPlacement : ScriptableObject {
             Vector3 mousePosition = MousePositionOnPlayerPlane();
             splat.transform.position = new Vector3(mousePosition.x, splatHeight, mousePosition.z);
 
-            if(parent.state == Ability.AbilityState.Notified){
-                splatProjector.enabled = true;
-            } else if(parent.state == Ability.AbilityState.Casted || parent.state == Ability.AbilityState.Idle){
-                splatProjector.enabled = false;
-            }
+            splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
         break;
         default:
         break;
         }
     }
 
-    public Actor[] GetTargetsInCast(){
+    public Actor[] GetTargetsInCast(Vector3 castPosition){
         Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
         Actor[] targets = new Actor[maxTargets];
         int targetCount = 0;
@@ -74,12 +70,11 @@ public class AbilityPlacement : ScriptableObject {
         case PlacementType.Location:
             for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
                 Vector3 targetpos = actors[i].transform.position;
-                Vector3 splatpos = splat.transform.position;
 
                 targetpos.y = 0.0f;
-                splatpos.y = 0.0f;
+                castPosition.y = 0.0f;
 
-                if((targetpos - splatpos).magnitude <= splatSize){
+                if((targetpos - castPosition).magnitude <= splatSize){
                     targets[++targetCount] = actors[i];
                 }
             }
@@ -92,7 +87,7 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     private Vector3 MousePositionOnPlayerPlane(){
-        // Why the fuck is it misplacing the splat? hmmm
+        // Why the fuck is it misplacing the splat?
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         Vector3 offset = new Vector3(0.0f, player.transform.position.y, 0.0f);
