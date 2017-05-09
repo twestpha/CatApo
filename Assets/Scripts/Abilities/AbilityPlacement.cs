@@ -19,8 +19,7 @@ public class AbilityPlacement : ScriptableObject {
     ONCLICK, // Placements below require a button press, followed by a click to confirm
         Target,        // Must click on enemy hero or unit
         Skillshot,     // Click on terrain and spell is cast that direction from hero
-        Location,      // Place spell where effects occur around it
-        ConstrainedLocation, // Place spell, limited distance from player
+        Location,      // Place spell where effects occur around it. Can be limited to a range
         Summon,        // create creature or persistent actor
     }
 
@@ -30,6 +29,9 @@ public class AbilityPlacement : ScriptableObject {
     public GameObject splat;
     private Projector splatProjector;
     public float splatSize;
+    public List<AbilityVolume> volumes;
+
+    // Deprecate this shit
     [Header("Placement Dimensions")]
     public float radius = -1.0f;
     public float width = -1.0f;
@@ -91,19 +93,25 @@ public class AbilityPlacement : ScriptableObject {
             skillShotDirection.y = 0.0f;
             skillShotDirection.Normalize();
 
+            // some setup for ability space, like direction and range
+
             for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
-                Vector3 targetDirection = actors[i].transform.position - player.transform.position;
-                float dot = Vector3.Dot(targetDirection, skillShotDirection);
-                Vector3 closestPoint = player.transform.position + (dot * skillShotDirection);
-                Vector3 crossBar = actors[i].transform.position - closestPoint;
-
-                Debug.DrawRay(player.transform.position, targetDirection, Color.red, 1.0f);
-                Debug.DrawRay(player.transform.position, dot * skillShotDirection, Color.white, 1.0f);
-                Debug.DrawRay(closestPoint, crossBar, Color.blue, 1.0f);
-
-                if(dot < distance && crossBar.magnitude < width / 2.0f){
+                if(volumes[0].ContainsPoint(actors[i].transform.position)){
                     targets[++targetCount] = actors[i];
                 }
+
+                // Vector3 targetDirection = actors[i].transform.position - player.transform.position;
+                // float dot = Vector3.Dot(targetDirection, skillShotDirection);
+                // Vector3 closestPoint = player.transform.position + (dot * skillShotDirection);
+                // Vector3 crossBar = actors[i].transform.position - closestPoint;
+                //
+                // Debug.DrawRay(player.transform.position, targetDirection, Color.red, 1.0f);
+                // Debug.DrawRay(player.transform.position, dot * skillShotDirection, Color.white, 1.0f);
+                // Debug.DrawRay(closestPoint, crossBar, Color.blue, 1.0f);
+                //
+                // if(dot < distance && crossBar.magnitude < width / 2.0f){
+                //     targets[++targetCount] = actors[i];
+                // }
             }
         } break;
         // Location placement
