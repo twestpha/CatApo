@@ -78,16 +78,20 @@ public class Ability : ScriptableObject {
 
             // Check to see if the timings are sorted
             for(int i = 1; i < effectsTiming.Count; ++i){
-                Assert(effectsTiming[i] >= effectsTiming[i-1], "Effects Timing is not sorted for ability " + abilityName);
+                Assert.IsTrue(effectsTiming[i] >= effectsTiming[i-1], "Effects Timing is not sorted for ability " + abilityName);
             }
 
             for(int i = 1; i < gameObjectTiming.Count; ++i){
-                Assert(gameObjectTiming[i] >= gameObjectTiming[i-1], "Effects Timing is not sorted for ability " + abilityName);
+                Assert.IsTrue(gameObjectTiming[i] >= gameObjectTiming[i-1], "Effects Timing is not sorted for ability " + abilityName);
             }
 
             // the timings must occur within the cooldown
-            Assert(effectsTiming[effectsTiming.Count -1] <= cooldown, "Timings must be less than or equal to the cooldown of the ability " + abilityName);
-            Assert(gameObjectTiming[gameObjectTiming.Count -1] <= cooldown, "Timings must be less than or equal to the cooldown of the ability " + abilityName);
+            if(effectsTiming.Count > 0){
+                Assert.IsTrue(effectsTiming[effectsTiming.Count - 1] <= cooldown, "Timings must be less than or equal to the cooldown of the ability " + abilityName);
+            }
+            if(gameObjectTiming.Count > 0){
+                Assert.IsTrue(gameObjectTiming[gameObjectTiming.Count - 1] <= cooldown, "Timings must be less than or equal to the cooldown of the ability " + abilityName);
+            }
         }
     }
 

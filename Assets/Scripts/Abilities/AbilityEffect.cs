@@ -7,6 +7,8 @@ using UnityEngine;
 public class AbilityEffect : ScriptableObject {
     // Ability Effect is the result of a cast ability. This is a sort of metaprogram
 
+    public bool debug;
+
     // Readability replacements for accessor
     protected const bool AssignToLeft = true;
     protected const bool AssignToRight = false;
@@ -47,6 +49,7 @@ public class AbilityEffect : ScriptableObject {
 
     // Implementation of the ability effects
     static public void ApplyWithSettings(ref Actor target_, Attribute attribute_, Operation operation_, Behavior behavior_, float value_, float duration_){
+
         // Get previous value
         float previousValue = 0.0f;
         AttributeAccessor(ref target_, attribute_, ref previousValue, AssignToRight);
@@ -87,6 +90,10 @@ public class AbilityEffect : ScriptableObject {
 
     // Non static
     public void Apply(Actor target){
+        if(debug){
+            Debug.Log("Casting [" + operation + " " + value + " " + attribute + "] on " + target);
+        }
+
         targetActor = target;
 
         ApplyWithSettings(ref target, attribute, operation, behavior, value, duration);
