@@ -29,13 +29,11 @@ public class AbilityPlacement : ScriptableObject {
     public GameObject splat;
     private Projector splatProjector;
     public float splatSize;
-    public List<AbilityVolume> volumes;
 
-    // Deprecate this shit
-    [Header("Placement Dimensions")]
-    public float radius = -1.0f;
-    public float width = -1.0f;
-    public float distance = -1.0f;
+    [Header("Placement Details")]
+    public AbilityVolume volume;
+    public bool rotateFromCaster;
+    public float distance = 0.0f;
 
     public void Start(){
         splat = Object.Instantiate(splat);
@@ -96,22 +94,9 @@ public class AbilityPlacement : ScriptableObject {
             // some setup for ability space, like direction and range
 
             for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
-                if(volumes[0].ContainsPoint(actors[i].transform.position)){
+                if(volume.ContainsPoint(actors[i].transform.position)){
                     targets[++targetCount] = actors[i];
                 }
-
-                // Vector3 targetDirection = actors[i].transform.position - player.transform.position;
-                // float dot = Vector3.Dot(targetDirection, skillShotDirection);
-                // Vector3 closestPoint = player.transform.position + (dot * skillShotDirection);
-                // Vector3 crossBar = actors[i].transform.position - closestPoint;
-                //
-                // Debug.DrawRay(player.transform.position, targetDirection, Color.red, 1.0f);
-                // Debug.DrawRay(player.transform.position, dot * skillShotDirection, Color.white, 1.0f);
-                // Debug.DrawRay(closestPoint, crossBar, Color.blue, 1.0f);
-                //
-                // if(dot < distance && crossBar.magnitude < width / 2.0f){
-                //     targets[++targetCount] = actors[i];
-                // }
             }
         } break;
         // Location placement
@@ -119,10 +104,9 @@ public class AbilityPlacement : ScriptableObject {
             for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
                 Vector3 targetpos = actors[i].transform.position;
 
-                targetpos.y = 0.0f;
-                castPosition.y = 0.0f;
+                volume.SetPosition(splat.transform.position);
 
-                if((targetpos - castPosition).magnitude <= radius){
+                if(volume.ContainsPoint(actors[i].transform.position)){
                     targets[++targetCount] = actors[i];
                 }
             }
