@@ -10,7 +10,7 @@ public class AbilityPlacement : ScriptableObject {
     private const int maxTargets = 16;
 
     public enum PlacementType {
-        Passive,       // Benefits player without activations
+        Passive,       // Benefits caster without activations
     ONHOTKEY, // Placements below require a button press
         Radius,        // Ability affects things in a radius around the hero
         Direction,     // Ability is aimed where hero is already facing
@@ -23,7 +23,7 @@ public class AbilityPlacement : ScriptableObject {
         Summon,        // create creature or persistent actor
     }
 
-    private GameObject player;
+    private Actor caster;
     private Ability parent;
     public PlacementType type;
     public GameObject splat;
@@ -33,19 +33,21 @@ public class AbilityPlacement : ScriptableObject {
     [Header("Placement Details")]
     public AbilityVolume volume;
     public bool rotateFromCaster;
-    public float distance = 0.0f;
+    public float distance = 0.0f; // I think all of the possible permutations can be made with a rotate bool and a min and max distance
 
     public void Start(){
         splat = Object.Instantiate(splat);
         splatProjector = splat.GetComponent<Projector>();
         splatProjector.enabled = false;
         splatProjector.orthographicSize	= splatSize;
-
-        player = GameObject.FindWithTag("Player");
     }
 
     public void SetParent(Ability ability){
         parent = ability;
+    }
+
+    public void SetCaster(Actor actor){
+        caster = actor;
     }
 
     public void Update(){
@@ -53,10 +55,10 @@ public class AbilityPlacement : ScriptableObject {
         // Skillshot placement
         case PlacementType.Skillshot:{
             Vector3 mousePosition = MousePositionOnPlayerPlane();
-            Vector3 playerpos = player.transform.position;
-            playerpos.y = 0.0f;
+            Vector3 casterpos = caster.transform.position;
+            casterpos.y = 0.0f;
 
-            Vector3 mouseDirNorm = (mousePosition - playerpos);
+            Vector3 mouseDirNorm = (mousePosition - casterpos);
             mouseDirNorm.Normalize();
 
             Vector3 splatPos = mouseDirNorm * splatSize;
@@ -87,7 +89,7 @@ public class AbilityPlacement : ScriptableObject {
         switch(type){
         // Skillshot placement
         case PlacementType.Skillshot:{
-            Vector3 skillShotDirection = (splat.transform.position - player.transform.position);
+            Vector3 skillShotDirection = (splat.transform.position - caster.transform.position);
             skillShotDirection.y = 0.0f;
             skillShotDirection.Normalize();
 
@@ -119,7 +121,7 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     private Vector3 MousePositionOnPlayerPlane(){
-        // Fix when player starts working proper
+        // Fix when caster starts working proper
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         Plane plane = new Plane(Vector3.up, Vector3.zero);
@@ -129,7 +131,7 @@ public class AbilityPlacement : ScriptableObject {
             return ray.GetPoint(rayDistance);
         }
 
-        Debug.LogError("Intersection with player plane has failed unexpectedly.");
+        Debug.LogError("Intersection with caster plane has failed unexpectedly.");
         return Vector3.zero;
     }
 };

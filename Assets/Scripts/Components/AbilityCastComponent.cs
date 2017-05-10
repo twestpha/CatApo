@@ -6,9 +6,6 @@ using System;
 [RequireComponent (typeof (PlayerComponent))]
 public class AbilityCastComponent : MonoBehaviour {
 
-    // Might want hidden passive abilities
-    private const int ABILITY_MAX = 4;
-
     [Header("Ability Key Bindings")]
     public KeyCode[] abilityHotkeys;
 
@@ -20,7 +17,7 @@ public class AbilityCastComponent : MonoBehaviour {
 	void Start(){
         for(int i = 0; i < abilities.Count; ++i){
             abilities[i] = UnityEngine.Object.Instantiate(abilities[i]);
-            abilities[i].SetSelfActor(gameObject.GetComponent<Actor>());
+            abilities[i].SetCaster(gameObject.GetComponent<Actor>());
             abilities[i].Start();
         }
 	}

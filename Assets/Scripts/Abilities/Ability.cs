@@ -22,7 +22,7 @@ public class Ability : ScriptableObject {
         Casted,
     }
 
-    public Actor selfActor;
+    public Actor caster;
 
     public AbilityState state;
 
@@ -129,7 +129,7 @@ public class Ability : ScriptableObject {
 
                         effectsIndex++;
                         foreach(Actor actor in targets){
-                            if(!actor || (!includeSelf && actor == selfActor)){
+                            if(!actor || (!includeSelf && actor == caster)){
                                 continue;
                             }
 
@@ -161,7 +161,11 @@ public class Ability : ScriptableObject {
         }
     }
 
-    public void SetSelfActor(Actor actor){
-        selfActor = actor;
+    public void SetCaster(Actor actor){
+        caster = actor;
+
+        for(int i = 0; i < placements.Count; ++i){
+            placements[i].SetCaster(actor);
+        }
     }
 }
