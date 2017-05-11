@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu()]
 [System.Serializable]
-public class AbilityEffect : ScriptableObject {
+public class AbilityEffect : ScriptableObject { // Maybe generalize this for other operations...?
     // Ability Effect is the result of a cast ability. This is a sort of metaprogram
 
     public bool debug;
@@ -32,15 +32,8 @@ public class AbilityEffect : ScriptableObject {
         Divide,
     }
 
-    public enum Behavior {
-        Keep,
-        Restore
-    }
-
-    private Actor targetActor;
     public Attribute attribute;
     public Operation operation;
-    public Behavior behavior;
     public float value;
     public float duration;
 
@@ -48,7 +41,7 @@ public class AbilityEffect : ScriptableObject {
     private IEnumerator coroutine;
 
     // Implementation of the ability effects
-    static public void ApplyWithSettings(ref Actor target_, Attribute attribute_, Operation operation_, Behavior behavior_, float value_, float duration_){
+    static public void ApplyWithSettings(ref Actor target_, Attribute attribute_, Operation operation_, float value_, float duration_){
 
         // Get previous value
         float previousValue = 0.0f;
@@ -58,17 +51,22 @@ public class AbilityEffect : ScriptableObject {
         float finalValue;
         switch(operation_){
         case Operation.Subtract:
-            finalValue = previousValue - value_; break;
+            finalValue = previousValue - value_;
+        break;
         case Operation.Add:
-            finalValue = previousValue + value_; break;
+            finalValue = previousValue + value_;
+        break;
         case Operation.Multiply:
-            finalValue = previousValue * value_; break;
+            finalValue = previousValue * value_;
+        break;
         case Operation.Divide:
-            finalValue = previousValue / value_; break;
+            finalValue = previousValue / value_;
+        break;
         case Operation.Replace:
-            finalValue = value_; break;
+            finalValue = value_;
+        break;
         default:
-            return; // nop
+        return; // nop
         }
 
         // push that back to target value
@@ -78,7 +76,8 @@ public class AbilityEffect : ScriptableObject {
     static private void AttributeAccessor(ref Actor actor, Attribute attribute, ref float v, bool dir){
         switch(attribute){
         case Attribute.Health:
-            Assign(ref actor.currentHealth, ref v, dir); return;
+            Assign(ref actor.currentHealth, ref v, dir);
+        return;
         default:
         return;
         }
@@ -94,33 +93,7 @@ public class AbilityEffect : ScriptableObject {
             Debug.Log("Casting [" + operation + " " + value + " " + attribute + "] on " + target);
         }
 
-        targetActor = target;
-
-        ApplyWithSettings(ref target, attribute, operation, behavior, value, duration);
-
-        if(behavior == Behavior.Restore){
-            targetActor.StartCoroutine(RestoreAfterTime(duration));
-        }
-    }
-
-    private IEnumerator RestoreAfterTime(float waitTime){
-        yield return new WaitForSeconds(waitTime);
-
-        // invert the operation
-        Operation newop = Operation.Replace;
-        switch(operation){
-        case Operation.Subtract:
-            newop = Operation.Add; break;
-        case Operation.Add:
-            newop = Operation.Subtract; break;
-        case Operation.Multiply:
-            newop = Operation.Divide; break;
-        case Operation.Divide:
-            newop = Operation.Multiply; break;
-        default:
-            Debug.LogError("Can't undo a \"Replace\" operation."); break;
-        }
-
-        ApplyWithSettings(ref targetActor, attribute, newop, Behavior.Keep, value, duration);
+        // apply operation
+        ApplyWithSettings(ref target, attribute, operation, /*behavior,*/ value, duration);
     }
 }
