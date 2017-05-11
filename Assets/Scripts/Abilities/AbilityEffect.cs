@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu()]
 [System.Serializable]
 public class AbilityEffect : ScriptableObject { // Maybe generalize this for other operations...?
+    // Locking a value, making sure it doesn't change
+    // maybe create an actor/gameobject... so ability doesn't pick up that slack mostly because I don't like double lists
+
     // Ability Effect is the result of a cast ability. This is a sort of metaprogram
 
     public bool debug;
@@ -35,13 +38,9 @@ public class AbilityEffect : ScriptableObject { // Maybe generalize this for oth
     public Attribute attribute;
     public Operation operation;
     public float value;
-    public float duration;
-
-    // Delayed coroutine
-    private IEnumerator coroutine;
 
     // Implementation of the ability effects
-    static public void ApplyWithSettings(ref Actor target_, Attribute attribute_, Operation operation_, float value_, float duration_){
+    static public void ApplyWithSettings(ref Actor target_, Attribute attribute_, Operation operation_, float value_){
 
         // Get previous value
         float previousValue = 0.0f;
@@ -94,6 +93,6 @@ public class AbilityEffect : ScriptableObject { // Maybe generalize this for oth
         }
 
         // apply operation
-        ApplyWithSettings(ref target, attribute, operation, /*behavior,*/ value, duration);
+        ApplyWithSettings(ref target, attribute, operation, value);
     }
 }

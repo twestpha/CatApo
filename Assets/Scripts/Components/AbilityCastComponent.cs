@@ -17,8 +17,8 @@ public class AbilityCastComponent : MonoBehaviour {
 	void Start(){
         for(int i = 0; i < abilities.Count; ++i){
             abilities[i] = UnityEngine.Object.Instantiate(abilities[i]);
-            abilities[i].SetCaster(gameObject.GetComponent<Actor>());
             abilities[i].Start();
+            abilities[i].SetCaster(gameObject.GetComponent<Actor>());
         }
 	}
 

@@ -30,7 +30,8 @@ public class Ability : ScriptableObject {
 
     public AbilitySource source;
     public bool includeSelf;
-    public bool channeled; // TODO
+    // channeled ability?
+    // tags to include or exclude
 
     public float cooldown;
     private float currentCooldown;
@@ -150,11 +151,10 @@ public class Ability : ScriptableObject {
 
     public void Notify(){
         foreach(AbilityPlacement placement in placements){
-            if(placement.type > AbilityPlacement.PlacementType.ONHOTKEY &&
-               placement.type < AbilityPlacement.PlacementType.ONCLICK){
+            if(placement.type == AbilityPlacement.PlacementType.ONHOTKEY){
                 // If ability requires hotkey only
                 state = AbilityState.Casted;
-            } else if(placement.type > AbilityPlacement.PlacementType.ONCLICK){
+            } else if(placement.type == AbilityPlacement.PlacementType.ONCLICK){
                 // If ability requires a left click
                 state = AbilityState.Notified;
             }
