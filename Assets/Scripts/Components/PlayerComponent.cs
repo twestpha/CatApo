@@ -5,15 +5,15 @@ using UnityEngine;
 public class PlayerComponent : Actor {
 
     // Constants
-    private const int kTerrainCollisionMask = 1 << 8;
+
     private const float kMouseDragTime = 0.25f;
     private const float kPlayerStopRadius = 0.1f;
     private const float kPlayerPlaneOffset = -1.0f;
 
     [Header("Jumping")]
-    public float jumpSpeed = 0.1f;
-    public float jumpTime = 0.5f;
-    public float gravity = 8.0f;
+    public float jumpSpeed = 0.09f;
+    public float jumpTime = 0.22f;
+    public float gravity = 0.45f;
     private float jumpTimeElapsed;
 
     // [Header("Actor Connections")]
@@ -44,14 +44,9 @@ public class PlayerComponent : Actor {
     public ActionState actionState;
     public UIState uiState;
 
-    // Component References
-    private CharacterController characterController;
+	new void Start(){
+        base.Start();
 
-    // Player Plane
-    private Plane playerPlane;
-
-	void Start(){
-        characterController = GetComponent<CharacterController>();
         targetPosition = characterController.transform.position;
 
         accelerationMultiplier = 0.0f;
@@ -63,9 +58,6 @@ public class PlayerComponent : Actor {
         dashing = false;
         actionState = ActionState.None;
         currentHealth = maxHealth;
-
-        // Setup player plane
-        playerPlane = new Plane(Vector3.down, characterController.transform.position.y + kPlayerPlaneOffset);
 	}
 
     void Update(){
@@ -160,7 +152,6 @@ public class PlayerComponent : Actor {
         }
 
         if(jumpButton && characterController.isGrounded && !jumping){
-            Debug.Log("Jumped");
             jumping = true;
             jumpUnreleased = true;
             jumpTimeElapsed = 0.0f;
@@ -181,35 +172,5 @@ public class PlayerComponent : Actor {
         }
 
         return jumpVelocity;
-    }
-
-    //##########################################################################
-    // Mouse-to-world helper functions
-    //##########################################################################
-    Vector3 MouseTarget(){
-        // Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if(Physics.Raycast(ray, out hit, Mathf.Infinity, kTerrainCollisionMask)){
-            return hit.point;
-        }
-
-        return IntersectionWithPlayerPlane(); // As fallback, use plane player is on.
-    }
-
-    Vector3 IntersectionWithPlayerPlane(){
-        playerPlane.distance = characterController.transform.position.y + kPlayerPlaneOffset;
-        // Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        float rayDistance;
-
-        if(playerPlane.Raycast(ray, out rayDistance)){
-            return ray.GetPoint(rayDistance);
-        }
-
-        Debug.LogError("Intersection with player plane has failed unexpectedly.");
-        return Vector3.zero;
     }
 }

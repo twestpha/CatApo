@@ -24,11 +24,17 @@ public class AbilityCastComponent : MonoBehaviour {
 
 	void Update(){
         for(int i = 0; i < abilities.Count; ++i){
-            if(Input.GetKeyDown(abilityHotkeys[i])){
+            if(Input.GetKey(abilityHotkeys[i])){
                 abilities[i].Notify();
             }
 
             abilities[i].Update();
         }
 	}
+
+    void LateUpdate(){
+        for(int i = 0; i < abilities.Count; ++i){
+            abilities[i].LateUpdate();
+        }
+    }
 }

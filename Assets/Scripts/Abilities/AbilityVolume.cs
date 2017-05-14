@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class AbilityVolume : ScriptableObject {
     // Ability Volume is the area in which an ability can be cast
-    
+
     public bool debug;
 
     protected Vector3 position;
@@ -51,28 +51,32 @@ public class AbilityVolumePolygon : AbilityVolume{
     public Vector2[] polygon;
 
     override public bool ContainsPoint(Vector3 point){
+        point.y = 0.0f;
+
+        Vector2[] newPolygon = new Vector2[polygon.Length];
+
+        for(int i = 0; i < newPolygon.Length; ++i){
+            float rotx = (polygon[i].x * Mathf.Cos(rotation)) - (polygon[i].y * Mathf.Sin(rotation));
+            float roty = (polygon[i].y * Mathf.Cos(rotation)) + (polygon[i].x * Mathf.Sin(rotation));
+            newPolygon[i] = new Vector2(rotx, roty) + new Vector2(position.x, position.z);
+        }
+
         if(debug){
-            for(int i = 0; i < polygon.Length; ++i){
-                Vector3 a = new Vector3(polygon[i].x + position.x, 0.1f, polygon[i].y + position.z);
+            for(int i = 0; i < newPolygon.Length; ++i){
+                Vector3 a = new Vector3(newPolygon[i].x, 0.1f, newPolygon[i].y);
                 Vector3 b = i == 0 ?
-                            new Vector3(polygon[polygon.Length - 1].x + position.x, 0.1f, polygon[polygon.Length - 1].y + position.z) :
-                            new Vector3(polygon[i - 1].x + position.x, 0.1f, polygon[i - 1].y + position.z);
+                            new Vector3(newPolygon[newPolygon.Length - 1].x, 0.1f, newPolygon[newPolygon.Length - 1].y) :
+                            new Vector3(newPolygon[i - 1].x, 0.1f, newPolygon[i - 1].y);
                 Debug.DrawLine(a, b, Color.red, 1.0f);
             }
         }
 
-        point.y = 0.0f;
-
-        // transform point into ability space
-        point -= position;
-        // then some rotation around y... TODO
-
-        int j = polygon.Length - 1;
+        int j = newPolygon.Length - 1;
         var result = false;
 
-        for(int i = 0; i < polygon.Length; j = i++){
-           if (((polygon[i].y <= point.z && point.z < polygon[j].y) || (polygon[j].y <= point.z && point.z < polygon[i].y)) &&
-              (point.x < (polygon[j].x - polygon[i].x) * (point.z - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x))
+        for(int i = 0; i < newPolygon.Length; j = i++){
+           if (((newPolygon[i].y <= point.z && point.z < newPolygon[j].y) || (newPolygon[j].y <= point.z && point.z < newPolygon[i].y)) &&
+              (point.x < (newPolygon[j].x - newPolygon[i].x) * (point.z - newPolygon[i].y) / (newPolygon[j].y - newPolygon[i].y) + newPolygon[i].x))
               result = !result;
         }
 

@@ -368,7 +368,7 @@ namespace UnityStandardAssets.ImageEffects
             prevFrameUp = transform.up;
             prevFramePos = transform.position;
 			prevStereoViewProjMat[0] = currentStereoViewProjMat[0];
-			prevStereoViewProjMat[1] = currentStereoViewProjMat[1]; 
+			prevStereoViewProjMat[1] = currentStereoViewProjMat[1];
 		}
 
         Camera GetTmpCam () {
@@ -396,7 +396,7 @@ namespace UnityStandardAssets.ImageEffects
 
         void StartFrame () {
             // take only x% of positional changes into account (camera motion)
-            // TODO: possibly do the same for rotational part
+            // possibly do the same for rotational part
             prevFramePos = Vector3.Slerp(prevFramePos, transform.position, 0.75f);
         }
 

@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class Actor : MonoBehaviour {
+
+    // Constants
+    protected const int kTerrainCollisionMask = 1 << 8;
 
     [Header("Base Actor Properties")]
 
@@ -23,13 +27,51 @@ public class Actor : MonoBehaviour {
     protected Vector3 targetPosition;
     protected Vector3 velocity;
 
+    // Component References
+    protected CharacterController characterController;
 
-	void Start(){
+    // Actor Plane
+    protected Plane actorPlane;
+
+	protected void Start(){
         currentHealth = maxHealth;
         currentMoveSpeed = maxMoveSpeed;
+
+        characterController = GetComponent<CharacterController>();
+
+        // Setup player plane
+        actorPlane = new Plane(Vector3.down, characterController.transform.position.y/* + kPlayerPlaneOffset*/);
 	}
 
 	void Update(){
 
 	}
+
+    //##########################################################################
+    // Mouse-to-world helper functions
+    //##########################################################################
+    public Vector3 MouseTarget(){
+        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // RaycastHit hit;
+        //
+        // if(Physics.Raycast(ray, out hit, Mathf.Infinity, kTerrainCollisionMask)){
+        //     return hit.point;
+        // }
+
+        return IntersectionWithPlayerPlane(); // As fallback, use plane player is on.
+    }
+
+    protected Vector3 IntersectionWithPlayerPlane(){
+        actorPlane.distance = characterController.transform.position.y - 1.0f/*+ kPlayerPlaneOffset /* not sure about this bad boy yet */;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        float rayDistance;
+
+        if(actorPlane.Raycast(ray, out rayDistance)){
+            return ray.GetPoint(rayDistance);
+        }
+
+        Debug.LogError("Intersection with player plane has failed unexpectedly.");
+        return Vector3.zero;
+    }
 }

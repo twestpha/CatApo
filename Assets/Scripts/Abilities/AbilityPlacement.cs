@@ -55,32 +55,37 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     public void Update(){
-            Vector3 mousePosition = MousePositionOnCasterPlane();
-            Vector3 casterpos = caster.transform.position;
-            mousePosition.y = 0.0f;
-            casterpos.y = 0.0f;
+        Vector3 mousePosition = caster.MouseTarget();
+        Vector3 casterpos = caster.transform.position;
+        mousePosition.y = 0.0f;
+        casterpos.y = 0.0f;
 
-            Vector3 mouseDir = (mousePosition - casterpos);
+        Vector3 mouseDir = (mousePosition - casterpos);
 
-            float mouseDirMag = Mathf.Min(Mathf.Max(mouseDir.magnitude, minDistance), maxDistance);
-            mouseDir.Normalize();
+        float mouseDirMag = Mathf.Min(Mathf.Max(mouseDir.magnitude, minDistance), maxDistance);
+        mouseDir.Normalize();
 
-            Vector3 splatPos = mouseDir * mouseDirMag;
-            splatPos.y = splatHeight;
-            splat.transform.position = splatPos + casterpos;
+        Vector3 splatPos = mouseDir * mouseDirMag;
+        splatPos.y = splatHeight;
+        splat.transform.position = splatPos + casterpos;
 
-            if(rotateFromCaster){
-                splat.transform.rotation = Quaternion.LookRotation(mouseDir) * Quaternion.Euler(90.0f, 0.0f, 0.0f);
-            }
+        if(rotateFromCaster){
+            splat.transform.rotation = Quaternion.LookRotation(mouseDir) * Quaternion.Euler(90.0f, 0.0f, 0.0f);
+        }
 
-            splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
+        splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
     }
 
     public Actor[] GetTargetsInCast(Vector3 castPosition){
         Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
         Actor[] targets = new Actor[maxTargets];
 
+        // Set position and rotation of volume
         volume.SetPosition(splat.transform.position);
+        if(rotateFromCaster){
+            float rotation = (-splat.transform.rotation.eulerAngles.y + 90.0f) * Mathf.Deg2Rad;
+            volume.SetRotation(rotation);
+        }
 
         int targetCount = 0;
 

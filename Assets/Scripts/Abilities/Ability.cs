@@ -48,10 +48,10 @@ public class Ability : ScriptableObject {
     public List<float> effectsTiming;
     private int effectsIndex;
 
-    [Header("GameObjects and Timing")]
-    public List<GameObject> gameObjects;
-    public List<float> gameObjectTiming;
-    private int gameObjectsIndex;
+    // [Header("GameObjects and Timing")]
+    // public List<GameObject> gameObjects; // TODO make creation of a game object an effect and lump these together
+    // public List<float> gameObjectTiming;
+    // private int gameObjectsIndex;
 
     // Default Methods
     public void Start(){
@@ -99,29 +99,25 @@ public class Ability : ScriptableObject {
     public void Update(){
         currentCooldown += Time.deltaTime;
 
-        foreach(AbilityPlacement placement in placements){
-            placement.Update();
-        }
-
         // If we're notified, wait for right or left click to either cast or cancel
         if(state == AbilityState.Notified){
-            if(Input.GetMouseButtonDown(0) && currentCooldown > cooldown){
+
+            if(Input.GetMouseButton(0) && currentCooldown >= cooldown){
                 currentCooldown = 0.0f;
 
                 // reset indices
                 effectsIndex = 0;
                 gameObjectsIndex = 0;
 
-                // TODO just get mouse position into world...
-                castPosition = placements[0].splat.transform.position;
+                castPosition = caster.MouseTarget();
 
                 state = AbilityState.Casted;
-            } else if(Input.GetMouseButtonDown(1)){
+            } else if(Input.GetMouseButton(1)){
                 state = AbilityState.Idle;
             }
         }
         // If we're casted, get all the targets from all placements and cast effects on said targets
-        else if(state == AbilityState.Casted){
+        if(state == AbilityState.Casted){
             // iterate through remaining effects and cast on targets at time specified
             for(int i = effectsIndex; i < effects.Count; ++i){
                 if(effectsTiming[i] < currentCooldown){
@@ -146,6 +142,13 @@ public class Ability : ScriptableObject {
             if(effectsIndex == effects.Count && gameObjectsIndex == gameObjects.Count){
                 state = AbilityState.Idle;
             }
+        }
+    }
+
+    public void LateUpdate(){
+        // Update placements _after_ the caster has moved
+        foreach(AbilityPlacement placement in placements){
+            placement.Update();
         }
     }
 
