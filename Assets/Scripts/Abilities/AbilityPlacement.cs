@@ -67,7 +67,7 @@ public class AbilityPlacement : ScriptableObject {
 
             Vector3 splatPos = mouseDir * mouseDirMag;
             splatPos.y = splatHeight;
-            splat.transform.position = splatPos;
+            splat.transform.position = splatPos + casterpos;
 
             if(rotateFromCaster){
                 splat.transform.rotation = Quaternion.LookRotation(mouseDir) * Quaternion.Euler(90.0f, 0.0f, 0.0f);

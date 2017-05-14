@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\Abilities\AbilityVolume.cs" />
      <Compile Include="Assets\Scripts\Actor.cs" />
      <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
+     <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
      <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
      <Compile Include="Assets\Scripts\Components\TestComponent.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
