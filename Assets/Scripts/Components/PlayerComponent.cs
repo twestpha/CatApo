@@ -60,9 +60,10 @@ public class PlayerComponent : Actor {
         currentHealth = maxHealth;
 	}
 
-    void Update(){
+    new void Update(){
+        base.Update();
+
         HandleInputs();
-        // should put this in late update probably
         characterController.Move(velocity);
     }
 
@@ -80,7 +81,7 @@ public class PlayerComponent : Actor {
             // HandleAbilities();
             // Vector3 abilityVelocity  = HandleAbilities();
             Vector3 jumpVelocity     = HandleJump();
-            Vector3 movementVelocity = HandleMove();
+            Vector3 movementVelocity = HandleMove(); // TODO rework this to use smoothdamp
 
             bool canMove = (moving || jumping) && !dashing;
             bool canJump = jumpVelocity.y != 0.0f && !dashing;
@@ -130,6 +131,9 @@ public class PlayerComponent : Actor {
 
             moveVector2D.Normalize();
             movementVelocity += moveVector2D * currentMoveSpeed * Time.deltaTime * accelerationMultiplier;
+
+            Vector3 playerModelDirection = Vector3.RotateTowards(transform.forward, moveVector2D, turnSpeed * Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(playerModelDirection);
 
             // Vector3 playerModelDirection = Vector3.RotateTowards(playerModel.transform.forward, moveVector2D, turnSpeed * Time.deltaTime, 0.0f);
             // playerModel.transform.rotation = Quaternion.LookRotation(playerModelDirection);

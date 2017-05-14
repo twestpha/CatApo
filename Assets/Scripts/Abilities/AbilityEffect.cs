@@ -2,16 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu()]
-[System.Serializable]
-public class AbilityEffect : ScriptableObject { // Maybe generalize this for other operations...?
-    // Locking a value, making sure it doesn't change
-    // maybe create an actor/gameobject... so ability doesn't pick up that slack mostly because I don't like double lists
 
+public class AbilityEffect : ScriptableObject {
     // Ability Effect is the result of a cast ability. This is a sort of metaprogram
+    // Locking a value, making sure it doesn't change
+    // conditional ability effect, based on some state
+    // ^ these two seem related to AbilityEffectModifyAttribute, maybe create some common base class there too
 
     public bool debug;
 
+    virtual public void Apply(Actor target){}
+}
+
+[CreateAssetMenu()]
+[System.Serializable]
+public class AbilityEffectCreateObject : AbilityEffect {
+    public GameObject createObject;
+
+    override public void Apply(Actor target){
+        Object.Instantiate(createObject, target.transform.position, target.transform.rotation);
+    }
+}
+
+[CreateAssetMenu()]
+[System.Serializable]
+public class AbilityEffectActorStatus : AbilityEffect {
+    public enum ActorStatus {
+        Stop,
+        Root,
+        Stun,
+        Silence,
+    };
+
+    public ActorStatus status;
+    public float duration;
+
+    override public void Apply(Actor target){
+        switch(status){
+        case ActorStatus.Stop:
+            target.Root(0.1f);
+        break;
+        }
+    }
+}
+
+[CreateAssetMenu()]
+[System.Serializable]
+public class AbilityEffectModifyAttribute : AbilityEffect {
     // Readability replacements for accessor
     protected const bool AssignToLeft = true;
     protected const bool AssignToRight = false;
@@ -87,7 +124,7 @@ public class AbilityEffect : ScriptableObject { // Maybe generalize this for oth
     }
 
     // Non static
-    public void Apply(Actor target){
+    override public void Apply(Actor target){
         if(debug){
             Debug.Log("Casting [" + operation + " " + value + " " + attribute + "] on " + target);
         }

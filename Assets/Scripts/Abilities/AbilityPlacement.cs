@@ -19,6 +19,7 @@ public class AbilityPlacement : ScriptableObject {
     // Skillshot,     // Click on terrain and spell is cast that direction from hero
     // Location,      // Place spell where effects occur around it. Can be limited to a range
     // Summon,        // create creature or persistent actor
+    // TODO passive abilities that are always firing, autocasting that fire with duration
 
     public enum PlacementType {
         onHotkey, // Placements below require a button press
@@ -34,7 +35,7 @@ public class AbilityPlacement : ScriptableObject {
 
     [Header("Placement Details")]
     public AbilityVolume volume;
-    public bool castOnActor; // really just filters to the closest actor and then keeps a reference probably
+    public bool castOnActor; // really just would filter the closest actor and then keeps a reference probably
     public bool rotateFromCaster;
     public float maxDistance = 0.0f;
     public float minDistance = 0.0f;

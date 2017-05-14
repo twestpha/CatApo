@@ -33,6 +33,11 @@ public class Actor : MonoBehaviour {
     // Actor Plane
     protected Plane actorPlane;
 
+    // fucking timers
+    // man I should really make a timer helper class
+    private float rootTime;
+    private float currentRootTime;
+
 	protected void Start(){
         currentHealth = maxHealth;
         currentMoveSpeed = maxMoveSpeed;
@@ -43,9 +48,23 @@ public class Actor : MonoBehaviour {
         actorPlane = new Plane(Vector3.down, characterController.transform.position.y/* + kPlayerPlaneOffset*/);
 	}
 
-	void Update(){
+	protected void Update(){
+        currentRootTime += Time.deltaTime;
 
+        if(currentRootTime > rootTime){
+            currentMoveSpeed = maxMoveSpeed;
+        }
 	}
+
+    //##########################################################################
+    // Status methods
+    //##########################################################################
+    public void Root(float duration){
+        currentMoveSpeed = 0.0f;
+        currentRootTime = 0.0f;
+        targetPosition = transform.position;
+        rootTime = duration;
+    }
 
     //##########################################################################
     // Mouse-to-world helper functions
