@@ -202,7 +202,7 @@ public class PlayerComponent : Actor {
         playerPlane.distance = characterController.transform.position.y + kPlayerPlaneOffset;
         // Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
+
         float rayDistance;
 
         if(playerPlane.Raycast(ray, out rayDistance)){

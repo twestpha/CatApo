@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\Actor.cs" />
      <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
      <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
+     <Compile Include="Assets\Scripts\Components\TestComponent.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
