@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class AbilityVolume : ScriptableObject {
     // Ability Volume is the area in which an ability can be cast
+    
     public bool debug;
 
     protected Vector3 position;
@@ -64,7 +65,7 @@ public class AbilityVolumePolygon : AbilityVolume{
 
         // transform point into ability space
         point -= position;
-        // then some rotation around y
+        // then some rotation around y... TODO
 
         int j = polygon.Length - 1;
         var result = false;

@@ -9,18 +9,20 @@ public class AbilityPlacement : ScriptableObject {
     private const float splatHeight = 15.0f;
     private const int maxTargets = 16;
 
+    // Old placement types
+    // Passive,       // Benefits caster without activations
+    // Radius,        // Ability affects things in a radius around the hero
+    // Direction,     // Ability is aimed where hero is already facing
+    // Autocast,      // Toggleable to enhance or modify other attacks
+    // Self,          // effects self only
+    // Target,        // Must click on enemy hero or unit
+    // Skillshot,     // Click on terrain and spell is cast that direction from hero
+    // Location,      // Place spell where effects occur around it. Can be limited to a range
+    // Summon,        // create creature or persistent actor
+
     public enum PlacementType {
-        // Passive,       // Benefits caster without activations
-        ONHOTKEY, // Placements below require a button press
-        // Radius,        // Ability affects things in a radius around the hero
-        // Direction,     // Ability is aimed where hero is already facing
-        // Autocast,      // Toggleable to enhance or modify other attacks
-        // Self,          // effects self only
-        ONCLICK, // Placements below require a button press, followed by a click to confirm
-        // Target,        // Must click on enemy hero or unit
-        // Skillshot,     // Click on terrain and spell is cast that direction from hero
-        // Location,      // Place spell where effects occur around it. Can be limited to a range
-        // Summon,        // create creature or persistent actor
+        onHotkey, // Placements below require a button press
+        onClick, // Placements below require a button press, followed by a click to confirm
     }
 
     private Actor caster;
@@ -53,7 +55,7 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     public void Update(){
-            Vector3 mousePosition = MousePositionOnPlayerPlane();
+            Vector3 mousePosition = MousePositionOnCasterPlane();
             Vector3 casterpos = caster.transform.position;
             mousePosition.y = 0.0f;
             casterpos.y = 0.0f;
@@ -72,77 +74,28 @@ public class AbilityPlacement : ScriptableObject {
             }
 
             splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
-
-        // switch(type){
-        // // Skillshot placement
-        // case PlacementType.Skillshot:{
-        //     Vector3 mousePosition = MousePositionOnPlayerPlane();
-        //     Vector3 casterpos = caster.transform.position;
-        //     casterpos.y = 0.0f;
-        //
-        //     Vector3 mouseDirNorm = (mousePosition - casterpos);
-        //     mouseDirNorm.Normalize();
-        //
-        //     Vector3 splatPos = mouseDirNorm * splatSize;
-        //     splatPos.y = splatHeight;
-        //     splat.transform.position = splatPos;
-        //
-        //     splat.transform.rotation = Quaternion.LookRotation(mouseDirNorm) * Quaternion.Euler(90.0f, 0.0f, 0.0f);
-        //
-        //     splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
-        // } break;
-        // // Location placement
-        // case PlacementType.Location:{
-        //     Vector3 mousePosition = MousePositionOnPlayerPlane();
-        //     splat.transform.position = new Vector3(mousePosition.x, splatHeight, mousePosition.z);
-        //
-        //     splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
-        // } break;
-        // default:
-        // break;
-        // }
     }
 
     public Actor[] GetTargetsInCast(Vector3 castPosition){
-        // Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
+        Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
         Actor[] targets = new Actor[maxTargets];
-        // int targetCount = 0;
-        //
-        // switch(type){
-        // // Skillshot placement
-        // case PlacementType.Skillshot:{
-        //     Vector3 skillShotDirection = (splat.transform.position - caster.transform.position);
-        //     skillShotDirection.y = 0.0f;
-        //     skillShotDirection.Normalize();
-        //
-        //     // some setup for ability space, like direction and range
-        //
-        //     for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
-        //         if(volume.ContainsPoint(actors[i].transform.position)){
-        //             targets[++targetCount] = actors[i];
-        //         }
-        //     }
-        // } break;
-        // // Location placement
-        // case PlacementType.Location:{
-        //     for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
-        //         Vector3 targetpos = actors[i].transform.position;
-        //
-        //         volume.SetPosition(splat.transform.position);
-        //
-        //         if(volume.ContainsPoint(actors[i].transform.position)){
-        //             targets[++targetCount] = actors[i];
-        //         }
-        //     }
-        // } break;
-        // default:
-        // break;
-        // }
+
+        volume.SetPosition(splat.transform.position);
+
+        int targetCount = 0;
+
+        for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
+            Vector3 targetpos = actors[i].transform.position;
+
+            if(volume.ContainsPoint(actors[i].transform.position)){
+                targets[++targetCount] = actors[i];
+            }
+        }
 
         return targets;
     }
 
-    private Vector3 MousePositionOnPlayerPlane(){
+    private Vector3 MousePositionOnCasterPlane(){
         // Fix when caster starts working proper
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

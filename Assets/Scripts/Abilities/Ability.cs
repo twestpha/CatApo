@@ -151,10 +151,10 @@ public class Ability : ScriptableObject {
 
     public void Notify(){
         foreach(AbilityPlacement placement in placements){
-            if(placement.type == AbilityPlacement.PlacementType.ONHOTKEY){
+            if(placement.type == AbilityPlacement.PlacementType.onHotkey){
                 // If ability requires hotkey only
                 state = AbilityState.Casted;
-            } else if(placement.type == AbilityPlacement.PlacementType.ONCLICK){
+            } else if(placement.type == AbilityPlacement.PlacementType.onClick){
                 // If ability requires a left click
                 state = AbilityState.Notified;
             }
