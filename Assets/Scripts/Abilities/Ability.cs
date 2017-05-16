@@ -35,10 +35,14 @@ public class Ability : ScriptableObject {
     // tags to include or exclude
 
     public float cooldown;
-    private float currentCooldown;
+    public float currentCooldown; // replace this shit with a timer
 
     // cast location stuff
     private Vector3 castPosition;
+
+    [Header("Equipment")]
+    public List<Equipment> equipments;
+    private int equipmentEffectsIndex;
 
     [Header("Placements")]
     public List<AbilityPlacement> placements;
@@ -88,8 +92,6 @@ public class Ability : ScriptableObject {
         // If we're notified, wait for right or left click to either cast or cancel
         if(state == AbilityState.Notified){
             if(Input.GetMouseButton(0) && currentCooldown >= cooldown){
-                castPosition = caster.MouseTarget();
-
                 state = AbilityState.Casted;
             } else if(Input.GetMouseButton(1)){
                 state = AbilityState.Idle;
@@ -99,30 +101,61 @@ public class Ability : ScriptableObject {
         if(state == AbilityState.Casted){
             // Casted last frame
             if(previousState != AbilityState.Casted){
+                castPosition = caster.MouseTarget();
                 currentCooldown = 0.0f;
                 effectsIndex = 0;
+                equipmentEffectsIndex = 0;
             }
 
-            // iterate through remaining effects and cast on targets at time specified
-            for(int i = effectsIndex; i < effects.Count; ++i){
-                if(effectsTiming[i] < currentCooldown){
-                    foreach(AbilityPlacement placement in placements){
-                        Actor[] targets = placement.GetTargetsInCast(castPosition);
+            bool equipmentComplete = true;
 
-                        effectsIndex++;
-                        foreach(Actor actor in targets){
-                            if(!actor || (!includeSelf && actor == caster)){
-                                continue;
+            if(source == AbilitySource.Talent){
+                // iterate through remaining effects and cast on targets at time specified
+                for(int i = effectsIndex; i < effects.Count; ++i){
+                    if(effectsTiming[i] < currentCooldown){
+                        foreach(AbilityPlacement placement in placements){
+                            Actor[] targets = placement.GetTargetsInCast(castPosition);
+
+                            effectsIndex++;
+                            foreach(Actor actor in targets){
+                                if(!actor || (!includeSelf && actor == caster)){
+                                    continue;
+                                }
+
+                                effects[i].Apply(actor);
                             }
-
-                            effects[i].Apply(actor);
                         }
                     }
+                }
+            } else if(source == AbilitySource.Equipment) {
+                // iterate through all equipment casting effects from each of them
+                foreach(Equipment equipment in equipments){
+                    for(int i = equipmentEffectsIndex; i < equipment.effects.Count; ++i){
+                        if(equipment.effectsTiming[i] < currentCooldown){
+                            foreach(AbilityPlacement placement in placements){
+                                Actor[] targets = placement.GetTargetsInCast(castPosition);
+
+                                equipmentEffectsIndex++;
+                                foreach(Actor actor in targets){
+                                    if(!actor || (!includeSelf && actor == caster)){
+                                        continue;
+                                    }
+
+                                    Debug.Log("CASTING SOMETHING!");
+
+
+                                    equipment.effects[i].Apply(actor);
+                                }
+                            }
+                        }
+                    }
+
+                    equipmentComplete &= (equipmentEffectsIndex == equipment.effects.Count);
                 }
             }
 
             // If we've done all the effects and we're off cooldown, we're done
-            if(effectsIndex == effects.Count && currentCooldown > cooldown){
+            if(effectsIndex == effects.Count && equipmentComplete && currentCooldown > cooldown){
                 state = AbilityState.Idle;
             }
         }
@@ -138,13 +171,15 @@ public class Ability : ScriptableObject {
     }
 
     public void Notify(){
-        foreach(AbilityPlacement placement in placements){
-            if(placement.type == AbilityPlacement.PlacementType.onHotkey){
-                // If ability requires hotkey only
-                state = AbilityState.Casted;
-            } else if(placement.type == AbilityPlacement.PlacementType.onClick){
-                // If ability requires a left click
-                state = AbilityState.Notified;
+        if(currentCooldown > cooldown){
+            foreach(AbilityPlacement placement in placements){
+                if(placement.type == AbilityPlacement.PlacementType.onHotkey){
+                    // If ability requires hotkey only
+                    state = AbilityState.Casted;
+                } else if(placement.type == AbilityPlacement.PlacementType.onClick){
+                    // If ability requires a left click
+                    state = AbilityState.Notified;
+                }
             }
         }
     }

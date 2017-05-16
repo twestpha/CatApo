@@ -62,6 +62,7 @@ public class AbilityVolumePolygon : AbilityVolume{
         }
 
         if(debug){
+            Debug.Log("If you're not seeing anything draw, you forgot to turn on Gizmos, dumbass.");
             for(int i = 0; i < newPolygon.Length; ++i){
                 Vector3 a = new Vector3(newPolygon[i].x, 0.1f, newPolygon[i].y);
                 Vector3 b = i == 0 ?

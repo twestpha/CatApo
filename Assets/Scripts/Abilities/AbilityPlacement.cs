@@ -89,10 +89,8 @@ public class AbilityPlacement : ScriptableObject {
         }
 
         int targetCount = 0;
-
         for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
             Vector3 targetpos = actors[i].transform.position;
-
             if(volume.ContainsPoint(actors[i].transform.position)){
                 targets[++targetCount] = actors[i];
             }

@@ -60,6 +60,7 @@ public class Actor : MonoBehaviour {
     // Status methods
     //##########################################################################
     public void Root(float duration){
+        // this is kind of a hack around the poor movement model we're using
         currentMoveSpeed = 0.0f;
         currentRootTime = 0.0f;
         targetPosition = transform.position;
