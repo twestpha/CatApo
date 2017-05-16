@@ -20,6 +20,10 @@ public class AbilityEffectCreateObject : AbilityEffect {
     public GameObject createObject;
 
     override public void Apply(Actor target){
+        if(debug){
+            Debug.Log("Creating " + createObject + "at offset...");
+        }
+
         Object.Instantiate(createObject, target.transform.position, target.transform.rotation);
     }
 }
@@ -38,6 +42,10 @@ public class AbilityEffectActorStatus : AbilityEffect {
     public float duration;
 
     override public void Apply(Actor target){
+        if(debug){
+            Debug.Log(status + " " +  target + " for " + duration);
+        }
+
         switch(status){
         case ActorStatus.Stop:
             target.Root(0.1f);
@@ -126,7 +134,7 @@ public class AbilityEffectModifyAttribute : AbilityEffect {
     // Non static
     override public void Apply(Actor target){
         if(debug){
-            Debug.Log("Casting [" + operation + " " + value + " " + attribute + "] on " + target);
+            Debug.Log(operation + " " + value + " " + attribute + " to " + target);
         }
 
         // apply operation

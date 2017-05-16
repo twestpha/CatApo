@@ -33,10 +33,8 @@ public class Actor : MonoBehaviour {
     // Actor Plane
     protected Plane actorPlane;
 
-    // fucking timers
-    // man I should really make a timer helper class
-    private float rootTime;
-    private float currentRootTime;
+    // Status timers
+    private Timer rootTimer = new Timer();
 
 	protected void Start(){
         currentHealth = maxHealth;
@@ -49,9 +47,7 @@ public class Actor : MonoBehaviour {
 	}
 
 	protected void Update(){
-        currentRootTime += Time.deltaTime;
-
-        if(currentRootTime > rootTime){
+        if(rootTimer.Finished()){
             currentMoveSpeed = maxMoveSpeed;
         }
 	}
@@ -61,10 +57,10 @@ public class Actor : MonoBehaviour {
     //##########################################################################
     public void Root(float duration){
         // this is kind of a hack around the poor movement model we're using
+        rootTimer = new Timer(duration);
+        rootTimer.Start();
         currentMoveSpeed = 0.0f;
-        currentRootTime = 0.0f;
         targetPosition = transform.position;
-        rootTime = duration;
     }
 
     //##########################################################################

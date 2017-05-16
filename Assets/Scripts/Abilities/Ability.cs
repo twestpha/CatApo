@@ -33,9 +33,11 @@ public class Ability : ScriptableObject {
     public bool includeSelf;
     // channeled ability?
     // tags to include or exclude
+    // maybe a filter class
+    // self, friendly, enemy, types of enemies?
 
     public float cooldown;
-    public float currentCooldown; // replace this shit with a timer
+    private Timer abilityTimer;
 
     // cast location stuff
     private Vector3 castPosition;
@@ -55,6 +57,8 @@ public class Ability : ScriptableObject {
     // Default Methods
     public void Start(){
         state = AbilityState.Idle;
+
+        abilityTimer = new Timer(cooldown);
 
         // Instantiate copies of the effects and placement data
         for(int i = 0; i < effects.Count; ++i){
@@ -87,11 +91,11 @@ public class Ability : ScriptableObject {
     }
 
     public void Update(){
-        currentCooldown += Time.deltaTime;
+        // currentCooldown += Time.deltaTime;
 
         // If we're notified, wait for right or left click to either cast or cancel
         if(state == AbilityState.Notified){
-            if(Input.GetMouseButton(0) && currentCooldown >= cooldown){
+            if(Input.GetMouseButton(0)){
                 state = AbilityState.Casted;
             } else if(Input.GetMouseButton(1)){
                 state = AbilityState.Idle;
@@ -101,8 +105,8 @@ public class Ability : ScriptableObject {
         if(state == AbilityState.Casted){
             // Casted last frame
             if(previousState != AbilityState.Casted){
+                abilityTimer.Start();
                 castPosition = caster.MouseTarget();
-                currentCooldown = 0.0f;
                 effectsIndex = 0;
                 equipmentEffectsIndex = 0;
             }
@@ -112,7 +116,7 @@ public class Ability : ScriptableObject {
             if(source == AbilitySource.Talent){
                 // iterate through remaining effects and cast on targets at time specified
                 for(int i = effectsIndex; i < effects.Count; ++i){
-                    if(effectsTiming[i] < currentCooldown){
+                    if(effectsTiming[i] < abilityTimer.Elapsed()){
                         foreach(AbilityPlacement placement in placements){
                             Actor[] targets = placement.GetTargetsInCast(castPosition);
 
@@ -131,7 +135,7 @@ public class Ability : ScriptableObject {
                 // iterate through all equipment casting effects from each of them
                 foreach(Equipment equipment in equipments){
                     for(int i = equipmentEffectsIndex; i < equipment.effects.Count; ++i){
-                        if(equipment.effectsTiming[i] < currentCooldown){
+                        if(equipment.effectsTiming[i] < abilityTimer.Elapsed()){
                             foreach(AbilityPlacement placement in placements){
                                 Actor[] targets = placement.GetTargetsInCast(castPosition);
 
@@ -140,9 +144,6 @@ public class Ability : ScriptableObject {
                                     if(!actor || (!includeSelf && actor == caster)){
                                         continue;
                                     }
-
-                                    Debug.Log("CASTING SOMETHING!");
-
 
                                     equipment.effects[i].Apply(actor);
                                 }
@@ -155,7 +156,7 @@ public class Ability : ScriptableObject {
             }
 
             // If we've done all the effects and we're off cooldown, we're done
-            if(effectsIndex == effects.Count && equipmentComplete && currentCooldown > cooldown){
+            if(effectsIndex == effects.Count && equipmentComplete && abilityTimer.Finished()){
                 state = AbilityState.Idle;
             }
         }
@@ -171,7 +172,7 @@ public class Ability : ScriptableObject {
     }
 
     public void Notify(){
-        if(currentCooldown > cooldown){
+        if(abilityTimer.Finished()){
             foreach(AbilityPlacement placement in placements){
                 if(placement.type == AbilityPlacement.PlacementType.onHotkey){
                     // If ability requires hotkey only

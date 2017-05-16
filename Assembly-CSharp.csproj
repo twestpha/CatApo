@@ -50,12 +50,13 @@
      <Compile Include="Assets\Scripts\Abilities\AbilityEffect.cs" />
      <Compile Include="Assets\Scripts\Abilities\AbilityPlacement.cs" />
      <Compile Include="Assets\Scripts\Abilities\AbilityVolume.cs" />
-     <Compile Include="Assets\Scripts\Actor.cs" />
      <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
+     <Compile Include="Assets\Scripts\Components\Actor.cs" />
      <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
      <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
      <Compile Include="Assets\Scripts\Components\TestComponent.cs" />
      <Compile Include="Assets\Scripts\Equipment\Equipment.cs" />
+     <Compile Include="Assets\Scripts\Libs\Timer.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
