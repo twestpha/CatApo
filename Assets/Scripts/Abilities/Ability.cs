@@ -22,7 +22,7 @@ public class Ability : ScriptableObject {
         Casted,
     }
 
-    public Actor caster;
+    private Actor caster;
 
     public AbilityState state;
     private AbilityState previousState;
@@ -31,10 +31,13 @@ public class Ability : ScriptableObject {
 
     public AbilitySource source;
     public bool includeSelf;
-    // channeled ability?
     // tags to include or exclude
     // maybe a filter class
+    // include or exclude
     // self, friendly, enemy, types of enemies?
+    // then an override to always add self to target list (and deprecate that from placement)
+
+    // channeled ability? Ends after duration, then cooldown starts. Maybe we want an "until" ability effect with a timer
 
     public float cooldown;
     private Timer abilityTimer;
@@ -42,6 +45,7 @@ public class Ability : ScriptableObject {
     // cast location stuff
     private Vector3 castPosition;
 
+    // TODO rework this to make more sense...
     [Header("Equipment")]
     public List<Equipment> equipments;
     private int equipmentEffectsIndex;
@@ -49,9 +53,13 @@ public class Ability : ScriptableObject {
     [Header("Placements")]
     public List<AbilityPlacement> placements;
 
+    // Group this as a structure of these thing? Can't access it...
+    // could make AbilityAnimation as a collection of these things
     [Header("Effects and Timing")]
+    // add effects list of "always" effects
     public List<AbilityEffect> effects;
     public List<float> effectsTiming;
+    // list for effects and always effects, referencing which placement to use for effect
     private int effectsIndex;
 
     // Default Methods
@@ -91,8 +99,6 @@ public class Ability : ScriptableObject {
     }
 
     public void Update(){
-        // currentCooldown += Time.deltaTime;
-
         // If we're notified, wait for right or left click to either cast or cancel
         if(state == AbilityState.Notified){
             if(Input.GetMouseButton(0)){
@@ -105,55 +111,67 @@ public class Ability : ScriptableObject {
         if(state == AbilityState.Casted){
             // Casted last frame
             if(previousState != AbilityState.Casted){
+                // Start the timer
                 abilityTimer.Start();
+
+                // TODO Get casting position and snap to target over set amount of time, then cast the ability
+                // this needs to follow the movement model refactor
                 castPosition = caster.MouseTarget();
+
+                // Reset indices
                 effectsIndex = 0;
                 equipmentEffectsIndex = 0;
             }
 
             bool equipmentComplete = true;
 
-            if(source == AbilitySource.Talent){
-                // iterate through remaining effects and cast on targets at time specified
-                for(int i = effectsIndex; i < effects.Count; ++i){
-                    if(effectsTiming[i] < abilityTimer.Elapsed()){
+            // FUCK
+            // we need abilities with matching timings
+            // AND
+            // abilities without timing (always)
+            // Ideally, a struct with several lists would suit, an AbilityAnimation perhaps
+            // it would need to know about the timer and the equipment...?
+            // also, which abilities correspond to which placement...?
+
+            // iterate through remaining effects and cast on targets at time specified
+            for(int i = effectsIndex; i < effects.Count; ++i){
+                if(effectsTiming[i] < abilityTimer.Elapsed()){
+                    foreach(AbilityPlacement placement in placements){
+                        Actor[] targets = placement.GetTargetsInCast(castPosition);
+
+                        effectsIndex++;
+                        foreach(Actor actor in targets){
+                            if(!actor || (!includeSelf && actor == caster)){
+                                continue;
+                            }
+
+                            effects[i].Apply(actor);
+                        }
+                    }
+                }
+            }
+
+            foreach(Equipment equipment in equipments){
+                for(int i = equipmentEffectsIndex; i < equipment.effects.Count; ++i){
+                    if(equipment.effectsTiming[i] < abilityTimer.Elapsed()){
                         foreach(AbilityPlacement placement in placements){
                             Actor[] targets = placement.GetTargetsInCast(castPosition);
 
-                            effectsIndex++;
+                            equipmentEffectsIndex++;
                             foreach(Actor actor in targets){
                                 if(!actor || (!includeSelf && actor == caster)){
                                     continue;
                                 }
 
-                                effects[i].Apply(actor);
+                                equipment.effects[i].Apply(actor);
                             }
                         }
                     }
                 }
-            } else if(source == AbilitySource.Equipment) {
-                // iterate through all equipment casting effects from each of them
-                foreach(Equipment equipment in equipments){
-                    for(int i = equipmentEffectsIndex; i < equipment.effects.Count; ++i){
-                        if(equipment.effectsTiming[i] < abilityTimer.Elapsed()){
-                            foreach(AbilityPlacement placement in placements){
-                                Actor[] targets = placement.GetTargetsInCast(castPosition);
 
-                                equipmentEffectsIndex++;
-                                foreach(Actor actor in targets){
-                                    if(!actor || (!includeSelf && actor == caster)){
-                                        continue;
-                                    }
-
-                                    equipment.effects[i].Apply(actor);
-                                }
-                            }
-                        }
-                    }
-
-                    equipmentComplete &= (equipmentEffectsIndex == equipment.effects.Count);
-                }
+                equipmentComplete &= (equipmentEffectsIndex == equipment.effects.Count);
             }
+
 
             // If we've done all the effects and we're off cooldown, we're done
             if(effectsIndex == effects.Count && equipmentComplete && abilityTimer.Finished()){

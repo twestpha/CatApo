@@ -21,6 +21,10 @@ public class Timer {
         return Time.time - startTime;
     }
 
+    public float Parameterized(){
+        return Mathf.Max(Mathf.Min(Elapsed() / duration, 1.0f), 0.0f);
+    }
+
     public bool Finished(){
         return Elapsed() >= duration;
     }

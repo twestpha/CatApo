@@ -12,19 +12,30 @@ public class AbilityEffect : ScriptableObject {
     public bool debug;
 
     virtual public void Apply(Actor target){}
+
+    virtual public bool RequiresTiming(){
+        return false;
+    }
 }
 
 [CreateAssetMenu()]
 [System.Serializable]
 public class AbilityEffectCreateObject : AbilityEffect {
     public GameObject createObject;
+    public Vector3 translationOffset;
+    public float rotationOffset;
 
     override public void Apply(Actor target){
+        // bug... not shooting in direction of skillshot, but in direction of target facing
         if(debug){
-            Debug.Log("Creating " + createObject + "at offset...");
+            Debug.Log("Creating " + createObject + "at offset " + translationOffset + " and " + rotationOffset);
         }
 
-        Object.Instantiate(createObject, target.transform.position, target.transform.rotation);
+        Object.Instantiate(
+            createObject,
+            target.transform.TransformPoint(translationOffset),
+            target.transform.rotation * Quaternion.Euler(0.0f, rotationOffset, 0.0f)
+        );
     }
 }
 
@@ -131,7 +142,6 @@ public class AbilityEffectModifyAttribute : AbilityEffect {
         if(dir){left = right;} else {right = left;}
     }
 
-    // Non static
     override public void Apply(Actor target){
         if(debug){
             Debug.Log(operation + " " + value + " " + attribute + " to " + target);
@@ -139,5 +149,21 @@ public class AbilityEffectModifyAttribute : AbilityEffect {
 
         // apply operation
         ApplyWithSettings(ref target, attribute, operation, value);
+    }
+}
+
+[CreateAssetMenu()]
+[System.Serializable]
+public class AbilityEffectAlways : AbilityEffect {
+    public AbilityEffect effect;
+
+    override public void Apply(Actor target){
+        if(debug){
+            Debug.Log("Casting " + effect + " on " + target + ", always.");
+        }
+    }
+
+    override public bool RequiresTiming(){
+        return true;
     }
 }

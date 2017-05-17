@@ -19,7 +19,6 @@ public class AbilityPlacement : ScriptableObject {
     // Skillshot,     // Click on terrain and spell is cast that direction from hero
     // Location,      // Place spell where effects occur around it. Can be limited to a range
     // Summon,        // create creature or persistent actor
-    // TODO passive abilities that are always firing, autocasting that fire with duration
 
     public enum PlacementType {
         onHotkey, // Placements below require a button press
@@ -35,6 +34,7 @@ public class AbilityPlacement : ScriptableObject {
 
     [Header("Placement Details")]
     public AbilityVolume volume;
+    public bool castOnlyOnSelf;
     public bool castOnActor; // really just would filter the closest actor and then keeps a reference probably
     public bool rotateFromCaster;
     public float maxDistance = 0.0f;
@@ -78,8 +78,15 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     public Actor[] GetTargetsInCast(Vector3 castPosition){
-        Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
         Actor[] targets = new Actor[maxTargets];
+
+        if(castOnlyOnSelf){
+            targets[0] = caster;
+            return targets;
+        }
+
+        Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
+
 
         // Set position and rotation of volume
         volume.SetPosition(splat.transform.position);

@@ -18,7 +18,7 @@ public class Equipment : ScriptableObject {
     };
 
     public enum EquipmentType {
-        Bow,
+        Bow, // If we're certain types (bow, etc) we should have a useConsumable accessor where the ability will then search for a consumable and cast it as well (on cast)
         Arrow,
         Sword,
         Shield,

@@ -81,7 +81,8 @@ public class PlayerComponent : Actor {
             // HandleAbilities();
             // Vector3 abilityVelocity  = HandleAbilities();
             Vector3 jumpVelocity     = HandleJump();
-            Vector3 movementVelocity = HandleMove(); // TODO rework this to use smoothdamp
+            Vector3 movementVelocity = HandleMove(); // TODO rework this to use smoothdamp (or linear movement like in heroes :shrug:)
+
 
             bool canMove = (moving || jumping) && !dashing;
             bool canJump = jumpVelocity.y != 0.0f && !dashing;
