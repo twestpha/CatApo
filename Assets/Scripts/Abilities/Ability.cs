@@ -116,7 +116,7 @@ public class Ability : ScriptableObject {
 
                 // TODO Get casting position and snap to target over set amount of time, then cast the ability
                 // this needs to follow the movement model refactor
-                castPosition = caster.MouseTarget();
+                castPosition = caster.AbilityTargetPoint();
 
                 // Reset indices
                 effectsIndex = 0;

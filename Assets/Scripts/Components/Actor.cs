@@ -17,21 +17,16 @@ public class Actor : MonoBehaviour {
     [Header("Movement")]
     public float maxMoveSpeed;
     public float currentMoveSpeed;
-    public float moveAcceleration;
-    public float turnSpeed;
-
-    // Hidden movement variables
-    protected float accelerationMultiplier;
-    protected float decelerationRadius;
 
     protected Vector3 targetPosition;
     protected Vector3 velocity;
 
+    public float gravity = 9.8f;
+
     // Component References
     protected CharacterController characterController;
 
-    // Actor Plane
-    protected Plane actorPlane;
+    private bool actorInFramePosition;
 
     // Status timers
     private Timer rootTimer = new Timer();
@@ -41,16 +36,40 @@ public class Actor : MonoBehaviour {
         currentMoveSpeed = maxMoveSpeed;
 
         characterController = GetComponent<CharacterController>();
-
-        // Setup player plane
-        actorPlane = new Plane(Vector3.down, characterController.transform.position.y/* + kPlayerPlaneOffset*/);
+        targetPosition = characterController.transform.position;
 	}
 
+    //##########################################################################
+    // Actor Update
+    //##########################################################################
 	protected void Update(){
         if(rootTimer.Finished()){
             currentMoveSpeed = maxMoveSpeed;
         }
 	}
+
+    //##########################################################################
+    // Actor Actions
+    //##########################################################################
+    protected void HandleMove(){
+        Vector3 movementVelocity = Vector3.zero;
+        // Apply movement
+        Vector3 moveVector3D = targetPosition - characterController.transform.position;
+        Vector3 moveVector2D = new Vector3(moveVector3D.x, 0.0f, moveVector3D.z);
+
+        if(moveVector2D.magnitude > 0.1f){
+            moveVector2D.Normalize();
+            movementVelocity += moveVector2D * currentMoveSpeed * Time.deltaTime;
+        }
+
+        velocity = movementVelocity;
+
+        if(!characterController.isGrounded){
+            velocity.y -= gravity * Time.deltaTime;
+        }
+
+        characterController.Move(velocity);
+    }
 
     //##########################################################################
     // Status methods
@@ -64,30 +83,16 @@ public class Actor : MonoBehaviour {
     }
 
     //##########################################################################
-    // Mouse-to-world helper functions
+    // Something
     //##########################################################################
-    public Vector3 MouseTarget(){
-        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        // RaycastHit hit;
-        //
-        // if(Physics.Raycast(ray, out hit, Mathf.Infinity, kTerrainCollisionMask)){
-        //     return hit.point;
-        // }
-
-        return IntersectionWithPlayerPlane(); // As fallback, use plane player is on.
+    virtual public Vector3 AbilityTargetPoint(){
+        return characterController.transform.position;
     }
 
-    protected Vector3 IntersectionWithPlayerPlane(){
-        actorPlane.distance = characterController.transform.position.y - 1.0f/*+ kPlayerPlaneOffset /* not sure about this bad boy yet */;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        float rayDistance;
-
-        if(actorPlane.Raycast(ray, out rayDistance)){
-            return ray.GetPoint(rayDistance);
-        }
-
-        Debug.LogError("Intersection with player plane has failed unexpectedly.");
-        return Vector3.zero;
+    //##########################################################################
+    // Iunno
+    //##########################################################################
+    public Vector3 FinalActorPosition(){
+        return transform.position + velocity;
     }
 }

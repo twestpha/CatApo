@@ -56,7 +56,7 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     public void Update(){
-        Vector3 mousePosition = caster.MouseTarget();
+        Vector3 mousePosition = caster.AbilityTargetPoint();
         Vector3 casterpos = caster.transform.position;
         mousePosition.y = 0.0f;
         casterpos.y = 0.0f;
