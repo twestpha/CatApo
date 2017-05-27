@@ -7,14 +7,13 @@ using UnityEngine;
 public class AbilityAnimation : ScriptableObject {
     [Header("Always Effects")]
     public List<AbilityEffect> alwaysEffects;
-    // public List<float> placementIndex;
+    public List<float> alwaysPlacementIndex;
 
     [Header("Time Effects")]
     public List<AbilityEffect> effects;
     public List<float> effectsTiming;
     private List<Timer> effectsTimers = new List<Timer>();
-    // public List<float> placementIndex;
-
+    public List<float> effectsPlacementIndex;
 
     private bool complete;
 
