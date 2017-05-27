@@ -21,16 +21,6 @@ public class PlayerComponent : Actor {
     // public GameObject uiRotator;
     // public GameObject playerModel;
 
-    public enum ActionState { // TODO Seems not descriptive... probably should set this up better
-        None,
-        Jumping,
-        CastingAbility1,
-        CastingAbility2,
-        CastingAbility3,
-        CastingUltimate,
-        Channeling,
-    };
-
     public enum UIState {
         InventoryHidden,
         InventoryOpen
@@ -41,7 +31,6 @@ public class PlayerComponent : Actor {
     public bool jumping;
     public bool dashing;
 
-    public ActionState actionState;
     public UIState uiState;
 
     // Actor Plane
@@ -57,7 +46,6 @@ public class PlayerComponent : Actor {
         moving  = false;
         jumping = false; // probably can be an ability too
         dashing = false; // really should be an ability now
-        actionState = ActionState.None;
         currentHealth = maxHealth;
 
         // Setup actor plane
@@ -75,8 +63,7 @@ public class PlayerComponent : Actor {
         // PHYSICS ONLY SHIT
     }
 
-    // TODO make this abstract so AI can use with it too
-    void HandleInputs(){
+    override public void HandleInputs(){
         if(uiState == UIState.InventoryHidden){
             // updateGameUI();
 

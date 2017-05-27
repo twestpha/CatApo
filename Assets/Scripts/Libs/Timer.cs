@@ -6,11 +6,13 @@ public class Timer {
     private float startTime;
 
     public Timer(){
-        duration = -1.0f;
+        duration = 0.0f;
     }
 
     public Timer(float duration_){
         duration = duration_;
+        // Timer starts "finished"
+        startTime = -duration;
     }
 
     public void Start(){
@@ -27,5 +29,9 @@ public class Timer {
 
     public bool Finished(){
         return Elapsed() >= duration;
+    }
+
+    public bool FinisedThisFrame(){
+        return Finished() && Elapsed() - Time.deltaTime < duration;
     }
 };

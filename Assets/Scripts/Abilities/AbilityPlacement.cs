@@ -5,29 +5,13 @@ using UnityEngine;
 [CreateAssetMenu()]
 [System.Serializable]
 public class AbilityPlacement : ScriptableObject {
+    public bool debug;
 
     private const float splatHeight = 15.0f;
     private const int maxTargets = 16;
 
-    // Old placement types
-    // Passive,       // Benefits caster without activations
-    // Radius,        // Ability affects things in a radius around the hero
-    // Direction,     // Ability is aimed where hero is already facing
-    // Autocast,      // Toggleable to enhance or modify other attacks
-    // Self,          // effects self only
-    // Target,        // Must click on enemy hero or unit
-    // Skillshot,     // Click on terrain and spell is cast that direction from hero
-    // Location,      // Place spell where effects occur around it. Can be limited to a range
-    // Summon,        // create creature or persistent actor
-
-    public enum PlacementType {
-        onHotkey, // Placements below require a button press
-        onClick, // Placements below require a button press, followed by a click to confirm
-    }
-
     private Actor caster;
     private Ability parent;
-    public PlacementType type;
     public GameObject splat;
     private Projector splatProjector;
     public float splatSize;
@@ -56,6 +40,10 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     public void Update(){
+        if(debug){
+            Assert.IsTrue(splat, "Missing splat prefab");
+            Assert.IsTrue(volume, "Missing volume data");
+        }
         Vector3 mousePosition = caster.AbilityTargetPoint();
         Vector3 casterpos = caster.transform.position;
         mousePosition.y = 0.0f;
@@ -77,34 +65,35 @@ public class AbilityPlacement : ScriptableObject {
         splatProjector.enabled = parent.state == Ability.AbilityState.Notified;
     }
 
-    public Actor[] GetTargetsInCast(Vector3 castPosition){
-        Actor[] targets = new Actor[maxTargets];
-
-        if(castOnlyOnSelf){
-            targets[0] = caster;
-            return targets;
-        }
-
-        Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
-
-
-        // Set position and rotation of volume
-        volume.SetPosition(splat.transform.position);
-        if(rotateFromCaster){
-            float rotation = (-splat.transform.rotation.eulerAngles.y + 90.0f) * Mathf.Deg2Rad;
-            volume.SetRotation(rotation);
-        }
-
-        int targetCount = 0;
-        for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
-            Vector3 targetpos = actors[i].transform.position;
-            if(volume.ContainsPoint(actors[i].transform.position)){
-                targets[++targetCount] = actors[i];
-            }
-        }
-
-        return targets;
-    }
+    // FUCK THIS NOISE TODO
+    // public Actor[] GetTargetsInCast(Vector3 castPosition){
+    //     Actor[] targets = new Actor[maxTargets];
+    //
+    //     if(castOnlyOnSelf){
+    //         targets[0] = caster;
+    //         return targets;
+    //     }
+    //
+    //     Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
+    //
+    //
+    //     // Set position and rotation of volume
+    //     volume.SetPosition(splat.transform.position);
+    //     if(rotateFromCaster){
+    //         float rotation = (-splat.transform.rotation.eulerAngles.y + 90.0f) * Mathf.Deg2Rad;
+    //         volume.SetRotation(rotation);
+    //     }
+    //
+    //     int targetCount = 0;
+    //     for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
+    //         Vector3 targetpos = actors[i].transform.position;
+    //         if(volume.ContainsPoint(actors[i].transform.position)){
+    //             targets[++targetCount] = actors[i];
+    //         }
+    //     }
+    //
+    //     return targets;
+    // }
 
     private Vector3 MousePositionOnCasterPlane(){
         // Fix when caster starts working proper

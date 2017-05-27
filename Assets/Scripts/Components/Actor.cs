@@ -51,6 +51,10 @@ public class Actor : MonoBehaviour {
     //##########################################################################
     // Actor Actions
     //##########################################################################
+    virtual public void HandleInputs(){
+        
+    }
+
     protected void HandleMove(){
         Vector3 movementVelocity = Vector3.zero;
         // Apply movement

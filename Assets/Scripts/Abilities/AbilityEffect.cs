@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class AbilityEffect : ScriptableObject {
     // Ability Effect is the result of a cast ability. This is a sort of metaprogram
     // Locking a value, making sure it doesn't change

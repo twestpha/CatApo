@@ -22,10 +22,19 @@ public class Ability : ScriptableObject {
         Casted,
     }
 
+    public enum Type {
+        Passive,  // will automatically cast when off cooldown
+        Toggle,   // will automatically cast when off cooldown and on, and hotkey toggles on/off
+        OnHotkey, // requires a hotkey to be pressed
+        OnClick,  // requires a hotkey to be pressed, then a left mouse click to confirm the cast location
+    }
+
     private Actor caster;
 
     public AbilityState state;
     private AbilityState previousState;
+    public Type type;
+    // private bool enabled;
 
     public string abilityName;
 
@@ -40,12 +49,11 @@ public class Ability : ScriptableObject {
     // channeled ability? Ends after duration, then cooldown starts. Maybe we want an "until" ability effect with a timer
 
     public float cooldown;
-    private Timer abilityTimer;
+    private Timer cooldownTimer;
 
-    // cast location stuff
+    // cast location
     private Vector3 castPosition;
 
-    // TODO rework this to make more sense...
     [Header("Equipment")]
     public List<Equipment> equipments;
     private int equipmentEffectsIndex;
@@ -53,25 +61,22 @@ public class Ability : ScriptableObject {
     [Header("Placements")]
     public List<AbilityPlacement> placements;
 
-    // Group this as a structure of these thing? Can't access it...
-    // could make AbilityAnimation as a collection of these things
-    [Header("Effects and Timing")]
-    // add effects list of "always" effects
-    public List<AbilityEffect> effects;
-    public List<float> effectsTiming;
-    // list for effects and always effects, referencing which placement to use for effect
-    private int effectsIndex;
+    // which effect goes to which volume goes to which placement
+    // parallel list of placements and volumes, effect has index into that?
+    // well if we have a heal in 3 circles, then we need three seperate ability effects... seems shit
 
-    // Default Methods
+    [Header("Ability Animation")]
+    public AbilityAnimation abilityAnimation;
+
     public void Start(){
+        if(debug){
+            Assert.IsTrue(abilityAnimation, "Ability \"" + abilityName + "\" is missing an AbilityAnimation.");
+            Assert.IsTrue(placements.Count > 0, "Ability \"" + abilityName + "\" is missing an AbilityPlacement.");
+        }
+
         state = AbilityState.Idle;
 
-        abilityTimer = new Timer(cooldown);
-
-        // Instantiate copies of the effects and placement data
-        for(int i = 0; i < effects.Count; ++i){
-            effects[i] = UnityEngine.Object.Instantiate(effects[i]);
-        }
+        cooldownTimer = new Timer(cooldown);
 
         for(int i = 0; i < placements.Count; ++i){
             placements[i] = UnityEngine.Object.Instantiate(placements[i]);
@@ -79,31 +84,16 @@ public class Ability : ScriptableObject {
             placements[i].SetParent(this);
         }
 
-        // Setting up lists of effects and gameobjects
-        effectsIndex = 0;
-
-        if(debug){
-            Assert.IsTrue(placements.Count > 0, "Ability \"" + abilityName + "\" is missing an AbilityPlacement.");
-            Assert.IsTrue(effects.Count == effectsTiming.Count, "Effects list for \"" + abilityName + "\" needs to match timing list length");
-
-            // Check to see if the timings are sorted
-            for(int i = 1; i < effectsTiming.Count; ++i){
-                Assert.IsTrue(effectsTiming[i] >= effectsTiming[i-1], "Effects Timing is not sorted for ability " + abilityName);
-            }
-
-            // the timings must occur within the cooldown
-            if(effectsTiming.Count > 0){
-                Assert.IsTrue(effectsTiming[effectsTiming.Count - 1] <= cooldown, "Timings must be less than or equal to the cooldown of the ability " + abilityName);
-            }
-        }
+        abilityAnimation = UnityEngine.Object.Instantiate(abilityAnimation);
+        abilityAnimation.Start();
     }
 
     public void Update(){
         // If we're notified, wait for right or left click to either cast or cancel
         if(state == AbilityState.Notified){
-            if(Input.GetMouseButton(0)){
+            if(Input.GetMouseButtonDown(0)){
                 state = AbilityState.Casted;
-            } else if(Input.GetMouseButton(1)){
+            } else if(Input.GetMouseButtonDown(1)){
                 state = AbilityState.Idle;
             }
         }
@@ -112,69 +102,20 @@ public class Ability : ScriptableObject {
             // Casted last frame
             if(previousState != AbilityState.Casted){
                 // Start the timer
-                abilityTimer.Start();
+                cooldownTimer.Start();
 
                 // TODO Get casting position and snap to target over set amount of time, then cast the ability
                 // this needs to follow the movement model refactor
                 castPosition = caster.AbilityTargetPoint();
 
-                // Reset indices
-                effectsIndex = 0;
-                equipmentEffectsIndex = 0;
+                abilityAnimation.Cast();
+
             }
 
-            bool equipmentComplete = true;
-
-            // FUCK
-            // we need abilities with matching timings
-            // AND
-            // abilities without timing (always)
-            // Ideally, a struct with several lists would suit, an AbilityAnimation perhaps
-            // it would need to know about the timer and the equipment...?
-            // also, which abilities correspond to which placement...?
-
-            // iterate through remaining effects and cast on targets at time specified
-            for(int i = effectsIndex; i < effects.Count; ++i){
-                if(effectsTiming[i] < abilityTimer.Elapsed()){
-                    foreach(AbilityPlacement placement in placements){
-                        Actor[] targets = placement.GetTargetsInCast(castPosition);
-
-                        effectsIndex++;
-                        foreach(Actor actor in targets){
-                            if(!actor || (!includeSelf && actor == caster)){
-                                continue;
-                            }
-
-                            effects[i].Apply(actor);
-                        }
-                    }
-                }
-            }
-
-            foreach(Equipment equipment in equipments){
-                for(int i = equipmentEffectsIndex; i < equipment.effects.Count; ++i){
-                    if(equipment.effectsTiming[i] < abilityTimer.Elapsed()){
-                        foreach(AbilityPlacement placement in placements){
-                            Actor[] targets = placement.GetTargetsInCast(castPosition);
-
-                            equipmentEffectsIndex++;
-                            foreach(Actor actor in targets){
-                                if(!actor || (!includeSelf && actor == caster)){
-                                    continue;
-                                }
-
-                                equipment.effects[i].Apply(actor);
-                            }
-                        }
-                    }
-                }
-
-                equipmentComplete &= (equipmentEffectsIndex == equipment.effects.Count);
-            }
-
+            bool effectsComplete = abilityAnimation.Apply(castPosition, placements);
 
             // If we've done all the effects and we're off cooldown, we're done
-            if(effectsIndex == effects.Count && equipmentComplete && abilityTimer.Finished()){
+            if(effectsComplete && cooldownTimer.Finished()){
                 state = AbilityState.Idle;
             }
         }
@@ -190,16 +131,18 @@ public class Ability : ScriptableObject {
     }
 
     public void Notify(){
-        if(abilityTimer.Finished()){
-            foreach(AbilityPlacement placement in placements){
-                if(placement.type == AbilityPlacement.PlacementType.onHotkey){
-                    // If ability requires hotkey only
-                    state = AbilityState.Casted;
-                } else if(placement.type == AbilityPlacement.PlacementType.onClick){
-                    // If ability requires a left click
-                    state = AbilityState.Notified;
-                }
+        if(cooldownTimer.Finished()){
+            if(type == Type.OnHotkey){
+                // If ability requires hotkey only
+                state = AbilityState.Casted;
+            } else if(type == Type.OnClick){
+                // If ability requires a left click
+                state = AbilityState.Notified;
             }
+
+            // foreach(AbilityPlacement placement in placements){
+            // enable or disable placements as appropriate?
+            // }
         }
     }
 
