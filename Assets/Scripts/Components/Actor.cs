@@ -52,7 +52,7 @@ public class Actor : MonoBehaviour {
     // Actor Actions
     //##########################################################################
     virtual public void HandleInputs(){
-        
+
     }
 
     protected void HandleMove(){
@@ -73,6 +73,12 @@ public class Actor : MonoBehaviour {
         }
 
         characterController.Move(velocity);
+
+        // rotate caster to face click target position
+        if(movementVelocity.magnitude > 0.01f){
+            float angle = Mathf.Rad2Deg * Mathf.Atan2(velocity.x, velocity.z);
+            transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+        }
     }
 
     //##########################################################################

@@ -99,9 +99,13 @@ public class Ability : ScriptableObject {
                 // Start the timer
                 cooldownTimer.Start();
 
-                // TODO Get casting position and snap to target over set amount of time, then cast the ability
-                // this needs to follow the movement model refactor
                 clickPosition = caster.AbilityTargetPoint();
+
+                // rotate caster to face click target position
+                Vector3 clickVector = clickPosition - caster.transform.position;
+                clickVector.y = 0.0f;
+                float angle = Mathf.Rad2Deg * Mathf.Atan2(clickVector.x, clickVector.z);
+                caster.transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
 
                 abilityAnimation.Cast();
             }

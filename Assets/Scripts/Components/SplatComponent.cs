@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
+[RequireComponent(typeof(Collider))]
 public class SplatComponent : MonoBehaviour {
     private List<Actor> actorsInTrigger;
 
     void Start(){
         actorsInTrigger = new List<Actor>();
-        // TODO Add some assertions
-        // has collider
-        // collider is trigger
+        Assert.IsTrue(GetComponent<Collider>().isTrigger, gameObject + "'s collider isn't set as a trigger");
     }
 
     void OnTriggerEnter(Collider other){

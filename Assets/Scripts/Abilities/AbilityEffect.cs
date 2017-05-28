@@ -11,10 +11,6 @@ public class AbilityEffect : ScriptableObject {
     public bool debug;
 
     virtual public void Apply(Actor target){}
-
-    virtual public bool RequiresTiming(){
-        return false;
-    }
 }
 
 [CreateAssetMenu()]
@@ -148,21 +144,5 @@ public class AbilityEffectModifyAttribute : AbilityEffect {
 
         // apply operation
         ApplyWithSettings(ref target, attribute, operation, value);
-    }
-}
-
-[CreateAssetMenu()]
-[System.Serializable]
-public class AbilityEffectAlways : AbilityEffect {
-    public AbilityEffect effect;
-
-    override public void Apply(Actor target){
-        if(debug){
-            Debug.Log("Casting " + effect + " on " + target + ", always.");
-        }
-    }
-
-    override public bool RequiresTiming(){
-        return true;
     }
 }
