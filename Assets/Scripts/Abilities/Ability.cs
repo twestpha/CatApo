@@ -51,8 +51,7 @@ public class Ability : ScriptableObject {
     public float cooldown;
     private Timer cooldownTimer;
 
-    // cast location
-    private Vector3 castPosition;
+    private Vector3 clickPosition;
 
     [Header("Equipment")]
     public List<Equipment> equipments;
@@ -60,10 +59,6 @@ public class Ability : ScriptableObject {
 
     [Header("Placements")]
     public List<AbilityPlacement> placements;
-
-    // which effect goes to which volume goes to which placement
-    // parallel list of placements and volumes, effect has index into that?
-    // well if we have a heal in 3 circles, then we need three seperate ability effects... seems shit
 
     [Header("Ability Animation")]
     public AbilityAnimation abilityAnimation;
@@ -106,15 +101,14 @@ public class Ability : ScriptableObject {
 
                 // TODO Get casting position and snap to target over set amount of time, then cast the ability
                 // this needs to follow the movement model refactor
-                castPosition = caster.AbilityTargetPoint();
+                clickPosition = caster.AbilityTargetPoint();
 
                 abilityAnimation.Cast();
-
             }
 
-            bool effectsComplete = abilityAnimation.Apply(castPosition, placements);
+            bool effectsComplete = abilityAnimation.Apply(placements);
 
-            // If we've done all the effects and we're off cooldown, we're done
+            // If we've done all the effects and we're off cooldown, idle until next cast
             if(effectsComplete && cooldownTimer.Finished()){
                 state = AbilityState.Idle;
             }
@@ -139,10 +133,6 @@ public class Ability : ScriptableObject {
                 // If ability requires a left click
                 state = AbilityState.Notified;
             }
-
-            // foreach(AbilityPlacement placement in placements){
-            // enable or disable placements as appropriate?
-            // }
         }
     }
 

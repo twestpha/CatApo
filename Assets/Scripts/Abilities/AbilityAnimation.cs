@@ -1,23 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [CreateAssetMenu()]
 [System.Serializable]
 public class AbilityAnimation : ScriptableObject {
+    public bool debug;
+
     [Header("Always Effects")]
     public List<AbilityEffect> alwaysEffects;
-    public List<float> alwaysPlacementIndex;
+    public List<int> alwaysPlacementIndex;
 
     [Header("Time Effects")]
     public List<AbilityEffect> effects;
     public List<float> effectsTiming;
     private List<Timer> effectsTimers = new List<Timer>();
-    public List<float> effectsPlacementIndex;
+    public List<int> effectsPlacementIndex;
 
     private bool complete;
 
     public void Start(){
+        if(debug){
+            Assert.IsTrue(alwaysEffects.Count == alwaysPlacementIndex.Count, "Always Effect's count doesn't match the indices list");
+            Assert.IsTrue(effects.Count == effectsTiming.Count, "Effect's count doesn't match timer count");
+            Assert.IsTrue(effects.Count == effectsPlacementIndex.Count, "Effect's count doesn't match indices count");
+        }
         // Instantiate timers for given timings
         for(int i = 0; i < effectsTiming.Count; ++i){
             effectsTimers.Add(new Timer(effectsTiming[i]));
@@ -44,23 +52,28 @@ public class AbilityAnimation : ScriptableObject {
         complete = false;
     }
 
-    public bool Apply(Vector3 castPosition, List<AbilityPlacement> placements){
-        if(!complete){
-            return true;
-        }
+    public bool Apply(List<AbilityPlacement> placements){
+        // Apply all always effects
+        for(int i = 0; i < alwaysEffects.Count; ++i){
+            List<Actor> actorsInCast = placements[alwaysPlacementIndex[i]].GetTargetsInCast();
 
-        foreach(AbilityEffect alwaysEffect in alwaysEffects){
-            foreach(AbilityPlacement placement in placements){
-
+            foreach(Actor actor in actorsInCast){
+                alwaysEffects[i].Apply(actor);
             }
         }
 
-        foreach(Timer timer in effectsTimers){
-            if(timer.FinisedThisFrame()){
-                // All sorts of shit
+        // If the timer is up this frame, apply the normal effects
+        for(int i = 0; i < effects.Count; ++i){
+            if(effectsTimers[i].FinishedThisFrame()){
+                List<Actor> actorsInCast = placements[effectsPlacementIndex[i]].GetTargetsInCast();
+
+                foreach(Actor actor in actorsInCast){
+                    effects[i].Apply(actor);
+                }
             }
         }
 
-        return false; // return completion status of all the effects
+        // return completion status of all the normal effects
+        return true;
     }
 }

@@ -4,6 +4,7 @@ public class Timer {
     private bool started;
     private float duration;
     private float startTime;
+    private bool finishedLastFrame;
 
     public Timer(){
         duration = 0.0f;
@@ -16,6 +17,7 @@ public class Timer {
     }
 
     public void Start(){
+        finishedLastFrame = false;
         startTime = Time.time;
     }
 
@@ -31,7 +33,12 @@ public class Timer {
         return Elapsed() >= duration;
     }
 
-    public bool FinisedThisFrame(){
-        return Finished() && Elapsed() - Time.deltaTime < duration;
+    public bool FinishedThisFrame(){
+        if(!finishedLastFrame && Finished()){
+            finishedLastFrame = true;
+            return true;
+        }
+
+        return false;
     }
 };

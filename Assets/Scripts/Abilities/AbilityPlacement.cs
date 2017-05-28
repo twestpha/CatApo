@@ -8,33 +8,40 @@ using UnityEngine.Assertions;
 public class AbilityPlacement : ScriptableObject {
     public bool debug;
 
-    // private const float splatHeight = 15.0f;
     private const int maxTargets = 16;
 
     private Actor caster;
     private Ability parent;
     public GameObject splat;
+    private SplatComponent splatComponent;
     private MeshRenderer meshRenderer;
     public float splatSize;
 
-    [Header("Placement Details")]
-    public AbilityVolume volume;
+    // really just would filter the closest actor and then keeps a reference probably
+    // TODO ability filter at some point
     public bool castOnlyOnSelf;
-    public bool castOnActor; // really just would filter the closest actor and then keeps a reference probably
+    public bool castOnActor;
+
+    [Header("Placement Details")]
     public bool rotateFromCaster;
-    public float maxDistance = 0.0f;
     public float minDistance = 0.0f;
+    public float maxDistance = 0.0f;
+    public float angleOffset = 0.0f;
+    public Vector3 positionOffset = Vector3.zero;
 
     public void Start(){
         if(debug){
             Assert.IsTrue(splat, "Missing splat prefab");
-            Assert.IsTrue(volume, "Missing volume data");
+            Assert.IsTrue(splat.GetComponent<SplatComponent>(), "Missing splat component on prefab " + splat);
         }
 
         splat = Object.Instantiate(splat);
+        splatComponent = splat.GetComponent<SplatComponent>();
         meshRenderer = splat.GetComponent<MeshRenderer>();
         meshRenderer.enabled = false;
         splat.transform.localScale = new Vector3(splatSize, splatSize, splatSize);
+
+        angleOffset = Mathf.Deg2Rad * angleOffset;
     }
 
     public void SetParent(Ability ability){
@@ -52,6 +59,7 @@ public class AbilityPlacement : ScriptableObject {
             return;
         }
 
+        // Get vector from caster -> mouse on zero plane
         Vector3 mousePosition = caster.AbilityTargetPoint();
         Vector3 casterpos = caster.transform.position;
         mousePosition.y = 0.0f;
@@ -59,47 +67,30 @@ public class AbilityPlacement : ScriptableObject {
 
         Vector3 mouseDir = (mousePosition - casterpos);
 
+        // clamp magnitude
         float mouseDirMag = Mathf.Min(Mathf.Max(mouseDir.magnitude, minDistance), maxDistance);
         mouseDir.Normalize();
 
+        // apply angle offset to direction
+        mouseDir = new Vector3(mouseDir.x * Mathf.Cos(angleOffset) - mouseDir.z * Mathf.Sin(angleOffset),
+                               0.0f,
+                               mouseDir.z * Mathf.Cos(angleOffset) + mouseDir.x * Mathf.Sin(angleOffset));
+
         Vector3 splatPos = mouseDir * mouseDirMag;
-        splatPos.y = caster.transform.position.y - 1.0f; // setup player offset
-        splat.transform.position = splatPos + casterpos;
+        splatPos.y = caster.transform.position.y - 1.0f; // TODO setup player offset
+        splat.transform.position = splatPos + casterpos + positionOffset;
 
         if(rotateFromCaster){
             splat.transform.rotation = Quaternion.LookRotation(mouseDir) * Quaternion.Euler(90.0f, 0.0f, 0.0f);
         }
-
-
     }
 
-    public Actor[] GetTargetsInCast(Vector3 castPosition){
-        Actor[] targets = new Actor[maxTargets];
+    public List<Actor> GetTargetsInCast(){
+        List<Actor> actorsInCast = splatComponent.GetActorsInTrigger();
 
-        if(castOnlyOnSelf){
-            targets[0] = caster;
-            return targets;
-        }
+        // TODO add filtering step
 
-        Actor[] actors = FindObjectsOfType(typeof(Actor)) as Actor[];
-
-
-        // Set position and rotation of volume
-        volume.SetPosition(splat.transform.position);
-        if(rotateFromCaster){
-            float rotation = (-splat.transform.rotation.eulerAngles.y + 90.0f) * Mathf.Deg2Rad;
-            volume.SetRotation(rotation);
-        }
-
-        int targetCount = 0;
-        for(int i = 0; i < actors.Length && targetCount < maxTargets; ++i){
-            Vector3 targetpos = actors[i].transform.position;
-            if(volume.ContainsPoint(actors[i].transform.position)){
-                targets[++targetCount] = actors[i];
-            }
-        }
-
-        return targets;
+        return actorsInCast;
     }
 
     private Vector3 MousePositionOnCasterPlane(){
