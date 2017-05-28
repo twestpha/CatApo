@@ -17,7 +17,6 @@ public class AbilityPlacement : ScriptableObject {
     private MeshRenderer meshRenderer;
     public float splatSize;
 
-    // really just would filter the closest actor and then keeps a reference probably
     // TODO ability filter at some point
     public bool castOnlyOnSelf;
     public bool castOnActor;
@@ -54,10 +53,6 @@ public class AbilityPlacement : ScriptableObject {
 
     public void Update(){
         meshRenderer.enabled = parent.state == Ability.AbilityState.Notified;
-
-        if(parent.state != Ability.AbilityState.Notified){
-            return;
-        }
 
         // Get vector from caster -> mouse on zero plane
         Vector3 mousePosition = caster.AbilityTargetPoint();

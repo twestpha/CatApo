@@ -37,9 +37,9 @@ public class Ability : ScriptableObject {
     // private bool enabled;
 
     public string abilityName;
+    public bool rotateActorOnCast;
 
     public AbilitySource source;
-    public bool includeSelf;
     // tags to include or exclude
     // maybe a filter class
     // include or exclude
@@ -98,14 +98,15 @@ public class Ability : ScriptableObject {
             if(previousState != AbilityState.Casted){
                 // Start the timer
                 cooldownTimer.Start();
-
                 clickPosition = caster.AbilityTargetPoint();
 
                 // rotate caster to face click target position
-                Vector3 clickVector = clickPosition - caster.transform.position;
-                clickVector.y = 0.0f;
-                float angle = Mathf.Rad2Deg * Mathf.Atan2(clickVector.x, clickVector.z);
-                caster.transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+                if(rotateActorOnCast){
+                    Vector3 clickVector = clickPosition - caster.transform.position;
+                    clickVector.y = 0.0f;
+                    float angle = Mathf.Rad2Deg * Mathf.Atan2(clickVector.x, clickVector.z);
+                    caster.transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+                }
 
                 abilityAnimation.Cast();
             }

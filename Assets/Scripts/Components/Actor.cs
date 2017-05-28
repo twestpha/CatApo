@@ -19,7 +19,7 @@ public class Actor : MonoBehaviour {
     public float currentMoveSpeed;
 
     protected Vector3 targetPosition;
-    protected Vector3 velocity;
+    public Vector3 velocity;
 
     public float gravity = 9.8f;
 
@@ -57,28 +57,27 @@ public class Actor : MonoBehaviour {
 
     protected void HandleMove(){
         Vector3 movementVelocity = Vector3.zero;
+
         // Apply movement
-        Vector3 moveVector3D = targetPosition - characterController.transform.position;
-        Vector3 moveVector2D = new Vector3(moveVector3D.x, 0.0f, moveVector3D.z);
+        Vector3 moveVector = targetPosition - characterController.transform.position;
+        moveVector.y = 0.0f;
 
-        if(moveVector2D.magnitude > 0.1f){
-            moveVector2D.Normalize();
-            movementVelocity += moveVector2D * currentMoveSpeed * Time.deltaTime;
-        }
+        if(moveVector.magnitude > 0.1f){
+            moveVector.Normalize();
+            movementVelocity += moveVector * currentMoveSpeed;
 
-        velocity = movementVelocity;
-
-        if(!characterController.isGrounded){
-            velocity.y -= gravity * Time.deltaTime;
-        }
-
-        characterController.Move(velocity);
-
-        // rotate caster to face click target position
-        if(movementVelocity.magnitude > 0.01f){
             float angle = Mathf.Rad2Deg * Mathf.Atan2(velocity.x, velocity.z);
             transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
         }
+
+        movementVelocity.y = velocity.y;
+        velocity = movementVelocity;
+
+        //if(!characterController.isGrounded){
+            velocity.y -= gravity;
+        //}
+
+        characterController.Move(velocity * Time.deltaTime);
     }
 
     //##########################################################################

@@ -75,6 +75,8 @@ public class AbilityEffectModifyAttribute : AbilityEffect {
         State,
         PositionX,
         PositionZ,
+        PositionY,
+        VelocityY,
     }
 
     public enum Operation {
@@ -127,6 +129,9 @@ public class AbilityEffectModifyAttribute : AbilityEffect {
         switch(attribute){
         case Attribute.Health:
             Assign(ref actor.currentHealth, ref v, dir);
+        return;
+        case Attribute.VelocityY:
+            Assign(ref actor.velocity.y, ref v, dir);
         return;
         default:
         return;
