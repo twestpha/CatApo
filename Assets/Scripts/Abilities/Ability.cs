@@ -111,10 +111,10 @@ public class Ability : ScriptableObject {
                 abilityAnimation.Cast();
             }
 
-            bool effectsComplete = abilityAnimation.Apply(placements);
+            abilityAnimation.Apply(placements);
 
             // If we've done all the effects and we're off cooldown, idle until next cast
-            if(effectsComplete && cooldownTimer.Finished()){
+            if(cooldownTimer.Finished()){
                 state = AbilityState.Idle;
             }
         }
@@ -147,5 +147,13 @@ public class Ability : ScriptableObject {
         for(int i = 0; i < placements.Count; ++i){
             placements[i].SetCaster(actor);
         }
+    }
+
+    public float CooldownElapsed(){
+        return cooldownTimer.Parameterized();
+    }
+
+    public void SetCooldownElapsed(float value){
+        cooldownTimer.SetParameterized(value);
     }
 }

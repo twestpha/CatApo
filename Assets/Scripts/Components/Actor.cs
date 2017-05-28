@@ -73,9 +73,7 @@ public class Actor : MonoBehaviour {
         movementVelocity.y = velocity.y;
         velocity = movementVelocity;
 
-        //if(!characterController.isGrounded){
-            velocity.y -= gravity;
-        //}
+        velocity.y -= gravity;
 
         characterController.Move(velocity * Time.deltaTime);
     }

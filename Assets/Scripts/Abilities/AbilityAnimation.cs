@@ -12,7 +12,7 @@ public class AbilityAnimation : ScriptableObject {
     public List<AbilityEffect> alwaysEffects;
     public List<int> alwaysPlacementIndex;
 
-    [Header("Time Effects")]
+    [Header("Timed Effects")]
     public List<AbilityEffect> effects;
     public List<float> effectsTiming;
     private List<Timer> effectsTimers = new List<Timer>();
@@ -52,7 +52,7 @@ public class AbilityAnimation : ScriptableObject {
         complete = false;
     }
 
-    public bool Apply(List<AbilityPlacement> placements){
+    public void Apply(List<AbilityPlacement> placements){
         // Apply all always effects
         for(int i = 0; i < alwaysEffects.Count; ++i){
             List<Actor> actorsInCast = placements[alwaysPlacementIndex[i]].GetTargetsInCast();
@@ -72,8 +72,5 @@ public class AbilityAnimation : ScriptableObject {
                 }
             }
         }
-
-        // return completion status of all the normal effects
-        return true;
     }
 }

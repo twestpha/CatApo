@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AbilityEffect : ScriptableObject {
     // Ability Effect is the result of a cast ability. This is a sort of metaprogram
-    // Locking a value, making sure it doesn't change
     // conditional ability effect, based on some state
     // ^ these two seem related to AbilityEffectModifyAttribute, maybe create some common base class there too
 
@@ -60,25 +59,174 @@ public class AbilityEffectActorStatus : AbilityEffect {
     }
 }
 
-[CreateAssetMenu()]
-[System.Serializable]
-public class AbilityEffectModifyAttribute : AbilityEffect {
-    // Readability replacements for accessor
-    protected const bool AssignToLeft = true;
-    protected const bool AssignToRight = false;
+public class AbilityEffectAttribute : AbilityEffect {
 
-    // This have to match the entries in Actor, or at least have an get/set
     public enum Attribute {
         Health,
         Speed,
-        Cooldown,
-        State,
+        Ability0Cooldown,
+        Ability1Cooldown,
+        Ability2Cooldown,
         PositionX,
         PositionZ,
         PositionY,
         VelocityY,
+        Grounded,
     }
 
+    static protected void WriteAttribute(ref Actor actor, Attribute attribute, ref float v){
+        switch(attribute){
+        case Attribute.Health:
+            actor.currentHealth = v;
+        return;
+        case Attribute.Ability0Cooldown:
+            actor.GetComponent<AbilityCastComponent>().abilities[0].SetCooldownElapsed(v);
+        return;
+        case Attribute.VelocityY:
+            actor.velocity.y = v;
+        return;
+        default:
+            Debug.LogWarning("Can't write attribute " + attribute);
+        return;
+        }
+    }
+
+    static protected void ReadAttribute(ref Actor actor, Attribute attribute, ref float v){
+        switch(attribute){
+        case Attribute.Health:
+            v = actor.currentHealth;
+        return;
+        case Attribute.Ability0Cooldown:
+            v = actor.GetComponent<AbilityCastComponent>().abilities[0].CooldownElapsed();
+        return;
+        case Attribute.VelocityY:
+            v = actor.velocity.y;
+        return;
+        case Attribute.Grounded:
+            v = actor.GetComponent<CharacterController>().isGrounded ? 1.0f : 0.0f;
+        return;
+        default:
+            Debug.LogWarning("Can't read attribute " + attribute);
+        return;
+        }
+    }
+
+    static protected void Assign(ref float left, ref float right, bool dir){
+        if(dir){left = right;} else {right = left;}
+    }
+}
+
+[CreateAssetMenu()]
+[System.Serializable]
+public class AbilityEffectConditional : AbilityEffectAttribute {
+    public enum Operation {
+        Equal,
+        NotEqual,
+        GreaterThan,
+        GreaterThanOrEqual,
+        LessThan,
+        LessThanOrEqual,
+        And,
+        Or,
+    }
+
+    public Attribute attribute;
+    public Operation operation;
+    public float value;
+
+    public AbilityEffect trueEffect;
+    public AbilityEffect falseEffect;
+
+    override public void Apply(Actor target){
+        float attributeValue = 0.0f;
+        ReadAttribute(ref target, attribute, ref attributeValue);
+
+        bool condition = false;
+
+        switch(operation){
+        case Operation.Equal:
+            condition = attributeValue == value;
+        break;
+        case Operation.NotEqual:
+            condition = attributeValue != value;
+        break;
+        case Operation.GreaterThan:
+            condition = attributeValue > value;
+        break;
+        case Operation.GreaterThanOrEqual:
+            condition = attributeValue >= value;
+        break;
+        case Operation.LessThan:
+            condition = attributeValue < value;
+        break;
+        case Operation.LessThanOrEqual:
+            condition = attributeValue <= value;
+        break;
+        case Operation.And:
+            condition = (attributeValue * value) > 0.5f;
+        break;
+        case Operation.Or:
+            condition = (attributeValue + value) > 0.5f;
+        break;
+        default:
+        break;
+        }
+
+        if(condition){
+            trueEffect.Apply(target);
+        } else {
+            if(falseEffect){
+                falseEffect.Apply(target);
+            }
+        }
+    }
+}
+
+[CreateAssetMenu()]
+[System.Serializable]
+public class AbilityEffectInputConditional : AbilityEffect {
+    public enum Operation {
+        Key,
+        KeyUp,
+        KeyDown,
+    }
+
+    public KeyCode keycode;
+    public Operation operation;
+
+    public AbilityEffect trueEffect;
+    public AbilityEffect falseEffect;
+
+    override public void Apply(Actor target){
+        bool condition = false;
+
+        switch(operation){
+        case Operation.Key:
+            condition = Input.GetKey(keycode);
+        break;
+        case Operation.KeyUp:
+            condition = Input.GetKeyUp(keycode);
+        break;
+        case Operation.KeyDown:
+            condition = Input.GetKeyDown(keycode);
+        break;
+        default:
+        break;
+        }
+
+        if(condition){
+            trueEffect.Apply(target);
+        } else {
+            if(falseEffect){
+                falseEffect.Apply(target);
+            }
+        }
+    }
+}
+
+[CreateAssetMenu()]
+[System.Serializable]
+public class AbilityEffectModifyAttribute : AbilityEffectAttribute {
     public enum Operation {
         None,
         Replace,
@@ -97,7 +245,7 @@ public class AbilityEffectModifyAttribute : AbilityEffect {
 
         // Get previous value
         float previousValue = 0.0f;
-        AttributeAccessor(ref target_, attribute_, ref previousValue, AssignToRight);
+        ReadAttribute(ref target_, attribute_, ref previousValue);
 
         // setup the value using the given operation
         float finalValue;
@@ -122,24 +270,7 @@ public class AbilityEffectModifyAttribute : AbilityEffect {
         }
 
         // push that back to target value
-        AttributeAccessor(ref target_, attribute_, ref finalValue, AssignToLeft);
-    }
-
-    static private void AttributeAccessor(ref Actor actor, Attribute attribute, ref float v, bool dir){
-        switch(attribute){
-        case Attribute.Health:
-            Assign(ref actor.currentHealth, ref v, dir);
-        return;
-        case Attribute.VelocityY:
-            Assign(ref actor.velocity.y, ref v, dir);
-        return;
-        default:
-        return;
-        }
-    }
-
-    static private void Assign(ref float left, ref float right, bool dir){
-        if(dir){left = right;} else {right = left;}
+        WriteAttribute(ref target_, attribute_, ref finalValue);
     }
 
     override public void Apply(Actor target){

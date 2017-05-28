@@ -41,4 +41,8 @@ public class Timer {
 
         return false;
     }
+
+    public void SetParameterized(float value){
+        startTime = Time.time - (value * duration);
+    }
 };
