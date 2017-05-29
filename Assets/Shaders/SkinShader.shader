@@ -2,7 +2,7 @@ Shader "Custom/Test" {
   Properties {
     _MainTex ("Texture", 2D) = "white" {}
     _Color ("Subsurface Scatter Color", COLOR) = (1,1,1,1)
-    _Strength ("Subsurface Attenuation", Range(0.0, 500.0)) = 0.5
+    _Strength ("Subsurface Attenuation", Range(9.0, 0.1)) = 0.5
     _Glossiness ("Smoothness", Range(0.0, 1.0)) = 0.5
   }
   SubShader {
@@ -15,20 +15,19 @@ Shader "Custom/Test" {
         half _Glossiness;
 
         half4 LightingWrapLambert (SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
-            half NormalDotLightDir = dot (normalize(s.Normal), normalize(lightDir));
-            half diff = NormalDotLightDir * 0.5 + 0.5;
-            half scatter = pow(2.71828, -_Strength * pow((NormalDotLightDir - 0.5), 2.0));
+            half parallel = dot(normalize(s.Normal), normalize(lightDir));
+            half parallelclamp = parallel * 0.5 + 0.5;
+            // scatter = e ^ -strength * (parallel - 0.5)^2
+            half scatter = pow(2.71828, -_Strength * pow((parallel - 0.5), 2.0));
 
-            half3 h = normalize (lightDir + viewDir);
-            half diff2 = max (0, dot (s.Normal, lightDir));
-            float nh = max (0, dot (s.Normal, h));
-            float spec = pow (nh, 32.0);
-            half3 specCol = spec * _Glossiness;
+            half3 lighttoview = normalize(lightDir + viewDir);
+            float reflect = max(0, dot (s.Normal, lighttoview));
+            float spec = pow(reflect, 2.0);
 
             half4 c;
-            // (1 minus scatter * normal albedo shading) + (scatter * shaded color)
-            c.rgb = ((1.0 - scatter) * ((s.Albedo * _LightColor0.rgb * diff * atten) + (_LightColor0.rgb * specCol)))
-                    + (scatter * _Color.rgb * _LightColor0.rgb * diff * atten);
+            // (1 minus scatter * (albedo shading + specular highlight)) + (scatter * shaded color)
+            c.rgb = ((1.0 - scatter) * ((s.Albedo * _LightColor0.rgb * reflect * atten) + (_LightColor0.rgb * spec * _Glossiness)))
+                    + (scatter * _Color.rgb * _LightColor0.rgb * reflect * atten);
             c.a = s.Alpha;
             return c;
         }
