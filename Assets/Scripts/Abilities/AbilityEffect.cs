@@ -63,15 +63,18 @@ public class AbilityEffectAttribute : AbilityEffect {
 
     public enum Attribute {
         Health,
-        Speed,
+        MoveSpeed,
         Ability0Cooldown,
         Ability1Cooldown,
         Ability2Cooldown,
         PositionX,
         PositionZ,
         PositionY,
+        LocalTargetPositionForward,
+        LocalTargetPositionRight,
         VelocityY,
         Grounded,
+        Steerable,
     }
 
     static protected void WriteAttribute(ref Actor actor, Attribute attribute, ref float v){
@@ -79,11 +82,20 @@ public class AbilityEffectAttribute : AbilityEffect {
         case Attribute.Health:
             actor.currentHealth = v;
         return;
+        case Attribute.MoveSpeed:
+            actor.currentMoveSpeed = v;
+        return;
         case Attribute.Ability0Cooldown:
             actor.GetComponent<AbilityCastComponent>().abilities[0].SetCooldownElapsed(v);
         return;
+        case Attribute.LocalTargetPositionForward:
+            actor.targetPosition = v * actor.transform.forward;
+        return;
         case Attribute.VelocityY:
             actor.velocity.y = v;
+        return;
+        case Attribute.Steerable:
+            actor.steerable = v > 0.5f;
         return;
         default:
             Debug.LogWarning("Can't write attribute " + attribute);
@@ -96,6 +108,9 @@ public class AbilityEffectAttribute : AbilityEffect {
         case Attribute.Health:
             v = actor.currentHealth;
         return;
+        case Attribute.MoveSpeed:
+            v = actor.currentMoveSpeed;
+        return;
         case Attribute.Ability0Cooldown:
             v = actor.GetComponent<AbilityCastComponent>().abilities[0].CooldownElapsed();
         return;
@@ -104,6 +119,9 @@ public class AbilityEffectAttribute : AbilityEffect {
         return;
         case Attribute.Grounded:
             v = actor.GetComponent<CharacterController>().isGrounded ? 1.0f : 0.0f;
+        return;
+        case Attribute.Steerable:
+            v = actor.steerable ? 1.0f : 0.0f;
         return;
         default:
             Debug.LogWarning("Can't read attribute " + attribute);
@@ -245,7 +263,9 @@ public class AbilityEffectModifyAttribute : AbilityEffectAttribute {
 
         // Get previous value
         float previousValue = 0.0f;
-        ReadAttribute(ref target_, attribute_, ref previousValue);
+        if(operation_ != Operation.Replace){
+            ReadAttribute(ref target_, attribute_, ref previousValue);
+        }
 
         // setup the value using the given operation
         float finalValue;

@@ -84,6 +84,11 @@ public class Ability : ScriptableObject {
     }
 
     public void Update(){
+        // Update placements early to cast in the correct places
+        foreach(AbilityPlacement placement in placements){
+            placement.Update();
+        }
+
         // If we're notified, wait for right or left click to either cast or cancel
         if(state == AbilityState.Notified){
             if(Input.GetMouseButtonDown(0)){
@@ -123,7 +128,7 @@ public class Ability : ScriptableObject {
     }
 
     public void LateUpdate(){
-        // Update placements _after_ the caster has moved
+        // Update placements _after_ the caster has moved to render the splat correctly
         foreach(AbilityPlacement placement in placements){
             placement.Update();
         }

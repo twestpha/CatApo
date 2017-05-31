@@ -3,7 +3,7 @@ Shader "Custom/SkinShader" {
     //_MainTex ("Texture", 2D) = "white" {}
     _SkinColor ("Skin Color", COLOR) = (1,1,1,1)
     _ScatterColor ("Subsurface Scatter Color", COLOR) = (1,1,1,1)
-    _Strength ("Subsurface Attenuation", Range(15.0, 0.1)) = 8.0
+    _Strength ("Subsurface Attenuation", Range(50.0, 0.1)) = 8.0
     _Glossiness ("Smoothness", Range(0.0, 1.0)) = 0.5
   }
   SubShader {

@@ -18,18 +18,20 @@ public class Actor : MonoBehaviour {
     public float maxMoveSpeed;
     public float currentMoveSpeed;
 
-    protected Vector3 targetPosition;
+    public Vector3 targetPosition;
     public Vector3 velocity;
 
     public float gravity = 9.8f;
+
+    [Header("Statuses")]
+    public bool steerable = true;
 
     // Component References
     protected CharacterController characterController;
 
     private bool actorInFramePosition;
 
-    // Status timers
-    private Timer rootTimer = new Timer();
+    public GameObject target;
 
 	protected void Start(){
         currentHealth = maxHealth;
@@ -43,9 +45,8 @@ public class Actor : MonoBehaviour {
     // Actor Update
     //##########################################################################
 	protected void Update(){
-        if(rootTimer.Finished()){
-            currentMoveSpeed = maxMoveSpeed;
-        }
+        target.transform.position = targetPosition;
+        Debug.DrawLine(transform.position, transform.forward);
 	}
 
     //##########################################################################
@@ -73,7 +74,9 @@ public class Actor : MonoBehaviour {
         movementVelocity.y = velocity.y;
         velocity = movementVelocity;
 
-        velocity.y -= gravity;
+        if(!characterController.isGrounded){
+            velocity.y -= gravity;
+        }
 
         characterController.Move(velocity * Time.deltaTime);
     }
@@ -83,10 +86,10 @@ public class Actor : MonoBehaviour {
     //##########################################################################
     public void Root(float duration){
         // this is kind of a hack around the poor movement model we're using
-        rootTimer = new Timer(duration);
-        rootTimer.Start();
-        currentMoveSpeed = 0.0f;
-        targetPosition = transform.position;
+        // rootTimer = new Timer(duration);
+        // rootTimer.Start();
+        // currentMoveSpeed = 0.0f;
+        // targetPosition = transform.position;
     }
 
     //##########################################################################

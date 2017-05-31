@@ -68,7 +68,7 @@ public class PlayerComponent : Actor {
             // updateGameUI();
 
             // Input Logic
-            if(Input.GetButton("Fire2")){
+            if(Input.GetButton("Fire2") && steerable){
                 targetPosition = MouseIntersectionWithTerrain();
             }
 
