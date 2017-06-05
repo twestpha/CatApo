@@ -1,0 +1,177 @@
+fileFormatVersion: 2
+guid: 4a4637701b8db7d46993227a5b2818a5
+timeCreated: 1496638516
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: woman
+    100004: woman_001
+    100006: female
+    100008: female_eyes
+    100010: Armature
+    100012: Bone
+    100014: Bone_001
+    100016: Bone_002
+    100018: Bone_003
+    100020: Bone_004
+    100022: Bone_005
+    100024: Bone_006
+    100026: Bone_007
+    100028: Bone_008
+    100030: Bone_009
+    100032: Bone_010
+    100034: Bone_011
+    100036: Bone_012
+    100038: Bone_013
+    100040: Bone_014
+    100042: Bone_015
+    100044: Bone_016
+    100046: Bone_017
+    100048: Bone_018
+    100050: female_bone_arm_l
+    100052: female_bone_arm_r
+    100054: female_bone_chest
+    100056: female_bone_foot_l
+    100058: female_bone_foot_r
+    100060: female_bone_forearm_r
+    100062: female_bone_hand_l
+    100064: female_bone_hand_r
+    100066: female_bone_head
+    100068: female_bone_hip_l
+    100070: female_bone_hip_r
+    100072: female_bone_neck
+    100074: female_bone_shin_l
+    100076: female_bone_shin_r
+    100078: female_bone_shoulder_l
+    100080: female_bone_shoulder_r
+    100082: female_bone_thigh_l
+    100084: female_bone_thigh_r
+    100086: female_bone_wrist_l
+    400000: //RootNode
+    400002: woman
+    400004: woman_001
+    400006: female
+    400008: female_eyes
+    400010: Armature
+    400012: Bone
+    400014: Bone_001
+    400016: Bone_002
+    400018: Bone_003
+    400020: Bone_004
+    400022: Bone_005
+    400024: Bone_006
+    400026: Bone_007
+    400028: Bone_008
+    400030: Bone_009
+    400032: Bone_010
+    400034: Bone_011
+    400036: Bone_012
+    400038: Bone_013
+    400040: Bone_014
+    400042: Bone_015
+    400044: Bone_016
+    400046: Bone_017
+    400048: Bone_018
+    400050: female_bone_arm_l
+    400052: female_bone_arm_r
+    400054: female_bone_chest
+    400056: female_bone_foot_l
+    400058: female_bone_foot_r
+    400060: female_bone_forearm_r
+    400062: female_bone_hand_l
+    400064: female_bone_hand_r
+    400066: female_bone_head
+    400068: female_bone_hip_l
+    400070: female_bone_hip_r
+    400072: female_bone_neck
+    400074: female_bone_shin_l
+    400076: female_bone_shin_r
+    400078: female_bone_shoulder_l
+    400080: female_bone_shoulder_r
+    400082: female_bone_thigh_l
+    400084: female_bone_thigh_r
+    400086: female_bone_wrist_l
+    2300000: woman
+    2300002: woman_001
+    2300004: female
+    2300006: female_eyes
+    3300000: woman
+    3300002: woman_001
+    3300004: female
+    3300006: female_eyes
+    4300000: woman_001
+    4300002: woman
+    4300004: female
+    4300006: female_eyes
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
