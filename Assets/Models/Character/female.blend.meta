@@ -49,6 +49,9 @@ ModelImporter:
     100082: female_bone_thigh_l
     100084: female_bone_thigh_r
     100086: female_bone_wrist_l
+    100088: female_bone_hand_L
+    100090: female_bone_hand_R
+    100092: female_rig
     400000: //RootNode
     400002: woman
     400004: woman_001
@@ -93,6 +96,9 @@ ModelImporter:
     400082: female_bone_thigh_l
     400084: female_bone_thigh_r
     400086: female_bone_wrist_l
+    400088: female_bone_hand_L
+    400090: female_bone_hand_R
+    400092: female_rig
     2300000: woman
     2300002: woman_001
     2300004: female
@@ -106,7 +112,11 @@ ModelImporter:
     4300004: female
     4300006: female_eyes
     7400000: Default Take
+    7400002: ArmatureAction
+    7400004: Female_Anim_Test
     9500000: //RootNode
+    13700000: female
+    13700002: female_eyes
   materials:
     importMaterials: 1
     materialName: 0
