@@ -46,9 +46,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Data\Abilities\Global\Jump\DoubleJump.cs" />
+     <Compile Include="Assets\Data\Abilities\Global\Jump\GlobalJump.cs" />
      <Compile Include="Assets\Scripts\Abilities\Ability.cs" />
-     <Compile Include="Assets\Scripts\Abilities\AbilityAnimation.cs" />
-     <Compile Include="Assets\Scripts\Abilities\AbilityEffect.cs" />
      <Compile Include="Assets\Scripts\Abilities\AbilityPlacement.cs" />
      <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
      <Compile Include="Assets\Scripts\Components\Actor.cs" />

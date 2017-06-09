@@ -38,7 +38,7 @@ public class Equipment : ScriptableObject {
     // probably some references to icons
 
     [Header("Equipment Ability Effects")]
-    public List<AbilityEffect> effects;
-    public List<float> effectsTiming;
+    // public List<AbilityEffect> effects;
+    // public List<float> effectsTiming;
     private int effectsIndex;
 }

@@ -11,7 +11,7 @@ public class AbilityPlacement : ScriptableObject {
     private const int maxTargets = 16;
 
     private Actor caster;
-    private Ability parent;
+    // private Ability parent;
     public GameObject splat;
     private SplatComponent splatComponent;
     private MeshRenderer meshRenderer;
@@ -43,16 +43,16 @@ public class AbilityPlacement : ScriptableObject {
         angleOffset = Mathf.Deg2Rad * angleOffset;
     }
 
-    public void SetParent(Ability ability){
-        parent = ability;
-    }
+    // public void SetParent(Ability ability){
+    //     parent = ability;
+    // }
 
     public void SetCaster(Actor actor){
         caster = actor;
     }
 
     public void Update(){
-        meshRenderer.enabled = parent.state == Ability.AbilityState.Notified;
+        // meshRenderer.enabled = parent.state == Ability.AbilityState.Notified;
 
         // Get vector from caster -> mouse on zero plane
         Vector3 mousePosition = caster.AbilityTargetPoint();

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 using UnityEngine;
 using System;
 
@@ -10,31 +11,35 @@ public class AbilityCastComponent : MonoBehaviour {
     public KeyCode[] abilityHotkeys;
 
     [Header("Abilities")]
-    public List<Ability> abilities;
+    public List<String> abilityNames;
+    private List<Ability> abilities;
 
     private PlayerComponent playercomponent;
 
 	void Start(){
-        for(int i = 0; i < abilities.Count; ++i){
-            abilities[i] = UnityEngine.Object.Instantiate(abilities[i]);
-            abilities[i].Start();
-            abilities[i].SetCaster(gameObject.GetComponent<Actor>());
+        abilities = new List<Ability>();
+
+        for(int i = 0; i < abilityNames.Count; ++i){
+            Ability ability = (Ability) ScriptableObject.CreateInstance(abilityNames[i]);
+            Assert.IsTrue(ability, "Error creating ability " + abilityNames[i]);
+
+            ability.selfActor = GetComponent<Actor>();
+            ability.castComponent = this;
+
+            abilities.Add(ability);
         }
+
 	}
 
 	void Update(){
         for(int i = 0; i < abilities.Count; ++i){
-            if(Input.GetKey(abilityHotkeys[i])){
-                abilities[i].Notify();
+            if(Input.GetKeyDown(abilityHotkeys[i])){
+                abilities[0].Cast();
             }
-
-            abilities[i].Update();
         }
 	}
 
     void LateUpdate(){
-        for(int i = 0; i < abilities.Count; ++i){
-            abilities[i].LateUpdate();
-        }
+
     }
 }

@@ -49,6 +49,16 @@ public class Actor : MonoBehaviour {
         Debug.DrawLine(transform.position, transform.forward);
 	}
 
+    protected void LateUpdate(){
+        if(mtPositionChanged){
+            mtPositionChanged = false;
+            transform.position = mtPosition;
+        }
+
+        mtPosition = transform.position;
+        mtGrounded = characterController.isGrounded;
+    }
+
     //##########################################################################
     // Actor Actions
     //##########################################################################
@@ -82,14 +92,25 @@ public class Actor : MonoBehaviour {
     }
 
     //##########################################################################
-    // Status methods
+    // Thread safe interface
+    // These are necessary for reading and writing to the Unity API from the
+    // ability scripts, because they're threaded
     //##########################################################################
-    public void Root(float duration){
-        // this is kind of a hack around the poor movement model we're using
-        // rootTimer = new Timer(duration);
-        // rootTimer.Start();
-        // currentMoveSpeed = 0.0f;
-        // targetPosition = transform.position;
+    private Vector3 mtPosition;
+    private bool mtPositionChanged;
+    private bool mtGrounded;
+
+    public void SetMTPosition(Vector3 position){
+        mtPositionChanged = true;
+        mtPosition = position;
+    }
+
+    public Vector3 GetMTPosition(){
+        return mtPosition;
+    }
+
+    public bool GetMTGrounded(){
+        return mtGrounded;
     }
 
     //##########################################################################
