@@ -7,8 +7,8 @@ using System;
 [RequireComponent (typeof (PlayerComponent))]
 public class AbilityCastComponent : MonoBehaviour {
 
-    [Header("Ability Key Bindings")]
-    public KeyCode[] abilityHotkeys;
+    // [Header("Ability Key Bindings")]
+    // public KeyCode[] abilityHotkeys;
 
     [Header("Abilities")]
     public List<String> abilityNames;
@@ -25,6 +25,9 @@ public class AbilityCastComponent : MonoBehaviour {
 
             ability.selfActor = GetComponent<Actor>();
             ability.castComponent = this;
+            ability.selfAbilityIndex = i;
+
+            ability.Setup();
 
             abilities.Add(ability);
         }
@@ -33,13 +36,17 @@ public class AbilityCastComponent : MonoBehaviour {
 
 	void Update(){
         for(int i = 0; i < abilities.Count; ++i){
-            if(Input.GetKeyDown(abilityHotkeys[i])){
-                abilities[0].Cast();
-            }
+            abilities[i].Update();
         }
 	}
 
     void LateUpdate(){
 
+    }
+
+    void OnDestroy() {
+        for(int i = 0; i < abilities.Count; ++i){
+            abilities[i].OnDestroy();
+        }
     }
 }

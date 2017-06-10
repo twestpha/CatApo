@@ -8,37 +8,119 @@ public class Ability : ScriptableObject {
 
     public Actor selfActor;
     public AbilityCastComponent castComponent;
+    public int selfAbilityIndex;
 
-    // Handling cooldown
+    public bool castable = true;
+
+    public KeyCode hotkey;
+
+    // State tracking and type
+    protected enum AbilityState {
+        Idle,
+        Notified,
+        Waiting,
+        Casted,
+    };
+
+    protected enum AbilityType {
+        passive,
+        onHotkey,
+        onClick,
+        vector,
+    }
+
+    protected AbilityState state;
+    protected AbilityType type;
+
+    // Cast locations
+    protected Vector3 castClickDownPosition;
+    protected Vector3 castClickUpPosition;
+
+    // Cooldown
     protected float cooldown;
     private Stopwatch cooldownStopwatch;
 
+    // Threads
     System.Threading.Thread alwaysCastThread = null;
     System.Threading.Thread SequentialCastThread = null;
 
-    public void Cast(){
-        Setup();
+    public void Update(){
+        if(type == AbilityType.passive){
+            // if passive, cast once and let alwaysCast handle logic
+            if(state == AbilityState.Idle){
+                state = AbilityState.Casted;
+                Cast();
+            }
+        } else if(type == AbilityType.onHotkey){
+            // if hotkey, cast on hotkey pressed
+            if(state == AbilityState.Idle && Input.GetKeyDown(hotkey)){
+                state = AbilityState.Casted;
+                castClickDownPosition = Vector3.zero;
+                Cast();
+            }
+        } else if(type == AbilityType.onClick){
+            // if on click, notify on hotkey, cast on click
+            if(state == AbilityState.Idle && Input.GetKeyDown(hotkey)){
+                state = AbilityState.Notified;
+            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(0)){
+                state = AbilityState.Casted;
+                castClickDownPosition = Vector3.zero;
+                Cast();
+            }
+        } else if(type == AbilityType.vector){
+            // if vector, notify on hotkey, wait on click, cast on unclick
+            if(state == AbilityState.Idle && Input.GetKeyDown(hotkey)){
+                state = AbilityState.Notified;
+            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(0)){
+                state = AbilityState.Waiting;
+                castClickDownPosition = Vector3.zero;
+            } else if(state == AbilityState.Waiting && Input.GetMouseButtonUp(0)){
+                state = AbilityState.Casted;
+                castClickUpPosition = Vector3.zero;
+                Cast();
+            }
+        }
+    }
 
+    public void Cast(){
         cooldownStopwatch = new Stopwatch();
         cooldownStopwatch.Start();
 
         alwaysCastThread = new System.Threading.Thread(AlwaysCastStub);
-        alwaysCastThread.Start();
-
         SequentialCastThread = new System.Threading.Thread(SequentialCast);
+
+        alwaysCastThread.Start();
         SequentialCastThread.Start();
     }
 
     public void AlwaysCastStub(){
-        while(cooldownStopwatch.ElapsedMilliseconds <= cooldown){
-            AlwaysCast();
+        if(type == AbilityType.passive){
+            // we're passive, loop infinitely (until stopped)
+            while(state == AbilityState.Casted){
+                AlwaysCast();
+            }
+        } else {
+            // If we're not passive, wait for cooldown
+            while(cooldownStopwatch.ElapsedMilliseconds <= cooldown){
+                AlwaysCast();
+            }
+
+            state = AbilityState.Idle;
         }
     }
 
     // virtual methods that sub-classes will implement
-    protected virtual void Setup(){}
+    public virtual void Setup(){}
     protected virtual void AlwaysCast(){}
     protected virtual void SequentialCast(){}
+
+    // shutdown methods kill threads
+    public void OnDestroy(){
+        state = AbilityState.Idle;
+
+        alwaysCastThread.Abort();
+        SequentialCastThread.Abort();
+    }
 
     // interface methods for "registering" effects
     // These will be the thread-safe methods of reading and writing actor data
@@ -98,6 +180,10 @@ public class Ability : ScriptableObject {
     //##########################################################################
     protected void Delay(int duration){
         System.Threading.Thread.Sleep(duration);
+    }
+
+    protected void Complete(){
+        // something
     }
 
     //##########################################################################

@@ -4,7 +4,7 @@ public class GlobalJump : Ability {
 
     float jumpSpeed;
 
-    override protected void Setup(){
+    override public void Setup(){
         cooldown = 1000.0f;
         jumpSpeed = 14.0f;
     }

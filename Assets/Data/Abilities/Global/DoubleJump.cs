@@ -5,19 +5,23 @@ public class DoubleJump : Ability {
     float jumpSpeed;
     static int jumpTimes;
 
-    override protected void Setup(){
-        cooldown = 1000.0f;
+    override public void Setup(){
+        hotkey = KeyCode.Space;
+        type = AbilityType.onHotkey;
+        cooldown = 10.0f;
         jumpSpeed = 14.0f;
     }
 
     override protected void AlwaysCast(){
-        if(GetGrounded(selfActor)){
-            jumpTimes = 0;
-        }
+
     }
 
     override protected void SequentialCast(){
-        if(!GetGrounded(selfActor) && jumpTimes >= 1){
+        if(GetGrounded(selfActor)){
+            jumpTimes = 0;
+        }
+
+        if(!GetGrounded(selfActor) && jumpTimes > 1){
             return;
         }
 
