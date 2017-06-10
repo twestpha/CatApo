@@ -10,9 +10,12 @@ public class Actor : MonoBehaviour {
 
     [Header("Base Actor Properties")]
 
-    [Header("Health")]
+    [Header("Health and Armor")]
     public float maxHealth;
     public float currentHealth;
+
+    public float maxArmor;
+    public float currentArmor;
 
     [Header("Movement")]
     public float maxMoveSpeed;

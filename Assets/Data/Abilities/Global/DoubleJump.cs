@@ -6,7 +6,6 @@ public class DoubleJump : Ability {
     static int jumpTimes;
 
     override public void Setup(){
-        hotkey = KeyCode.Space;
         type = AbilityType.onHotkey;
         cooldown = 10.0f;
         jumpSpeed = 14.0f;

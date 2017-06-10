@@ -42,7 +42,7 @@ public class Ability : ScriptableObject {
 
     // Threads
     System.Threading.Thread alwaysCastThread = null;
-    System.Threading.Thread SequentialCastThread = null;
+    System.Threading.Thread sequentialCastThread = null;
 
     public void Update(){
         if(type == AbilityType.passive){
@@ -87,21 +87,21 @@ public class Ability : ScriptableObject {
         cooldownStopwatch.Start();
 
         alwaysCastThread = new System.Threading.Thread(AlwaysCastStub);
-        SequentialCastThread = new System.Threading.Thread(SequentialCast);
+        sequentialCastThread = new System.Threading.Thread(SequentialCast);
 
         alwaysCastThread.Start();
-        SequentialCastThread.Start();
+        sequentialCastThread.Start();
     }
 
     public void AlwaysCastStub(){
         if(type == AbilityType.passive){
-            // we're passive, loop infinitely (until stopped)
+            // we're passive, loop until stopped
             while(state == AbilityState.Casted){
                 AlwaysCast();
             }
         } else {
             // If we're not passive, wait for cooldown
-            while(cooldownStopwatch.ElapsedMilliseconds <= cooldown){
+            while(cooldownStopwatch.ElapsedMilliseconds <= cooldown && state == AbilityState.Casted){
                 AlwaysCast();
             }
 
@@ -118,8 +118,13 @@ public class Ability : ScriptableObject {
     public void OnDestroy(){
         state = AbilityState.Idle;
 
-        alwaysCastThread.Abort();
-        SequentialCastThread.Abort();
+        if(alwaysCastThread != null && alwaysCastThread.IsAlive){
+            alwaysCastThread.Abort();
+        }
+
+        if(sequentialCastThread != null && sequentialCastThread.IsAlive){
+            sequentialCastThread.Abort();
+        }
     }
 
     // interface methods for "registering" effects
@@ -146,6 +151,14 @@ public class Ability : ScriptableObject {
 
     protected bool GetGrounded(Actor actor){
         return actor.GetMTGrounded();
+    }
+
+    protected void SetSteerable(Actor actor, bool steerable){
+        actor.steerable = steerable;
+    }
+
+    protected bool GetSteerable(Actor actor){
+        return actor.steerable;
     }
 
     //##########################################################################
@@ -178,12 +191,15 @@ public class Ability : ScriptableObject {
     //##########################################################################
     // Scripting Utility Functions
     //##########################################################################
-    protected void Delay(int duration){
-        System.Threading.Thread.Sleep(duration);
+    protected void Delay(float duration){
+        System.Threading.Thread.Sleep((int)duration);
     }
 
-    protected void Complete(){
-        // something
+    protected void End(){
+        state = AbilityState.Idle;
+
+        alwaysCastThread.Abort();
+        sequentialCastThread.Abort();
     }
 
     //##########################################################################

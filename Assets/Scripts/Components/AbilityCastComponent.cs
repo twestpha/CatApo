@@ -7,8 +7,8 @@ using System;
 [RequireComponent (typeof (PlayerComponent))]
 public class AbilityCastComponent : MonoBehaviour {
 
-    // [Header("Ability Key Bindings")]
-    // public KeyCode[] abilityHotkeys;
+    [Header("Ability Key Bindings")]
+    public KeyCode[] abilityHotkeys;
 
     [Header("Abilities")]
     public List<String> abilityNames;
@@ -26,6 +26,8 @@ public class AbilityCastComponent : MonoBehaviour {
             ability.selfActor = GetComponent<Actor>();
             ability.castComponent = this;
             ability.selfAbilityIndex = i;
+
+            ability.hotkey = abilityHotkeys[i];
 
             ability.Setup();
 

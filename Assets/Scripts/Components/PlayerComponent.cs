@@ -10,17 +10,6 @@ public class PlayerComponent : Actor {
     private const float kPlayerStopRadius = 0.1f;
     private const float kPlayerPlaneOffset = -1.0f;
 
-    [Header("Jumping")]
-    public float jumpSpeed = 0.09f;
-    public float jumpTime = 0.22f;
-
-    private float jumpTimeElapsed;
-
-    // [Header("Actor Connections")]
-    // public Camera playerCamera;
-    // public GameObject uiRotator;
-    // public GameObject playerModel;
-
     public enum UIState {
         InventoryHidden,
         InventoryOpen
@@ -44,8 +33,6 @@ public class PlayerComponent : Actor {
 
         // Setting initial states
         moving  = false;
-        jumping = false; // probably can be an ability too
-        dashing = false; // really should be an ability now
         currentHealth = maxHealth;
 
         // Setup actor plane
@@ -60,7 +47,7 @@ public class PlayerComponent : Actor {
     }
 
     void FixedUpdate(){
-        // PHYSICS ONLY SHIT
+
     }
 
     override public void HandleInputs(){
@@ -76,43 +63,6 @@ public class PlayerComponent : Actor {
         } else {
             // HandleUIInputs();
         }
-    }
-
-    //##########################################################################
-    // Player Actions
-    //##########################################################################
-
-    Vector3 HandleJump(){
-        Vector3 jumpVelocity = Vector3.zero;
-
-        bool jumpButton = Input.GetKey("space");
-
-        if(characterController.isGrounded){
-            jumping = false;
-            jumpUnreleased = false;
-        }
-
-        if(jumpButton && characterController.isGrounded && !jumping){
-            jumping = true;
-            jumpUnreleased = true;
-            jumpTimeElapsed = 0.0f;
-
-            jumpVelocity.y = jumpSpeed;
-        }
-
-        if(jumpButton && !characterController.isGrounded && jumpUnreleased){
-            jumpTimeElapsed += Time.deltaTime;
-
-            if(jumpTimeElapsed < jumpTime){
-                jumpVelocity.y = jumpSpeed;
-            }
-        }
-
-        if(jumping && !jumpButton){
-            jumpUnreleased = false;
-        }
-
-        return jumpVelocity;
     }
 
     //##########################################################################

@@ -5,6 +5,7 @@ public class GlobalJump : Ability {
     float jumpSpeed;
 
     override public void Setup(){
+        type = AbilityType.onHotkey;
         cooldown = 1000.0f;
         jumpSpeed = 14.0f;
     }
