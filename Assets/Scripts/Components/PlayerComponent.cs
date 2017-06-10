@@ -28,9 +28,6 @@ public class PlayerComponent : Actor {
 	new void Start(){
         base.Start();
 
-        // accelerationMultiplier = 0.0f;
-        // decelerationRadius = currentMoveSpeed / (2.0f * moveAcceleration);
-
         // Setting initial states
         moving  = false;
         currentHealth = maxHealth;
@@ -58,8 +55,6 @@ public class PlayerComponent : Actor {
             if(Input.GetButton("Fire2") && steerable){
                 targetPosition = MouseIntersectionWithTerrain();
             }
-
-
         } else {
             // HandleUIInputs();
         }

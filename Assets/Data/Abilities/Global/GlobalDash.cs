@@ -18,6 +18,11 @@ public class GlobalDash : Ability {
     }
 
     override protected void SequentialCast(){
+        if(!GetGrounded(selfActor)){
+            End();
+            return;
+        }
+
         Vector3 oldTarget = GetTarget(selfActor);
         Vector3 oldPosition = GetPosition(selfActor);
         Vector3 dashDirection = oldTarget - oldPosition;

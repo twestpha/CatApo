@@ -116,15 +116,7 @@ public class Ability : ScriptableObject {
 
     // shutdown methods kill threads
     public void OnDestroy(){
-        state = AbilityState.Idle;
-
-        if(alwaysCastThread != null && alwaysCastThread.IsAlive){
-            alwaysCastThread.Abort();
-        }
-
-        if(sequentialCastThread != null && sequentialCastThread.IsAlive){
-            sequentialCastThread.Abort();
-        }
+        End();
     }
 
     // interface methods for "registering" effects
@@ -198,8 +190,13 @@ public class Ability : ScriptableObject {
     protected void End(){
         state = AbilityState.Idle;
 
-        alwaysCastThread.Abort();
-        sequentialCastThread.Abort();
+        if(alwaysCastThread != null && alwaysCastThread.IsAlive){
+            alwaysCastThread.Abort();
+        }
+
+        if(sequentialCastThread != null && sequentialCastThread.IsAlive){
+            sequentialCastThread.Abort();
+        }
     }
 
     //##########################################################################
