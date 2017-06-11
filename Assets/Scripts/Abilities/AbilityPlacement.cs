@@ -11,21 +11,15 @@ public class AbilityPlacement : ScriptableObject {
     private const int maxTargets = 16;
 
     private Actor caster;
-    // private Ability parent;
+    private Ability ability;
     public GameObject splat;
-    private SplatComponent splatComponent;
     private MeshRenderer meshRenderer;
     public float splatSize;
 
-    // TODO ability filter at some point
-    public bool castOnlyOnSelf;
-    public bool castOnActor;
-
-    [Header("Placement Details")]
     public bool rotateFromCaster;
     public float minDistance = 0.0f;
     public float maxDistance = 0.0f;
-    public float angleOffset = 0.0f;
+    public float angleOffset = 0.0f; // really should start with start and end offsets
     public Vector3 positionOffset = Vector3.zero;
 
     public void Start(){
@@ -35,7 +29,6 @@ public class AbilityPlacement : ScriptableObject {
         }
 
         splat = Object.Instantiate(splat);
-        splatComponent = splat.GetComponent<SplatComponent>();
         meshRenderer = splat.GetComponent<MeshRenderer>();
         meshRenderer.enabled = false;
         splat.transform.localScale = new Vector3(splatSize, splatSize, splatSize);
@@ -43,17 +36,15 @@ public class AbilityPlacement : ScriptableObject {
         angleOffset = Mathf.Deg2Rad * angleOffset;
     }
 
-    // public void SetParent(Ability ability){
-    //     parent = ability;
-    // }
-
     public void SetCaster(Actor actor){
         caster = actor;
     }
 
-    public void Update(){
-        // meshRenderer.enabled = parent.state == Ability.AbilityState.Notified;
+    public void SetAbility(Ability parentability){
+        ability = parentability;
+    }
 
+    public void Update(){
         // Get vector from caster -> mouse on zero plane
         Vector3 mousePosition = caster.AbilityTargetPoint();
         Vector3 casterpos = caster.transform.position;
@@ -80,12 +71,8 @@ public class AbilityPlacement : ScriptableObject {
         }
     }
 
-    public List<Actor> GetTargetsInCast(){
-        List<Actor> actorsInCast = splatComponent.GetActorsInTrigger();
-
-        // TODO add filtering step
-
-        return actorsInCast;
+    public void SetEnabled(bool enabled){
+        meshRenderer.enabled = enabled;
     }
 
     private Vector3 MousePositionOnCasterPlane(){

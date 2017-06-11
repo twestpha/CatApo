@@ -46,9 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Data\Abilities\Global\DoubleJump.cs" />
-     <Compile Include="Assets\Data\Abilities\Global\GlobalDash.cs" />
-     <Compile Include="Assets\Data\Abilities\Global\GlobalJump.cs" />
+     <Compile Include="Assets\Resources\Abilities\DoubleJump.cs" />
+     <Compile Include="Assets\Resources\Abilities\GlobalDash.cs" />
+     <Compile Include="Assets\Resources\Abilities\GlobalJump.cs" />
+     <Compile Include="Assets\Resources\Abilities\TestClick.cs" />
      <Compile Include="Assets\Scripts\Abilities\Ability.cs" />
      <Compile Include="Assets\Scripts\Abilities\AbilityPlacement.cs" />
      <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />

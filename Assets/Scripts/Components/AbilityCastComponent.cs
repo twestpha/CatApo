@@ -29,7 +29,7 @@ public class AbilityCastComponent : MonoBehaviour {
 
             ability.hotkey = abilityHotkeys[i];
 
-            ability.Setup();
+            ability.SetupAbility();
 
             abilities.Add(ability);
         }

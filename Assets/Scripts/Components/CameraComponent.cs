@@ -15,7 +15,6 @@ public class CameraComponent : MonoBehaviour {
     public float yscale;
 
 	void Start(){
-        originalRotation = transform.rotation;
         cameraOffset = transform.position - targetObject.transform.position;
 	}
 

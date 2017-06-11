@@ -15,7 +15,7 @@ public class Ability : ScriptableObject {
     public KeyCode hotkey;
 
     // State tracking and type
-    protected enum AbilityState {
+    public enum AbilityState {
         Idle,
         Notified,
         Waiting,
@@ -29,8 +29,12 @@ public class Ability : ScriptableObject {
         vector,
     }
 
-    protected AbilityState state;
+    public AbilityState state;
     protected AbilityType type;
+
+    // Placements
+    protected List<string> placementNames;
+    private List<AbilityPlacement> placements;
 
     // Cast locations
     protected Vector3 castClickDownPosition;
@@ -44,6 +48,26 @@ public class Ability : ScriptableObject {
     System.Threading.Thread alwaysCastThread = null;
     System.Threading.Thread sequentialCastThread = null;
 
+    public void SetupAbility(){
+        placementNames = new List<string>();
+
+        Setup();
+
+        if(UsePlacement()){
+            placements = new List<AbilityPlacement>();
+
+            for(int i = 0; i < placementNames.Count; ++i){
+                string assetName = "Abilities/" + placementNames[i];
+                AbilityPlacement placement = Resources.Load(assetName, typeof(AbilityPlacement)) as AbilityPlacement;
+                placement = ScriptableObject.Instantiate(placement);
+                placement.SetCaster(selfActor);
+                placement.Start();
+
+                placements.Add(placement);
+            }
+        }
+    }
+
     public void Update(){
         if(type == AbilityType.passive){
             // if passive, cast once and let alwaysCast handle logic
@@ -55,16 +79,21 @@ public class Ability : ScriptableObject {
             // if hotkey, cast on hotkey pressed
             if(state == AbilityState.Idle && Input.GetKeyDown(hotkey)){
                 state = AbilityState.Casted;
-                castClickDownPosition = Vector3.zero;
+                castClickDownPosition = selfActor.AbilityTargetPoint();
                 Cast();
             }
         } else if(type == AbilityType.onClick){
             // if on click, notify on hotkey, cast on click
             if(state == AbilityState.Idle && Input.GetKeyDown(hotkey)){
                 state = AbilityState.Notified;
+                SetPlacementEnabled(true);
+            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(1)){
+                state = AbilityState.Idle;
+                SetPlacementEnabled(false);
             } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(0)){
                 state = AbilityState.Casted;
-                castClickDownPosition = Vector3.zero;
+                SetPlacementEnabled(false);
+                castClickDownPosition = selfActor.AbilityTargetPoint();
                 Cast();
             }
         } else if(type == AbilityType.vector){
@@ -73,11 +102,25 @@ public class Ability : ScriptableObject {
                 state = AbilityState.Notified;
             } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(0)){
                 state = AbilityState.Waiting;
-                castClickDownPosition = Vector3.zero;
+                SetPlacementEnabled(true);
+                castClickDownPosition = selfActor.AbilityTargetPoint();
+            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(1)){
+                state = AbilityState.Idle;
+                SetPlacementEnabled(false);
+            } else if(state == AbilityState.Waiting && Input.GetMouseButtonDown(1)){
+                state = AbilityState.Idle;
+                SetPlacementEnabled(false);
             } else if(state == AbilityState.Waiting && Input.GetMouseButtonUp(0)){
                 state = AbilityState.Casted;
-                castClickUpPosition = Vector3.zero;
+                SetPlacementEnabled(false);
+                castClickUpPosition = selfActor.AbilityTargetPoint();
                 Cast();
+            }
+        }
+
+        if(UsePlacement()){
+            for(int i = 0; i < placements.Count; ++i){
+                placements[i].Update();
             }
         }
     }
@@ -110,13 +153,23 @@ public class Ability : ScriptableObject {
     }
 
     // virtual methods that sub-classes will implement
-    public virtual void Setup(){}
+    protected virtual void Setup(){}
     protected virtual void AlwaysCast(){}
     protected virtual void SequentialCast(){}
 
     // shutdown methods kill threads
     public void OnDestroy(){
         End();
+    }
+
+    private bool UsePlacement(){
+        return type == AbilityType.onClick || type == AbilityType.vector;
+    }
+
+    private void SetPlacementEnabled(bool enabled){
+        for(int i = 0; i < placements.Count; ++i){
+            placements[i].SetEnabled(enabled);
+        }
     }
 
     // interface methods for "registering" effects
