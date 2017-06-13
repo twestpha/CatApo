@@ -19,8 +19,8 @@ public class AbilityPlacement : ScriptableObject {
     public bool rotateFromCaster;
     public float minDistance = 0.0f;
     public float maxDistance = 0.0f;
-    public float angleOffset = 0.0f; // really should start with start and end offsets
-    public Vector3 positionOffset = Vector3.zero;
+    public Vector3 startPositionOffset = Vector3.zero;
+    public Vector3 endPositionOffset = Vector3.zero;
 
     public void Start(){
         if(debug){
@@ -32,8 +32,6 @@ public class AbilityPlacement : ScriptableObject {
         meshRenderer = splat.GetComponent<MeshRenderer>();
         meshRenderer.enabled = false;
         splat.transform.localScale = new Vector3(splatSize, splatSize, splatSize);
-
-        angleOffset = Mathf.Deg2Rad * angleOffset;
     }
 
     public void SetCaster(Actor actor){
@@ -45,48 +43,50 @@ public class AbilityPlacement : ScriptableObject {
     }
 
     public void Update(){
-        // Get vector from caster -> mouse on zero plane
-        Vector3 mousePosition = caster.AbilityTargetPoint();
-        Vector3 casterpos = caster.transform.position;
-        mousePosition.y = 0.0f;
-        casterpos.y = 0.0f;
+        // if we're a vector type placement, get vector from click down to mouse position
+        // if we're not, get the vector from the actor position to the mouse position
+        Vector3 origin = ability.type == Ability.AbilityType.vector ? ability.castClickDownPosition : caster.transform.position;
+        Vector3 mouse = caster.AbilityTargetPoint();
 
-        Vector3 mouseDir = (mousePosition - casterpos);
+        origin.y = 0.0f;
+        mouse.y = 0.0f;
+
+        Vector3 mouseDir = (mouse - origin);
+
+        Vector3 startPosition = origin + startPositionOffset;
+        Vector3 endPosition = mouse + endPositionOffset;
+
+        // if we're not a vector, rotate to face mouse direction
+        if(ability.type != Ability.AbilityType.vector){
+            float angle = Mathf.Atan2(mouseDir.z, mouseDir.x);
+
+            startPosition = new Vector3( startPositionOffset.z * Mathf.Cos(angle) - startPositionOffset.x * Mathf.Sin(angle),
+                                        0.0f,
+                                        startPositionOffset.x * Mathf.Cos(angle) + startPositionOffset.z * Mathf.Sin(angle));
+            endPosition = new Vector3( endPositionOffset.z * Mathf.Cos(angle) - endPositionOffset.x * Mathf.Sin(angle),
+                                       0.0f,
+                                       endPositionOffset.x * Mathf.Cos(angle) + endPositionOffset.z * Mathf.Sin(angle));
+
+            startPosition += origin;
+            endPosition += mouse;
+
+            mouseDir = (endPosition - startPosition);
+        }
 
         // clamp magnitude
         float mouseDirMag = Mathf.Min(Mathf.Max(mouseDir.magnitude, minDistance), maxDistance);
         mouseDir.Normalize();
 
-        // apply angle offset to direction
-        mouseDir = new Vector3(mouseDir.x * Mathf.Cos(angleOffset) - mouseDir.z * Mathf.Sin(angleOffset),
-                               0.0f,
-                               mouseDir.z * Mathf.Cos(angleOffset) + mouseDir.x * Mathf.Sin(angleOffset));
-
-        Vector3 splatPos = mouseDir * mouseDirMag;
-        splatPos.y = caster.transform.position.y - 1.0f; // TODO setup player offset
-        splat.transform.position = splatPos + casterpos + positionOffset;
-
         if(rotateFromCaster){
             splat.transform.rotation = Quaternion.LookRotation(mouseDir) * Quaternion.Euler(90.0f, 0.0f, 0.0f);
         }
+
+        Vector3 splatPos = startPosition + mouseDir * mouseDirMag;
+        splatPos.y = caster.transform.position.y - 1.0f; // TODO setup player offset
+        splat.transform.position = splatPos;
     }
 
     public void SetEnabled(bool enabled){
         meshRenderer.enabled = enabled;
-    }
-
-    private Vector3 MousePositionOnCasterPlane(){
-        // Fix when caster starts working proper
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        Plane plane = new Plane(Vector3.up, Vector3.zero);
-        float rayDistance;
-
-        if(plane.Raycast(ray, out rayDistance)){
-            return ray.GetPoint(rayDistance);
-        }
-
-        Debug.LogError("Intersection with caster plane has failed unexpectedly.");
-        return Vector3.zero;
     }
 };

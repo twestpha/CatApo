@@ -22,7 +22,7 @@ public class Ability : ScriptableObject {
         Casted,
     };
 
-    protected enum AbilityType {
+    public enum AbilityType {
         passive,
         onHotkey,
         onClick,
@@ -30,15 +30,15 @@ public class Ability : ScriptableObject {
     }
 
     public AbilityState state;
-    protected AbilityType type;
+    public AbilityType type;
 
     // Placements
     protected List<string> placementNames;
     private List<AbilityPlacement> placements;
 
     // Cast locations
-    protected Vector3 castClickDownPosition;
-    protected Vector3 castClickUpPosition;
+    public Vector3 castClickDownPosition;
+    public Vector3 castClickUpPosition;
 
     // Cooldown
     protected float cooldown;
@@ -61,6 +61,7 @@ public class Ability : ScriptableObject {
                 AbilityPlacement placement = Resources.Load(assetName, typeof(AbilityPlacement)) as AbilityPlacement;
                 placement = ScriptableObject.Instantiate(placement);
                 placement.SetCaster(selfActor);
+                placement.SetAbility(this);
                 placement.Start();
 
                 placements.Add(placement);
