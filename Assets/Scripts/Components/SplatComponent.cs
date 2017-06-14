@@ -13,13 +13,13 @@ public class SplatComponent : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider other){
-        if(other.gameObject.GetComponent<Actor>()){
+        if(actorsInTrigger != null && other.gameObject.GetComponent<Actor>()){
             actorsInTrigger.Add(other.gameObject.GetComponent<Actor>());
         }
     }
 
     void OnTriggerExit(Collider other){
-        if(other.gameObject.GetComponent<Actor>()){
+        if(actorsInTrigger != null && other.gameObject.GetComponent<Actor>()){
             actorsInTrigger.Remove(other.gameObject.GetComponent<Actor>());
         }
     }

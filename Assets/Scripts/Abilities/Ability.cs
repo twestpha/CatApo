@@ -14,6 +14,13 @@ public class Ability : ScriptableObject {
 
     public KeyCode hotkey;
 
+    private enum MouseButton {
+        Right,
+        Left,
+        Middle,
+    }
+
+
     // State tracking and type
     public enum AbilityState {
         Idle,
@@ -70,6 +77,12 @@ public class Ability : ScriptableObject {
     }
 
     public void Update(){
+        if(UsePlacement()){
+            for(int i = 0; i < placements.Count; ++i){
+                placements[i].Update();
+            }
+        }
+
         if(type == AbilityType.passive){
             // if passive, cast once and let alwaysCast handle logic
             if(state == AbilityState.Idle){
@@ -88,10 +101,10 @@ public class Ability : ScriptableObject {
             if(state == AbilityState.Idle && Input.GetKeyDown(hotkey)){
                 state = AbilityState.Notified;
                 SetPlacementEnabled(true);
-            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(1)){
+            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown((int)MouseButton.Left)){
                 state = AbilityState.Idle;
                 SetPlacementEnabled(false);
-            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(0)){
+            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown((int)MouseButton.Right)){
                 state = AbilityState.Casted;
                 SetPlacementEnabled(false);
                 castClickDownPosition = selfActor.AbilityTargetPoint();
@@ -101,27 +114,21 @@ public class Ability : ScriptableObject {
             // if vector, notify on hotkey, wait on click, cast on unclick
             if(state == AbilityState.Idle && Input.GetKeyDown(hotkey)){
                 state = AbilityState.Notified;
-            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(0)){
+            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown((int)MouseButton.Right)){
                 state = AbilityState.Waiting;
                 SetPlacementEnabled(true);
                 castClickDownPosition = selfActor.AbilityTargetPoint();
-            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown(1)){
+            } else if(state == AbilityState.Notified && Input.GetMouseButtonDown((int)MouseButton.Left)){
                 state = AbilityState.Idle;
                 SetPlacementEnabled(false);
-            } else if(state == AbilityState.Waiting && Input.GetMouseButtonDown(1)){
+            } else if(state == AbilityState.Waiting && Input.GetMouseButtonDown((int)MouseButton.Left)){
                 state = AbilityState.Idle;
                 SetPlacementEnabled(false);
-            } else if(state == AbilityState.Waiting && Input.GetMouseButtonUp(0)){
+            } else if(state == AbilityState.Waiting && Input.GetMouseButtonUp((int)MouseButton.Right)){
                 state = AbilityState.Casted;
                 SetPlacementEnabled(false);
                 castClickUpPosition = selfActor.AbilityTargetPoint();
                 Cast();
-            }
-        }
-
-        if(UsePlacement()){
-            for(int i = 0; i < placements.Count; ++i){
-                placements[i].Update();
             }
         }
     }

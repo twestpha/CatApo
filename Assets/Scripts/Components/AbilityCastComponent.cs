@@ -7,6 +7,8 @@ using System;
 [RequireComponent (typeof (PlayerComponent))]
 public class AbilityCastComponent : MonoBehaviour {
 
+    [Header("THESE ARE ONLY FOR DEBUGGING")]
+
     [Header("Ability Key Bindings")]
     public KeyCode[] abilityHotkeys;
 
@@ -16,7 +18,26 @@ public class AbilityCastComponent : MonoBehaviour {
 
     private PlayerComponent playercomponent;
 
+    public enum AbilitySlot {
+        QSlot,
+        WSlot,
+        ESlot,
+        RSlot,
+        DefaultAbilities,
+        JumpSlot = DefaultAbilities,
+        DashSlot,
+        OverflowAbilities,
+        Overflow1Slot = OverflowAbilities,
+        Overflow2Slot,
+        Overflow3Slot,
+        Overflow4Slot,
+        MaxAbilities,
+    }
+
+
 	void Start(){
+        Assert.IsTrue(abilityNames.Count < (int) AbilitySlot.DefaultAbilities);
+
         abilities = new List<Ability>();
 
         for(int i = 0; i < abilityNames.Count; ++i){
