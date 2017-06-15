@@ -13,6 +13,9 @@ public class AbilityUIComponent : MonoBehaviour {
 
     private AbilityCastComponent castComponent;
 
+    public GameObject healthBar;
+    private Vector3 healthBarOffset = new Vector3(0.0f, -80.0f);
+
 	void Start(){
         castComponent = player.GetComponent<AbilityCastComponent>();
 	}
@@ -22,5 +25,6 @@ public class AbilityUIComponent : MonoBehaviour {
             abilityIconCovers[i].GetComponent<Image>().fillAmount = 1.0f - castComponent.GetCooldownPercentage(i);
         }
 
+        healthBar.transform.position = Camera.main.WorldToScreenPoint (player.transform.position) + healthBarOffset;
 	}
 }

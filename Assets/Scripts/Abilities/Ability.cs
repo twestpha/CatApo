@@ -193,11 +193,11 @@ public class Ability : ScriptableObject {
     //##########################################################################
     // Singular Attribute Getters and Setters
     //##########################################################################
-    protected void SetHealth(Actor actor, float health){
+    protected void SetHealth(Actor actor, int health){
         actor.currentHealth = health;
     }
 
-    protected float GetHealth(Actor actor){
+    protected int GetHealth(Actor actor){
         return actor.currentHealth;
     }
 

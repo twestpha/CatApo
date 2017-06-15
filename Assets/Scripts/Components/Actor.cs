@@ -11,11 +11,11 @@ public class Actor : MonoBehaviour {
     [Header("Base Actor Properties")]
 
     [Header("Health and Armor")]
-    public float maxHealth;
-    public float currentHealth;
+    public int maxHealth;
+    public int currentHealth;
 
-    public float maxArmor;
-    public float currentArmor;
+    public int maxArmor;
+    public int currentArmor;
 
     [Header("Movement")]
     public float maxMoveSpeed;
@@ -32,10 +32,8 @@ public class Actor : MonoBehaviour {
     // Component References
     protected CharacterController characterController;
 
-    private bool actorInFramePosition;
-
 	protected void Start(){
-        currentHealth = maxHealth;
+        // currentHealth = maxHealth;
         currentMoveSpeed = maxMoveSpeed;
 
         characterController = GetComponent<CharacterController>();
@@ -73,8 +71,10 @@ public class Actor : MonoBehaviour {
         Vector3 moveVector = targetPosition - characterController.transform.position;
         moveVector.y = 0.0f;
 
-        if(moveVector.magnitude > 0.1f){
-            moveVector.Normalize();
+        float moveDistance = moveVector.magnitude;
+        moveVector.Normalize();
+
+        if(moveDistance > 0.1f){
             movementVelocity += moveVector * currentMoveSpeed;
 
             float angle = Mathf.Rad2Deg * Mathf.Atan2(velocity.x, velocity.z);

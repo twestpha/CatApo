@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\Components\AbilityUIComponent.cs" />
      <Compile Include="Assets\Scripts\Components\Actor.cs" />
      <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
+     <Compile Include="Assets\Scripts\Components\HealthUIComponent.cs" />
      <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
      <Compile Include="Assets\Scripts\Components\SplatComponent.cs" />
      <Compile Include="Assets\Scripts\Components\TestComponent.cs" />
