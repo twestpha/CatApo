@@ -180,6 +180,13 @@ public class Ability : ScriptableObject {
         }
     }
 
+    public float GetCooldownPercentage(){
+        if(cooldownStopwatch != null){
+            return Mathf.Min(Mathf.Max(cooldownStopwatch.ElapsedMilliseconds / cooldown, 0.0f), 1.0f);
+        }
+        return 1.0f;
+    }
+
     // interface methods for "registering" effects
     // These will be the thread-safe methods of reading and writing actor data
 

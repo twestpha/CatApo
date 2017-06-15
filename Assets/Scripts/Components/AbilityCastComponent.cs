@@ -36,8 +36,6 @@ public class AbilityCastComponent : MonoBehaviour {
 
 
 	void Start(){
-        Assert.IsTrue(abilityNames.Count < (int) AbilitySlot.DefaultAbilities);
-
         abilities = new List<Ability>();
 
         for(int i = 0; i < abilityNames.Count; ++i){
@@ -62,6 +60,13 @@ public class AbilityCastComponent : MonoBehaviour {
             abilities[i].Update();
         }
 	}
+
+    public float GetCooldownPercentage(int index){
+        if(index < abilities.Count && abilities[index]){
+            return abilities[index].GetCooldownPercentage();
+        }
+        return 1.0f;
+    }
 
     void LateUpdate(){
 

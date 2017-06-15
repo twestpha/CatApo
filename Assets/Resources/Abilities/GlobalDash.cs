@@ -40,7 +40,7 @@ public class GlobalDash : Ability {
 
         SetSteerable(selfActor, true);
 
-        // Delay(cooldown - dashTime);
+        Delay(cooldown - dashTime);
 
         End();
     }

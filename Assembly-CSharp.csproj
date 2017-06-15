@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\Abilities\Ability.cs" />
      <Compile Include="Assets\Scripts\Abilities\AbilityPlacement.cs" />
      <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
+     <Compile Include="Assets\Scripts\Components\AbilityUIComponent.cs" />
      <Compile Include="Assets\Scripts\Components\Actor.cs" />
      <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
      <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />

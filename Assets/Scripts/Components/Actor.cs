@@ -34,8 +34,6 @@ public class Actor : MonoBehaviour {
 
     private bool actorInFramePosition;
 
-    public GameObject target;
-
 	protected void Start(){
         currentHealth = maxHealth;
         currentMoveSpeed = maxMoveSpeed;
@@ -48,8 +46,7 @@ public class Actor : MonoBehaviour {
     // Actor Update
     //##########################################################################
 	protected void Update(){
-        target.transform.position = targetPosition;
-        Debug.DrawLine(transform.position, transform.forward);
+
 	}
 
     protected void LateUpdate(){
