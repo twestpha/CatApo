@@ -114,6 +114,21 @@ public class Actor : MonoBehaviour {
     }
 
     //##########################################################################
+    // common operations
+    //##########################################################################
+    public void Heal(int amount){
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+    }
+
+    public void Damage(int amount){
+        if(currentArmor > 0){
+            currentArmor =  Mathf.Max(currentArmor - amount, 0);
+        } else {
+            currentHealth = Mathf.Max(currentHealth - amount, 0);
+        }
+    }
+
+    //##########################################################################
     // Something
     //##########################################################################
     virtual public Vector3 AbilityTargetPoint(){

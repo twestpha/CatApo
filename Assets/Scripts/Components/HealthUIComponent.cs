@@ -17,13 +17,15 @@ public class HealthUIComponent : MonoBehaviour {
 
     private List<GameObject> heartContainers;
 
-    private float heartContainerWidth = 30.0f;
-    private float heartContainerSpacing = 3.0f;
+    private float heartContainerWidth = 20.0f;
+    private float heartContainerSpacing = 2.0f;
 
     private int lastHealth;
     private int lastArmor;
 
-	void Start(){
+    private Vector3 healthBarOffset = new Vector3(0.0f, -80.0f);
+
+	public void CreateHearts(){
         targetActor = target.GetComponent<Actor>();
 
         heartContainers = new List<GameObject>();
@@ -47,7 +49,7 @@ public class HealthUIComponent : MonoBehaviour {
         lastArmor = currentArmor;
 	}
 
-	void Update(){
+	public void UpdateUI(){
         int currentArmor = targetActor.currentArmor;
         int currentHealth = targetActor.currentHealth;
 
@@ -59,6 +61,8 @@ public class HealthUIComponent : MonoBehaviour {
 
         lastHealth = currentHealth;
         lastArmor = currentArmor;
+
+        transform.position = Camera.main.WorldToScreenPoint(target.transform.position) + healthBarOffset;
 	}
 
     private void SetHeartContainerSprite(int index){

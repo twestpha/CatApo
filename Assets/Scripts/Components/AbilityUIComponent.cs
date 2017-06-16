@@ -13,18 +13,37 @@ public class AbilityUIComponent : MonoBehaviour {
 
     private AbilityCastComponent castComponent;
 
-    public GameObject healthBar;
-    private Vector3 healthBarOffset = new Vector3(0.0f, -80.0f);
+    public GameObject healthBarPrefab;
+
+    private List<HealthUIComponent> healthBars;
 
 	void Start(){
+        // abilities
         castComponent = player.GetComponent<AbilityCastComponent>();
+
+        // health bars
+        healthBars = new List<HealthUIComponent>();
+
+        Actor[] actors = (Actor[]) GameObject.FindObjectsOfType (typeof(Actor));
+
+        for(int i = 0; i < actors.Length; ++i){
+            GameObject healthBar = Object.Instantiate(healthBarPrefab);
+            healthBar.GetComponent<HealthUIComponent>().target = actors[i].gameObject;
+            healthBar.GetComponent<HealthUIComponent>().CreateHearts();
+            healthBar.transform.SetParent(GetComponent<Canvas>().transform);
+            healthBars.Add(healthBar.GetComponent<HealthUIComponent>());
+        }
 	}
 
 	void Update(){
+        // abilities
         for(int i = 0; i < (int)AbilityCastComponent.AbilitySlot.OverflowAbilities; ++i){
             abilityIconCovers[i].GetComponent<Image>().fillAmount = 1.0f - castComponent.GetCooldownPercentage(i);
         }
 
-        healthBar.transform.position = Camera.main.WorldToScreenPoint (player.transform.position) + healthBarOffset;
+        // health bars
+        for(int i = 0; i < healthBars.Count; ++i){
+            healthBars[i].UpdateUI();
+        }
 	}
 }
