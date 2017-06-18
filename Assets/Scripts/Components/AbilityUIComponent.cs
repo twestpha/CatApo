@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class AbilityUIComponent : MonoBehaviour {
 
     public GameObject player;
@@ -16,6 +17,15 @@ public class AbilityUIComponent : MonoBehaviour {
     public GameObject healthBarPrefab;
 
     private List<HealthUIComponent> healthBars;
+
+    private int lastHealth;
+    private int lastArmor;
+
+    private AudioSource audioSource;
+    public AudioClip playerLostArmorSound;
+    public AudioClip playerGainedArmorSound;
+    public AudioClip playerLostHealthSound;
+    public AudioClip playerGainedHealthSound;
 
 	void Start(){
         // abilities
@@ -33,6 +43,11 @@ public class AbilityUIComponent : MonoBehaviour {
             healthBar.transform.SetParent(GetComponent<Canvas>().transform);
             healthBars.Add(healthBar.GetComponent<HealthUIComponent>());
         }
+
+        // ui sounds
+        audioSource = GetComponent<AudioSource>();
+        lastHealth = player.GetComponent<Actor>().currentHealth;
+        lastArmor = player.GetComponent<Actor>().currentArmor;
 	}
 
 	void Update(){
@@ -44,6 +59,29 @@ public class AbilityUIComponent : MonoBehaviour {
         // health bars
         for(int i = 0; i < healthBars.Count; ++i){
             healthBars[i].UpdateUI();
+        }
+
+        // ui sounds
+        if(lastHealth != player.GetComponent<Actor>().currentHealth){
+            if(lastHealth > player.GetComponent<Actor>().currentHealth){
+                audioSource.clip = playerLostHealthSound;
+                audioSource.Play();
+            } else {
+                audioSource.clip = playerGainedHealthSound;
+                audioSource.Play();
+            }
+            lastHealth = player.GetComponent<Actor>().currentHealth;
+        }
+
+        if(lastArmor != player.GetComponent<Actor>().currentArmor){
+            if(lastArmor > player.GetComponent<Actor>().currentArmor){
+                audioSource.clip = playerLostArmorSound;
+                audioSource.Play();
+            } else {
+                audioSource.clip = playerGainedArmorSound;
+                audioSource.Play();
+            }
+            lastArmor = player.GetComponent<Actor>().currentArmor;
         }
 	}
 }

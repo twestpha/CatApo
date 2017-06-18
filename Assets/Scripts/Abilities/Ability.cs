@@ -20,7 +20,6 @@ public class Ability : ScriptableObject {
         Middle,
     }
 
-
     // State tracking and type
     public enum AbilityState {
         Idle,

@@ -30,7 +30,6 @@ public class PlayerComponent : Actor {
 
         // Setting initial states
         moving  = false;
-        currentHealth = maxHealth;
 
         // Setup actor plane
         playerPlane = new Plane(Vector3.down, characterController.transform.position.y/* + kPlayerPlaneOffset*/);
