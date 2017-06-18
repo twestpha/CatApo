@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class HealthUIComponent : MonoBehaviour {
+public class HealthUIController : MonoBehaviour {
 
     public GameObject target;
     public Actor targetActor;

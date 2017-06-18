@@ -4,18 +4,11 @@ using UnityEngine;
 
 [CreateAssetMenu()]
 [System.Serializable]
-public class Equipment : ScriptableObject {
+public class Equipment : Castable {
     // Equipment is the collection of model, icon, effects, summonables, and stats
     // for a piece of equipment in the game
 
     public bool debug;
-
-    public enum EquipmentRarity {
-        Common,
-        Rare,
-        Legendary,
-        Singular,
-    };
 
     public enum EquipmentType {
         Bow, // If we're certain types (bow, etc) we should have a useConsumable accessor where the ability will then search for a consumable and cast it as well (on cast)
@@ -24,10 +17,7 @@ public class Equipment : ScriptableObject {
         Shield,
     };
 
-    [Header("Equipment Information")]
-    public string equipmentName;
-    public string description;
-    public EquipmentRarity rarity;
+
     public EquipmentType type;
 
     [Header("Game Objects")]

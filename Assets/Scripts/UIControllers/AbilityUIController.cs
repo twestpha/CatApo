@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class AbilityUIComponent : MonoBehaviour {
+public class AbilityUIController : MonoBehaviour {
 
     public GameObject player;
+
+    public GameObject backpackCanvas;
 
     [Header("Icons")]
     public List<GameObject> abilityIcons;
@@ -16,7 +18,7 @@ public class AbilityUIComponent : MonoBehaviour {
 
     public GameObject healthBarPrefab;
 
-    private List<HealthUIComponent> healthBars;
+    private List<HealthUIController> healthBars;
 
     private int lastHealth;
     private int lastArmor;
@@ -32,16 +34,16 @@ public class AbilityUIComponent : MonoBehaviour {
         castComponent = player.GetComponent<AbilityCastComponent>();
 
         // health bars
-        healthBars = new List<HealthUIComponent>();
+        healthBars = new List<HealthUIController>();
 
         Actor[] actors = (Actor[]) GameObject.FindObjectsOfType (typeof(Actor));
 
         for(int i = 0; i < actors.Length; ++i){
             GameObject healthBar = Object.Instantiate(healthBarPrefab);
-            healthBar.GetComponent<HealthUIComponent>().target = actors[i].gameObject;
-            healthBar.GetComponent<HealthUIComponent>().CreateHearts();
+            healthBar.GetComponent<HealthUIController>().target = actors[i].gameObject;
+            healthBar.GetComponent<HealthUIController>().CreateHearts();
             healthBar.transform.SetParent(GetComponent<Canvas>().transform);
-            healthBars.Add(healthBar.GetComponent<HealthUIComponent>());
+            healthBars.Add(healthBar.GetComponent<HealthUIController>());
         }
 
         // ui sounds
@@ -83,5 +85,11 @@ public class AbilityUIComponent : MonoBehaviour {
             }
             lastArmor = player.GetComponent<Actor>().currentArmor;
         }
+
+        // backpack ui
+        if(Input.GetKeyDown(KeyCode.Tab)){
+            backpackCanvas.GetComponent<BackpackUIController>().Toggle();
+        }
+
 	}
 }
