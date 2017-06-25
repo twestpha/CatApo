@@ -6,6 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class PlayerUIController : MonoBehaviour {
 
+    // Reminder from AbilityCastComponent
+    // QSlot
+    // WSlot
+    // ESlot
+    // RSlot
+    // JumpSlot
+    // DashSlot
+
     private enum MouseButton {
         Right,
         Left,
@@ -14,7 +22,7 @@ public class PlayerUIController : MonoBehaviour {
 
     public GameObject player;
 
-    public GameObject backpackCanvas;
+    //public GameObject backpackCanvas;
 
     [Header("Icons")]
     public List<GameObject> abilityIcons;
@@ -66,15 +74,15 @@ public class PlayerUIController : MonoBehaviour {
 
         // something
         // set up the icons from the player's inventory component
-        InventoryComponent playerInventory = player.GetComponent<InventoryComponent>();
-        for(int i = 0; i < playerInventory.backpackCastables.Length; ++i){
-            Castable castable = playerInventory.backpackCastables[i];
-            if(castable){
-                Image castableIconImage = gridIcons[i].GetComponent<Image>();
-                castableIconImage.sprite = castable.icon;
-                castableIconImage.enabled = true;
-            }
-        }
+        // InventoryComponent playerInventory = player.GetComponent<InventoryComponent>();
+        // for(int i = 0; i < playerInventory.backpackCastables.Length; ++i){
+        //     Castable castable = playerInventory.backpackCastables[i];
+        //     if(castable){
+        //         Image castableIconImage = gridIcons[i].GetComponent<Image>();
+        //         castableIconImage.sprite = castable.icon;
+        //         castableIconImage.enabled = true;
+        //     }
+        // }
 	}
 
     public void Toggle(){
