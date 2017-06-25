@@ -38,8 +38,7 @@ Shader "Custom/SkinShader" {
             float2 uv_MainTex;
         };
 
-        sampler2D _MainTex;
-            void surf (Input IN, inout SurfaceOutput o) {
+        void surf (Input IN, inout SurfaceOutput o) {
             //o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
             //o.Gloss = _Glossiness;
         }
