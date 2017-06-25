@@ -63,9 +63,8 @@
      <Compile Include="Assets\Scripts\Libs\Actor.cs" />
      <Compile Include="Assets\Scripts\Libs\Castable.cs" />
      <Compile Include="Assets\Scripts\Libs\Timer.cs" />
-     <Compile Include="Assets\Scripts\UIControllers\AbilityUIController.cs" />
-     <Compile Include="Assets\Scripts\UIControllers\BackpackUIController.cs" />
      <Compile Include="Assets\Scripts\UIControllers\HealthUIController.cs" />
+     <Compile Include="Assets\Scripts\UIControllers\PlayerUIController.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Shaders\Splat.shader" />

@@ -4,7 +4,13 @@ using UnityEngine.UI;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class AbilityUIController : MonoBehaviour {
+public class PlayerUIController : MonoBehaviour {
+
+    private enum MouseButton {
+        Right,
+        Left,
+        Middle,
+    }
 
     public GameObject player;
 
@@ -29,6 +35,13 @@ public class AbilityUIController : MonoBehaviour {
     public AudioClip playerLostHealthSound;
     public AudioClip playerGainedHealthSound;
 
+    [Header("Icons")]
+    public GameObject grabbedIcon;
+
+    public List<GameObject> gridIcons;
+
+    private bool backpackEnabled;
+
 	void Start(){
         // abilities
         castComponent = player.GetComponent<AbilityCastComponent>();
@@ -50,7 +63,36 @@ public class AbilityUIController : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
         lastHealth = player.GetComponent<Actor>().currentHealth;
         lastArmor = player.GetComponent<Actor>().currentArmor;
+
+        // something
+        // set up the icons from the player's inventory component
+        InventoryComponent playerInventory = player.GetComponent<InventoryComponent>();
+        for(int i = 0; i < playerInventory.backpackCastables.Length; ++i){
+            Castable castable = playerInventory.backpackCastables[i];
+            if(castable){
+                Image castableIconImage = gridIcons[i].GetComponent<Image>();
+                castableIconImage.sprite = castable.icon;
+                castableIconImage.enabled = true;
+            }
+        }
 	}
+
+    public void Toggle(){
+        backpackEnabled = !backpackEnabled;
+        if(backpackEnabled){
+            Enable();
+        } else {
+            Disable();
+        }
+    }
+
+    private void Enable(){
+        GetComponent<Canvas>().enabled = true;
+    }
+
+    private void Disable(){
+        GetComponent<Canvas>().enabled = false;
+    }
 
 	void Update(){
         // abilities
@@ -88,8 +130,16 @@ public class AbilityUIController : MonoBehaviour {
 
         // backpack ui
         if(Input.GetKeyDown(KeyCode.Tab)){
-            backpackCanvas.GetComponent<BackpackUIController>().Toggle();
+            // backpackCanvas.GetComponent<BackpackUIController>().Toggle();
         }
 
+        if(enabled){
+            // on key down, iterate over grid icons to see if we've pressed one
+            if(Input.GetMouseButtonDown((int) MouseButton.Right)){
+                for(int i = 0; i < gridIcons.Count; ++i){
+
+                }
+            }
+        }
 	}
 }

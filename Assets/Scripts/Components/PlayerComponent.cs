@@ -67,12 +67,12 @@ public class PlayerComponent : Actor {
     }
 
     public Vector3 MouseIntersectionWithTerrain(){
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if(Physics.Raycast(ray, out hit, Mathf.Infinity, kTerrainCollisionMask)){
-            return hit.point;
-        }
+        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // RaycastHit hit;
+        //
+        // if(Physics.Raycast(ray, out hit, Mathf.Infinity, kTerrainCollisionMask)){
+        //     return hit.point;
+        // }
 
         // fallback
         return MouseIntersectionWithPlayerPlane();
