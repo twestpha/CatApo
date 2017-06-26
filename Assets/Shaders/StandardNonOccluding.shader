@@ -13,11 +13,7 @@ Shader "Custom/StandardNonOccluding"
 
 		_Normal("Normal Map", 2D) = "bump" {}
 
-		// Blending state
-		[HideInInspector] _Mode ("__mode", Float) = 0.0
-		[HideInInspector] _SrcBlend ("__src", Float) = 1.0
-		[HideInInspector] _DstBlend ("__dst", Float) = 0.0
-		[HideInInspector] _ZWrite ("__zw", Float) = 1.0
+		_Disabled("Disabled", Range(0.0, 1.0)) = 0.0
 	}
 
 	CGINCLUDE
@@ -25,7 +21,7 @@ Shader "Custom/StandardNonOccluding"
 	ENDCG
 
     SubShader {
-        Tags { "RenderType" = "Transparent" }
+        Tags { "Queue"="AlphaTest" "RenderType"="TransparentCutout" "IgnoreProjector"="True" }
         CGPROGRAM
             #pragma surface surf Standard alpha:blend
 
@@ -34,6 +30,7 @@ Shader "Custom/StandardNonOccluding"
             sampler2D _MainTex;
             sampler2D _Normal;
             half _Glossiness;
+            half _Disabled;
 
             struct Input {
                 float2 uv_MainTex;
@@ -49,13 +46,15 @@ Shader "Custom/StandardNonOccluding"
                 float2 screenUV = IN.screenPos.xy / IN.screenPos.w;
                 screenUV.y = (((screenUV.y - 0.5f) *0.5f) + 0.5f);
 
-                half alpha = length(screenUV - float2(0.5f, 0.5f)) / _Radius;
-                alpha = pow(alpha, 6.0f);
+                //o.Alpha = 0.5f;
 
-                o.Alpha = alpha;
+                half alpha = length(screenUV - float2(0.5f, 0.5f)) / _Radius;
+                alpha = pow(alpha, 1.5f);
+
+                o.Alpha = _Disabled + alpha;
             }
         ENDCG
     }
 
-	FallBack "Diffuse"
+    Fallback "VertexLit"
 }

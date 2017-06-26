@@ -4,27 +4,48 @@ using UnityEngine;
 
 public class TestComponent : MonoBehaviour {
 
-    public GameObject moveme;
-    public float movedistance;
+    public GameObject player;
+
+    public bool occludingPlayer;
+
+    public float fadeDuration;
+    private Timer fadeOutTimer;
+    private Timer fadeInTimer;
+
+    private Renderer rend;
 
 	void Start(){
         //Debug.LogError("DO NOT USE THIS SCRIPT FOR ANYTHING EXCEPT TESTING.");
-        moveme.transform.position += Vector3.up * movedistance;
+        rend = GetComponent<Renderer>();
+        fadeOutTimer = new Timer(fadeDuration);
+        fadeInTimer = new Timer(fadeDuration);
 	}
 
 	void Update(){
+        if(occludingPlayer){
+            // check occlusion
+            Vector3 direction = player.transform.position - Camera.main.transform.position;
+            Debug.DrawRay(player.transform.position, direction);
+            if(!Physics.Raycast(Camera.main.transform.position, direction, direction.magnitude, 1 << 12)){
+                occludingPlayer = false;
+                fadeInTimer.Start();
+            }
 
+            Color newColor = rend.material.color;
+            newColor.a = 1.0f - fadeOutTimer.Parameterized();
+            rend.material.color = newColor;
+        } else {
+            Color newColor = rend.material.color;
+            newColor.a = fadeInTimer.Parameterized();
+            rend.material.color = newColor;
+        }
 	}
 
-    void OnTriggerEnter(Collider other) {
-        if(other.tag == "Player"){
-            moveme.transform.position -= Vector3.up * movedistance;
+    public void EnableNonOcclusion(){
+        if(!occludingPlayer){
+            occludingPlayer = true;
+            fadeOutTimer.Start();
         }
     }
 
-    void OnTriggerExit(Collider other) {
-        if(other.tag == "Player"){
-            moveme.transform.position += Vector3.up * movedistance;
-        }
-    }
 }
