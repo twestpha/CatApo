@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Abilities\Spell.cs" />
      <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
      <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
+     <Compile Include="Assets\Scripts\Components\DialogueComponent.cs" />
      <Compile Include="Assets\Scripts\Components\InventoryComponent.cs" />
      <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
      <Compile Include="Assets\Scripts\Components\SplatComponent.cs" />
@@ -62,6 +63,7 @@
      <Compile Include="Assets\Scripts\Equipment\Equipment.cs" />
      <Compile Include="Assets\Scripts\Libs\Actor.cs" />
      <Compile Include="Assets\Scripts\Libs\Castable.cs" />
+     <Compile Include="Assets\Scripts\Libs\Strings.cs" />
      <Compile Include="Assets\Scripts\Libs\Timer.cs" />
      <Compile Include="Assets\Scripts\UIControllers\HealthUIController.cs" />
      <Compile Include="Assets\Scripts\UIControllers\PlayerUIController.cs" />

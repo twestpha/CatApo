@@ -5,9 +5,6 @@ using UnityEngine;
 public class PlayerComponent : Actor {
 
     // Constants
-
-    private const float kMouseDragTime = 0.25f;
-    private const float kPlayerStopRadius = 0.1f;
     private const float kPlayerPlaneOffset = -1.0f;
 
     public enum UIState {
@@ -25,6 +22,8 @@ public class PlayerComponent : Actor {
     // Actor Plane
     protected Plane playerPlane;
 
+    private GameObject playerUI;
+
 	new void Start(){
         base.Start();
 
@@ -33,6 +32,8 @@ public class PlayerComponent : Actor {
 
         // Setup actor plane
         playerPlane = new Plane(Vector3.down, characterController.transform.position.y/* + kPlayerPlaneOffset*/);
+
+        playerUI = GameObject.FindWithTag("PlayerUI");
 	}
 
     new void Update(){
@@ -48,14 +49,25 @@ public class PlayerComponent : Actor {
 
     override public void HandleInputs(){
         if(uiState == UIState.InventoryHidden){
-            // updateGameUI();
-
-            // Input Logic
+            // Movement
             if(Input.GetButton("Fire2") && steerable){
                 targetPosition = MouseIntersectionWithTerrain();
             }
+
+            // Dialogue
+            if(Input.GetMouseButtonDown(0)){
+                GameObject dialogueObject = MouseIntersectionWithDialogue();
+
+                PlayerUIController uicontroller = playerUI.GetComponent<PlayerUIController>();
+
+                if(dialogueObject){
+                    uicontroller.EnableDialogueUI(dialogueObject);
+                } else {
+                    uicontroller.DisableDialogueUI();
+                }
+            }
         } else {
-            // HandleUIInputs();
+
         }
     }
 
@@ -66,8 +78,19 @@ public class PlayerComponent : Actor {
         return MouseIntersectionWithPlayerPlane();
     }
 
+    public GameObject MouseIntersectionWithDialogue(){
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, DialogueComponent.DialogueCollisionMask)){
+            return hit.collider.gameObject;
+        }
+
+        return null;
+    }
+
     public Vector3 MouseIntersectionWithTerrain(){
-        // TODO iunno 
+        // TODO iunno
         // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         // RaycastHit hit;
         //
@@ -89,7 +112,7 @@ public class PlayerComponent : Actor {
             return ray.GetPoint(rayDistance);
         }
 
-        Debug.LogError("Intersection with player plane has failed unexpectedly.");
+        //Debug.LogError("Intersection with player plane has failed unexpectedly.");
         return Vector3.zero;
     }
 }

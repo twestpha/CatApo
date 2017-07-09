@@ -13,7 +13,7 @@ public class Castable : ScriptableObject {
     };
 
     [Header("Equipment Information")]
-    public string title;
+    public Strings.LocalizedString title;
     public string description;
     public Rarity rarity;
     public Sprite icon;

@@ -25,10 +25,16 @@ public class TestComponent : MonoBehaviour {
         if(occludingPlayer){
             // check occlusion
             Vector3 direction = player.transform.position - Camera.main.transform.position;
-            Debug.DrawRay(player.transform.position, direction);
-            if(!Physics.Raycast(Camera.main.transform.position, direction, direction.magnitude, 1 << 12)){
+            RaycastHit hit;
+            Debug.DrawRay(Camera.main.transform.position, direction);
+            if(!Physics.Raycast(Camera.main.transform.position, direction, out hit, direction.magnitude, 1 << 12)){
                 occludingPlayer = false;
                 fadeInTimer.Start();
+            } else {
+                if(hit.collider.GetComponent<TestComponent>() != this){
+                    occludingPlayer = false;
+                    fadeInTimer.Start();
+                }
             }
 
             Color newColor = rend.material.color;

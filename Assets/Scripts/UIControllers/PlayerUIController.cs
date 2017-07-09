@@ -48,6 +48,10 @@ public class PlayerUIController : MonoBehaviour {
 
     public List<GameObject> gridIcons;
 
+    [Header("Dialogue")]
+    public GameObject dialogueCanvas;
+    public GameObject dialogueText;
+
     private bool backpackEnabled;
 
 	void Start(){
@@ -150,4 +154,13 @@ public class PlayerUIController : MonoBehaviour {
             }
         }
 	}
+
+    public void EnableDialogueUI(GameObject dialogueObject){
+        dialogueText.GetComponent<Text>().text = dialogueObject.GetComponent<DialogueComponent>().GetString();
+        dialogueCanvas.GetComponent<Canvas>().enabled = true;
+    }
+
+    public void DisableDialogueUI(){
+        dialogueCanvas.GetComponent<Canvas>().enabled = false;
+    }
 }
