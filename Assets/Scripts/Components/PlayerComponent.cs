@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerComponent : Actor {
 
     // Constants
-    private const float kPlayerPlaneOffset = -1.0f;
+    private const float PlayerPlaneOffset = -1.0f;
+    public const float DialogueDistance = 4.0f;
 
     public enum UIState {
         InventoryHidden,
@@ -31,7 +32,7 @@ public class PlayerComponent : Actor {
         moving  = false;
 
         // Setup actor plane
-        playerPlane = new Plane(Vector3.down, characterController.transform.position.y/* + kPlayerPlaneOffset*/);
+        playerPlane = new Plane(Vector3.down, characterController.transform.position.y/* + PlayerPlaneOffset*/);
 
         playerUI = GameObject.FindWithTag("PlayerUI");
 	}
@@ -60,7 +61,7 @@ public class PlayerComponent : Actor {
 
                 PlayerUIController uicontroller = playerUI.GetComponent<PlayerUIController>();
 
-                if(dialogueObject){
+                if(dialogueObject && (dialogueObject.transform.position - transform.position).magnitude <= DialogueDistance){
                     uicontroller.EnableDialogueUI(dialogueObject);
                 } else {
                     uicontroller.DisableDialogueUI();
@@ -103,7 +104,7 @@ public class PlayerComponent : Actor {
     }
 
     protected Vector3 MouseIntersectionWithPlayerPlane(){
-        playerPlane.distance = characterController.transform.position.y - 1.0f/*+ kPlayerPlaneOffset /* not sure about this bad boy yet */;
+        playerPlane.distance = characterController.transform.position.y - 1.0f/*+ PlayerPlaneOffset /* not sure about this bad boy yet */;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         float rayDistance;

@@ -6,7 +6,13 @@ public class TestComponent : MonoBehaviour {
 
     public GameObject player;
 
-    public bool occludingPlayer;
+    public enum OccludingState {
+        NotOccluding,
+        StartedOccluding,
+        Occluding,
+    }
+
+    public OccludingState state;
 
     public float fadeDuration;
     private Timer fadeOutTimer;
@@ -15,6 +21,7 @@ public class TestComponent : MonoBehaviour {
     private Renderer rend;
 
 	void Start(){
+        state = OccludingState.NotOccluding;
         //Debug.LogError("DO NOT USE THIS SCRIPT FOR ANYTHING EXCEPT TESTING.");
         rend = GetComponent<Renderer>();
         fadeOutTimer = new Timer(fadeDuration);
@@ -22,25 +29,33 @@ public class TestComponent : MonoBehaviour {
 	}
 
 	void Update(){
-        if(occludingPlayer){
-            // check occlusion
+        if(state == OccludingState.StartedOccluding){
+            fadeOutTimer.Start();
+            state = OccludingState.Occluding;
+        }
+
+        if(state == OccludingState.Occluding){
+            // check current occlusion
             Vector3 direction = player.transform.position - Camera.main.transform.position;
             RaycastHit hit;
             Debug.DrawRay(Camera.main.transform.position, direction);
-            if(!Physics.Raycast(Camera.main.transform.position, direction, out hit, direction.magnitude, 1 << 12)){
-                occludingPlayer = false;
-                fadeInTimer.Start();
-            } else {
+
+            if(Physics.Raycast(Camera.main.transform.position, direction, out hit, direction.magnitude, 1 << 12)){
                 if(hit.collider.GetComponent<TestComponent>() != this){
-                    occludingPlayer = false;
+                    state = OccludingState.NotOccluding;;
                     fadeInTimer.Start();
                 }
+            } else {
+                state = OccludingState.NotOccluding;
+                fadeInTimer.Start();
             }
 
             Color newColor = rend.material.color;
             newColor.a = 1.0f - fadeOutTimer.Parameterized();
             rend.material.color = newColor;
-        } else {
+        }
+
+        if(state == OccludingState.NotOccluding){
             Color newColor = rend.material.color;
             newColor.a = fadeInTimer.Parameterized();
             rend.material.color = newColor;
@@ -48,9 +63,8 @@ public class TestComponent : MonoBehaviour {
 	}
 
     public void EnableNonOcclusion(){
-        if(!occludingPlayer){
-            occludingPlayer = true;
-            fadeOutTimer.Start();
+        if(state == OccludingState.NotOccluding){
+            state = OccludingState.StartedOccluding;
         }
     }
 

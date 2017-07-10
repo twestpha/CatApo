@@ -30,10 +30,6 @@ public class PlayerUIController : MonoBehaviour {
 
     private AbilityCastComponent castComponent;
 
-    public GameObject healthBarPrefab;
-
-    private List<HealthUIController> healthBars;
-
     private int lastHealth;
     private int lastArmor;
 
@@ -48,7 +44,17 @@ public class PlayerUIController : MonoBehaviour {
 
     public List<GameObject> gridIcons;
 
+    [Header("Health Bars")]
+    public GameObject healthBarParent;
+
+    public GameObject healthBarPrefab;
+
+    private List<HealthUIController> healthBars;
+
     [Header("Dialogue")]
+    private bool dialogueEnabled;
+    private Vector3 dialogueOffset = new Vector3(0.0f, 100.0f);
+    private GameObject dialogueObject;
     public GameObject dialogueCanvas;
     public GameObject dialogueText;
 
@@ -67,7 +73,7 @@ public class PlayerUIController : MonoBehaviour {
             GameObject healthBar = Object.Instantiate(healthBarPrefab);
             healthBar.GetComponent<HealthUIController>().target = actors[i].gameObject;
             healthBar.GetComponent<HealthUIController>().CreateHearts();
-            healthBar.transform.SetParent(GetComponent<Canvas>().transform);
+            healthBar.transform.SetParent(healthBarParent.GetComponent<Canvas>().transform);
             healthBars.Add(healthBar.GetComponent<HealthUIController>());
         }
 
@@ -87,6 +93,9 @@ public class PlayerUIController : MonoBehaviour {
         //         castableIconImage.enabled = true;
         //     }
         // }
+
+        // Dialogue
+        dialogueEnabled = false;
 	}
 
     public void Toggle(){
@@ -153,14 +162,30 @@ public class PlayerUIController : MonoBehaviour {
                 }
             }
         }
+
+        // dialogue
+        if(dialogueEnabled){
+            dialogueCanvas.transform.position = Camera.main.WorldToScreenPoint(dialogueObject.transform.position) + dialogueOffset;
+            dialogueCanvas.GetComponent<Canvas>().enabled = true;
+        }
 	}
 
     public void EnableDialogueUI(GameObject dialogueObject){
-        dialogueText.GetComponent<Text>().text = dialogueObject.GetComponent<DialogueComponent>().GetString();
-        dialogueCanvas.GetComponent<Canvas>().enabled = true;
+        DialogueComponent dialogueComponent = dialogueObject.GetComponent<DialogueComponent>();
+        dialogueComponent.NotifyBeingUsedByUI();
+        dialogueComponent.playerUIController = this;
+
+        dialogueText.GetComponent<Text>().text = dialogueComponent.GetString();
+        this.dialogueObject = dialogueObject;
+        dialogueEnabled = true;
     }
 
     public void DisableDialogueUI(){
+        if(dialogueObject){
+            dialogueObject.GetComponent<DialogueComponent>().NotifyNotBeingUsedByUI();
+        }
+        
         dialogueCanvas.GetComponent<Canvas>().enabled = false;
+        dialogueEnabled = false;
     }
 }
