@@ -64,6 +64,7 @@ public class TestComponent : MonoBehaviour {
 
     public void EnableNonOcclusion(){
         if(state == OccludingState.NotOccluding){
+
             state = OccludingState.StartedOccluding;
         }
     }

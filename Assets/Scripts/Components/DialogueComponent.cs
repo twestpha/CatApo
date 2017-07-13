@@ -22,6 +22,7 @@ public class DialogueComponent : MonoBehaviour {
         if(dialogueInUse && playerUIController){
             if((transform.position - player.transform.position).magnitude > PlayerComponent.DialogueDistance){
                 playerUIController.DisableDialogueUI();
+                dialogueInUse = false;
             }
         }
     }

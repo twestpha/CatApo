@@ -66,6 +66,7 @@
      <Compile Include="Assets\Scripts\Libs\Strings.cs" />
      <Compile Include="Assets\Scripts\Libs\Timer.cs" />
      <Compile Include="Assets\Scripts\UIControllers\HealthUIController.cs" />
+     <Compile Include="Assets\Scripts\UIControllers\MouseUIController.cs" />
      <Compile Include="Assets\Scripts\UIControllers\PlayerUIController.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />

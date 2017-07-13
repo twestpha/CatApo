@@ -184,7 +184,7 @@ public class PlayerUIController : MonoBehaviour {
         if(dialogueObject){
             dialogueObject.GetComponent<DialogueComponent>().NotifyNotBeingUsedByUI();
         }
-        
+
         dialogueCanvas.GetComponent<Canvas>().enabled = false;
         dialogueEnabled = false;
     }
