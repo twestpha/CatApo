@@ -3,7 +3,7 @@ Shader "Custom/SkinShader" {
     //_MainTex ("Texture", 2D) = "white" {}
     _SkinColor ("Skin Color", COLOR) = (1,1,1,1)
     _ScatterColor ("Subsurface Scatter Color", COLOR) = (1,1,1,1)
-    _Strength ("Subsurface Attenuation", Range(50.0, 0.1)) = 8.0
+    _Strength ("Subsurface Attenuation", Range(100.0, 0.1)) = 8.0
     _Glossiness ("Smoothness", Range(0.0, 1.0)) = 0.5
   }
   SubShader {
@@ -28,8 +28,9 @@ Shader "Custom/SkinShader" {
 
             half4 c;
             // (1 minus scatter * (albedo shading + specular highlight)) + (scatter * shaded color)
-            c.rgb = ((1.0 - scatter) * ((_SkinColor * _LightColor0.rgb * parallelclamp * atten) + (_LightColor0.rgb * spec * _Glossiness)))
-                    + (scatter * _ScatterColor.rgb * _LightColor0.rgb * parallelclamp * atten);
+            // blend these...
+            half3 skinColor = ((1.0 - scatter) * _SkinColor) + (scatter * _ScatterColor.rgb);
+            c.rgb = (skinColor * _LightColor0.rgb * parallelclamp * atten) + (_LightColor0.rgb * spec * _Glossiness);
             c.a = s.Alpha;
             return c;
         }

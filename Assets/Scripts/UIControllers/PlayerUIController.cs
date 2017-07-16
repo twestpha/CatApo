@@ -162,8 +162,6 @@ public class PlayerUIController : MonoBehaviour {
                 }
             }
         }
-
-
 	}
 
     public void EnableDialogueUI(GameObject dialogueObject){

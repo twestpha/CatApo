@@ -40,7 +40,7 @@ public static class Strings {
     static string[] stringDatabase = new string[]{
         "Default String",
         "Test string. Has a newline.\nAnd a \ttab character. Also, here's some extended ascii: waßermelone. τΦΘΩδ∞φε∩",
-        "Another, different test string...",
+        "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890",
     };
 
     public static string GetString(LocalizedString stringEnum){
