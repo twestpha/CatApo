@@ -19,18 +19,18 @@ Shader "Custom/SkinShader" {
         half4 LightingWrapLambert (SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
             half parallel = dot(normalize(s.Normal), normalize(lightDir));
             half parallelclamp = parallel * 0.75 + 0.25;
+            half diff = max(0, dot(s.Normal, lightDir));
+
             // scatter = e ^ -strength * (parallel - 0.5)^2
             half scatter = pow(2.71828, -_Strength * pow((parallel - 0.5), 2.0));
 
             half3 lighttoview = normalize(lightDir + viewDir);
             float reflect = max(0, dot (s.Normal, lighttoview));
-            float spec = pow(reflect, 2.0);
+            float spec = pow(reflect, 6.0);
 
             half4 c;
-            // (1 minus scatter * (albedo shading + specular highlight)) + (scatter * shaded color)
-            // blend these...
-            half3 skinColor = ((1.0 - scatter) * _SkinColor) + (scatter * _ScatterColor.rgb);
-            c.rgb = (skinColor * _LightColor0.rgb * parallelclamp * atten) + (_LightColor0.rgb * spec * _Glossiness);
+            half3 skinColor = ((1.0 - scatter) * _SkinColor.rgb) + (scatter * _ScatterColor.rgb);
+            c.rgb = ((skinColor * _LightColor0.rgb * parallelclamp) + (_LightColor0.rgb * spec * _Glossiness)) * atten;
             c.a = s.Alpha;
             return c;
         }

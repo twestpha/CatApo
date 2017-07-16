@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Game/caer.unity
+- path: Assets/Scenes/Test/test_aesthetic.unity
   isLoaded: 1
   isActive: 1
