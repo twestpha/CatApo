@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\Libs\Castable.cs" />
      <Compile Include="Assets\Scripts\Libs\Strings.cs" />
      <Compile Include="Assets\Scripts\Libs\Timer.cs" />
+     <Compile Include="Assets\Scripts\UIControllers\DialogueUIController.cs" />
      <Compile Include="Assets\Scripts\UIControllers\HealthUIController.cs" />
      <Compile Include="Assets\Scripts\UIControllers\MouseUIController.cs" />
      <Compile Include="Assets\Scripts\UIControllers\PlayerUIController.cs" />

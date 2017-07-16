@@ -21,17 +21,22 @@ public class PlayerUIController : MonoBehaviour {
     }
 
     public GameObject player;
+    private Actor playerActor;
 
-    //public GameObject backpackCanvas;
-
-    [Header("Icons")]
+    [Header("Ability Icons")]
     public List<GameObject> abilityIcons;
     public List<GameObject> abilityIconCovers;
 
     private AbilityCastComponent castComponent;
 
+
+    [Header("Health Bars")]
     private int lastHealth;
     private int lastArmor;
+
+    public GameObject healthBarParent;
+    public GameObject healthBarPrefab;
+    private List<HealthUIController> healthBars;
 
     private AudioSource audioSource;
     public AudioClip playerLostArmorSound;
@@ -39,24 +44,14 @@ public class PlayerUIController : MonoBehaviour {
     public AudioClip playerLostHealthSound;
     public AudioClip playerGainedHealthSound;
 
-    [Header("Icons")]
+    [Header("Backpack UI")]
     public GameObject grabbedIcon;
 
     public List<GameObject> gridIcons;
 
-    [Header("Health Bars")]
-    public GameObject healthBarParent;
-
-    public GameObject healthBarPrefab;
-
-    private List<HealthUIController> healthBars;
-
     [Header("Dialogue")]
-    private bool dialogueEnabled;
-    private Vector3 dialogueOffset = new Vector3(0.0f, 100.0f);
-    private GameObject dialogueObject;
     public GameObject dialogueCanvas;
-    public GameObject dialogueText;
+    private DialogueUIController dialogueCanvasController;
 
     private bool backpackEnabled;
 
@@ -71,16 +66,20 @@ public class PlayerUIController : MonoBehaviour {
 
         for(int i = 0; i < actors.Length; ++i){
             GameObject healthBar = Object.Instantiate(healthBarPrefab);
-            healthBar.GetComponent<HealthUIController>().target = actors[i].gameObject;
-            healthBar.GetComponent<HealthUIController>().CreateHearts();
+            HealthUIController healthUIController = healthBar.GetComponent<HealthUIController>();
+
+            healthUIController.target = actors[i].gameObject;
+            healthUIController.CreateHearts();
             healthBar.transform.SetParent(healthBarParent.GetComponent<Canvas>().transform);
-            healthBars.Add(healthBar.GetComponent<HealthUIController>());
+
+            healthBars.Add(healthUIController);
         }
 
         // ui sounds
         audioSource = GetComponent<AudioSource>();
-        lastHealth = player.GetComponent<Actor>().currentHealth;
-        lastArmor = player.GetComponent<Actor>().currentArmor;
+        playerActor = player.GetComponent<Actor>();
+        lastHealth = playerActor.currentHealth;
+        lastArmor = playerActor.currentArmor;
 
         // something
         // set up the icons from the player's inventory component
@@ -95,11 +94,12 @@ public class PlayerUIController : MonoBehaviour {
         // }
 
         // Dialogue
-        dialogueEnabled = false;
+        dialogueCanvasController = dialogueCanvas.GetComponent<DialogueUIController>();
 	}
 
-    public void Toggle(){
+    public void ToggleBackpack(){
         backpackEnabled = !backpackEnabled;
+
         if(backpackEnabled){
             Enable();
         } else {
@@ -127,31 +127,31 @@ public class PlayerUIController : MonoBehaviour {
         }
 
         // ui sounds
-        if(lastHealth != player.GetComponent<Actor>().currentHealth){
-            if(lastHealth > player.GetComponent<Actor>().currentHealth){
+        if(lastHealth != playerActor.currentHealth){
+            if(lastHealth > playerActor.currentHealth){
                 audioSource.clip = playerLostHealthSound;
                 audioSource.Play();
             } else {
                 audioSource.clip = playerGainedHealthSound;
                 audioSource.Play();
             }
-            lastHealth = player.GetComponent<Actor>().currentHealth;
+            lastHealth = playerActor.currentHealth;
         }
 
-        if(lastArmor != player.GetComponent<Actor>().currentArmor){
-            if(lastArmor > player.GetComponent<Actor>().currentArmor){
+        if(lastArmor != playerActor.currentArmor){
+            if(lastArmor > playerActor.currentArmor){
                 audioSource.clip = playerLostArmorSound;
                 audioSource.Play();
             } else {
                 audioSource.clip = playerGainedArmorSound;
                 audioSource.Play();
             }
-            lastArmor = player.GetComponent<Actor>().currentArmor;
+            lastArmor = playerActor.currentArmor;
         }
 
         // backpack ui
         if(Input.GetKeyDown(KeyCode.Tab)){
-            // backpackCanvas.GetComponent<BackpackUIController>().Toggle();
+            // backpackCanvas.GetComponent<BackpackUIController>().ToggleBackpack();
         }
 
         if(enabled){
@@ -163,29 +163,16 @@ public class PlayerUIController : MonoBehaviour {
             }
         }
 
-        // dialogue
-        if(dialogueEnabled){
-            dialogueCanvas.transform.position = Camera.main.WorldToScreenPoint(dialogueObject.transform.position) + dialogueOffset;
-            dialogueCanvas.GetComponent<Canvas>().enabled = true;
-        }
+
 	}
 
     public void EnableDialogueUI(GameObject dialogueObject){
-        DialogueComponent dialogueComponent = dialogueObject.GetComponent<DialogueComponent>();
-        dialogueComponent.NotifyBeingUsedByUI();
-        dialogueComponent.playerUIController = this;
+        dialogueObject.GetComponent<DialogueComponent>().playerUIController = this;
 
-        dialogueText.GetComponent<Text>().text = dialogueComponent.GetString();
-        this.dialogueObject = dialogueObject;
-        dialogueEnabled = true;
+        dialogueCanvasController.EnableDialogueUI(dialogueObject);
     }
 
     public void DisableDialogueUI(){
-        if(dialogueObject){
-            dialogueObject.GetComponent<DialogueComponent>().NotifyNotBeingUsedByUI();
-        }
-
-        dialogueCanvas.GetComponent<Canvas>().enabled = false;
-        dialogueEnabled = false;
+        dialogueCanvasController.DisableDialogueUI();
     }
 }
