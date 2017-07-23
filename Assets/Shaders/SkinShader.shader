@@ -8,7 +8,7 @@ Shader "Custom/SkinShader" {
   }
   SubShader {
     Tags { "RenderType" = "Opaque" }
-    CGPROGRAM
+    CGPROGRAM   
         #pragma surface surf WrapLambert
 
         fixed4 _SkinColor;
