@@ -52,7 +52,11 @@ public class PlayerComponent : Actor {
         if(uiState == UIState.InventoryHidden){
             // Movement
             if(Input.GetButton("Fire2") && steerable){
-                targetPosition = MouseIntersectionWithTerrain();
+                Vector3 terrainIntersection = MouseIntersectionWithTerrain();
+
+                if((terrainIntersection - transform.position).magnitude >= 1.2f){
+                    targetPosition = terrainIntersection;
+                }
             }
 
             // Dialogue
