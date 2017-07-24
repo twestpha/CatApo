@@ -56,6 +56,8 @@
      <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
      <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
      <Compile Include="Assets\Scripts\Components\DialogueComponent.cs" />
+     <Compile Include="Assets\Scripts\Components\FullscreenSunComponent.cs" />
+     <Compile Include="Assets\Scripts\Components\FullscreenSunVolumeComponent.cs" />
      <Compile Include="Assets\Scripts\Components\InventoryComponent.cs" />
      <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
      <Compile Include="Assets\Scripts\Components\SplatComponent.cs" />
