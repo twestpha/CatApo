@@ -7,6 +7,7 @@ public class PlayerComponent : Actor {
     // Constants
     private const float PlayerPlaneOffset = -1.0f;
     public const float DialogueDistance = 4.0f;
+    public const float TerrainLayerHeight = 5.0f;
 
     public enum UIState {
         InventoryHidden,
@@ -119,5 +120,9 @@ public class PlayerComponent : Actor {
 
         //Debug.LogError("Intersection with player plane has failed unexpectedly.");
         return Vector3.zero;
+    }
+
+    public int GetPlayerTerrainLayer(){
+        return 1 << (int)(transform.position.y / TerrainLayerHeight);
     }
 }
