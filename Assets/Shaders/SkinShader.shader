@@ -8,7 +8,7 @@ Shader "Custom/SkinShader" {
   }
   SubShader {
     Tags { "RenderType" = "Opaque" }
-    CGPROGRAM   
+    CGPROGRAM
         #pragma surface surf WrapLambert
 
         fixed4 _SkinColor;
@@ -31,6 +31,7 @@ Shader "Custom/SkinShader" {
             half4 c;
             half3 skinColor = ((1.0 - scatter) * _SkinColor.rgb) + (scatter * _ScatterColor.rgb);
             c.rgb = ((skinColor * _LightColor0.rgb * parallelclamp) + (_LightColor0.rgb * spec * _Glossiness)) * atten;
+            c.rgb += UNITY_LIGHTMODEL_AMBIENT * _SkinColor.rgb;
             c.a = s.Alpha;
             return c;
         }
