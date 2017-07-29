@@ -53,7 +53,7 @@ public class PlayerComponent : Actor {
         if(uiState == UIState.InventoryHidden){
             // Movement
             if(Input.GetButton("Fire2") && steerable){
-                Vector3 terrainIntersection = MouseIntersectionWithTerrain();
+                Vector3 terrainIntersection = MouseIntersectionWithPlayerPlane();
 
                 if((terrainIntersection - transform.position).magnitude >= 1.2f){
                     targetPosition = terrainIntersection;
@@ -96,13 +96,12 @@ public class PlayerComponent : Actor {
     }
 
     public Vector3 MouseIntersectionWithTerrain(){
-        // TODO iunno
-        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        // RaycastHit hit;
-        //
-        // if(Physics.Raycast(ray, out hit, Mathf.Infinity, kTerrainCollisionMask)){
-        //     return hit.point;
-        // }
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, kTerrainCollisionMask)){
+            return hit.point;
+        }
 
         // fallback
         return MouseIntersectionWithPlayerPlane();

@@ -13,6 +13,8 @@ public class FullscreenSunVolumeComponent : MonoBehaviour {
     public float ambientIntensity = 0.0f;
     public float reflectionIntensity = 1.0f;
     public float playerLightIntensity = 1.0f;
+    public float scatteringCoeffecient = 1.0f;
+    public float bloom = 1.0f;
 
 	void Start(){
         sun = GameObject.FindWithTag("Sun").GetComponent<FullscreenSunComponent>();
@@ -20,7 +22,16 @@ public class FullscreenSunVolumeComponent : MonoBehaviour {
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.tag == "Player"){
-            sun.ApplyFullscreenSettings(fadeDuration, sunIntensity, ambientIntensity, reflectionIntensity, playerLightIntensity);
+            FullscreenSettings settings = new FullscreenSettings();
+            settings.fadeDuration = fadeDuration;
+            settings.sunIntensity = sunIntensity;
+            settings.ambientIntensity = ambientIntensity;
+            settings.playerLightIntensity = playerLightIntensity;
+            settings.reflectionIntensity = reflectionIntensity;
+            settings.scatteringCoeffecient = scatteringCoeffecient;
+            settings.bloom = bloom;
+
+            sun.ApplyFullscreenSettings(settings);
         }
     }
 

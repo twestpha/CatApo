@@ -1,38 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.ImageEffects;
 using UnityEngine;
 
 [RequireComponent (typeof (Light))]
+[RequireComponent (typeof (VolumetricLight))]
 public class FullscreenSunComponent : MonoBehaviour {
 
     private GameObject playerLight;
+    private BloomOptimized cameraBloom;
+    private VolumetricLight volumetricLight;
 
     private Timer fadeTimer;
-    private float previousSunIntensity;
-    private float previousAmbientIntensity;
-    private float previousReflectionIntensity;
-    private float previousPlayerLightIntensity;
 
-    private float sunIntensity;
-    private float ambientIntensity;
-    private float reflectionIntensity;
-    private float playerLightIntensity;
+    private FullscreenSettings newSettings;
+    private FullscreenSettings oldSettings;
 
     private bool fading;
 
     void Start(){
         fadeTimer = new Timer();
-        playerLight = GameObject.FindWithTag("PlayerLight");
         fading = false;
+
+        playerLight = GameObject.FindWithTag("PlayerLight");
+        volumetricLight = GetComponent<VolumetricLight>();
+        cameraBloom = Camera.main.gameObject.GetComponent<BloomOptimized>();
+
+        newSettings = new FullscreenSettings();
+        newSettings.sunIntensity = GetComponent<Light>().intensity;
+        newSettings.ambientIntensity = RenderSettings.ambientIntensity;
+        newSettings.reflectionIntensity = RenderSettings.reflectionIntensity;
+        newSettings.playerLightIntensity = playerLight.GetComponent<Light>().intensity;
+        newSettings.scatteringCoeffecient = volumetricLight.ScatteringCoef;
+        newSettings.bloom = cameraBloom.intensity;
     }
 
     void Update(){
+        // TODO if performance from some of these effects gets too expensive, we should consider disabling them aggresively we can.
+
         if(fading){
-            GetComponent<Light>().intensity = previousSunIntensity + ((sunIntensity - previousSunIntensity)*fadeTimer.Parameterized());
-            RenderSettings.ambientIntensity = previousAmbientIntensity + ((ambientIntensity - previousAmbientIntensity)*fadeTimer.Parameterized());
-            RenderSettings.reflectionIntensity = previousReflectionIntensity + ((reflectionIntensity - previousReflectionIntensity)*fadeTimer.Parameterized());
-            float newPlayerLightIntensity = previousPlayerLightIntensity + ((playerLightIntensity - previousPlayerLightIntensity)*fadeTimer.Parameterized());
+            GetComponent<Light>().intensity = oldSettings.LerpSunIntensity(newSettings, fadeTimer.Parameterized());
+            RenderSettings.ambientIntensity = oldSettings.LerpAmbientIntensity(newSettings, fadeTimer.Parameterized());
+            RenderSettings.reflectionIntensity = oldSettings.LerpReflectionIntensity(newSettings, fadeTimer.Parameterized());
+
+            float newPlayerLightIntensity = oldSettings.LerpPlayerLightIntensity(newSettings, fadeTimer.Parameterized());
             playerLight.GetComponent<Light>().intensity = newPlayerLightIntensity;
+
+            volumetricLight.ScatteringCoef = oldSettings.LerpScatteringCoeffecient(newSettings, fadeTimer.Parameterized());
+            cameraBloom.intensity = oldSettings.LerpBloom(newSettings, fadeTimer.Parameterized());
 
             if(newPlayerLightIntensity > 0.95f){
                 playerLight.GetComponent<FireLightComponent>().Enable();
@@ -44,23 +59,13 @@ public class FullscreenSunComponent : MonoBehaviour {
         fading = !fadeTimer.Finished();
     }
 
-    public void ApplyFullscreenSettings(float fadeDuration, float sunIntensity_, float ambientIntensity_, float reflectionIntensity_, float playerLightIntensity_){
-        // Debug.Log("Applying Fullscreen Settings: " + sunIntensity_ + " " + ambientIntensity_ + " " + reflectionIntensity_ + " " + playerLightIntensity_);
-
-        fadeTimer.SetDuration(fadeDuration);
+    public void ApplyFullscreenSettings(FullscreenSettings settings){
+        fadeTimer.SetDuration(settings.fadeDuration);
         fading = true;
 
         // cache previous settings to lerp between
-        previousSunIntensity = GetComponent<Light>().intensity;
-        previousAmbientIntensity = RenderSettings.ambientIntensity;
-        previousReflectionIntensity = RenderSettings.reflectionIntensity;
-        previousPlayerLightIntensity = playerLight.GetComponent<Light>().intensity;
-
-        // save new values
-        sunIntensity = sunIntensity_;
-        ambientIntensity = ambientIntensity_;
-        reflectionIntensity = reflectionIntensity_;
-        playerLightIntensity = playerLightIntensity_;
+        oldSettings = newSettings;
+        newSettings = settings;
 
         fadeTimer.Start();
     }

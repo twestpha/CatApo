@@ -9,6 +9,7 @@ public class AbilityPlacement : ScriptableObject {
     public bool debug;
 
     private const int maxTargets = 16;
+    private const float playerPlaneOffset = -1.0f;
 
     private Actor caster;
     private Ability ability;
@@ -82,7 +83,7 @@ public class AbilityPlacement : ScriptableObject {
         }
 
         Vector3 splatPos = startPosition + mouseDir * mouseDirMag;
-        splatPos.y = caster.transform.position.y - 1.0f; // TODO setup player offset
+        splatPos.y = caster.transform.position.y - playerPlaneOffset;
         splat.transform.position = splatPos;
     }
 
