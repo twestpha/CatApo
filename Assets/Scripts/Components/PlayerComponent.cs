@@ -62,15 +62,17 @@ public class PlayerComponent : Actor {
 
             // Dialogue
             if(Input.GetMouseButtonDown(0)){
-                GameObject dialogueObject = MouseIntersectionWithDialogue();
+                MouseIntersectionWithInteract();
 
-                PlayerUIController uicontroller = playerUI.GetComponent<PlayerUIController>();
-
-                if(dialogueObject && (dialogueObject.transform.position - transform.position).magnitude <= DialogueDistance){
-                    uicontroller.EnableDialogueUI(dialogueObject);
-                } else {
-                    uicontroller.DisableDialogueUI();
-                }
+                // GameObject dialogueObject = MouseIntersectionWithDialogue();
+                //
+                // PlayerUIController uicontroller = playerUI.GetComponent<PlayerUIController>();
+                //
+                // if(dialogueObject && (dialogueObject.transform.position - transform.position).magnitude <= DialogueDistance){
+                //     uicontroller.EnableDialogueUI(dialogueObject);
+                // } else {
+                //     uicontroller.DisableDialogueUI();
+                // }
             }
         } else {
 
@@ -84,15 +86,16 @@ public class PlayerComponent : Actor {
         return MouseIntersectionWithPlayerPlane();
     }
 
-    public GameObject MouseIntersectionWithDialogue(){
+    public void MouseIntersectionWithInteract(){
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if(Physics.Raycast(ray, out hit, Mathf.Infinity, DialogueComponent.DialogueCollisionMask)){
-            return hit.collider.gameObject;
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, Interactable.InteractableCollisionMask)){
+            Interactable interactable = hit.collider.gameObject.GetComponent<Interactable>();
+            if(interactable){
+                interactable.NotifyClicked();
+            }
         }
-
-        return null;
     }
 
     public Vector3 MouseIntersectionWithTerrain(){

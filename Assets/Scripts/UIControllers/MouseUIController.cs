@@ -16,10 +16,10 @@ public class MouseUIController : MonoBehaviour {
 	void Update(){
         transform.position = Input.mousePosition;
 
-        if(player.GetComponent<PlayerComponent>().MouseIntersectionWithDialogue()){
-            GetComponent<Image>().sprite = cursor_2;
-        } else {
-            GetComponent<Image>().sprite = cursor_1;
-        }
+        // if(player.GetComponent<PlayerComponent>().MouseIntersectionWithDialogue()){
+        //     GetComponent<Image>().sprite = cursor_2;
+        // } else {
+        //     GetComponent<Image>().sprite = cursor_1;
+        // }
 	}
 }
