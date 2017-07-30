@@ -16,7 +16,7 @@ public class TerrainLayerComponent : MonoBehaviour {
 
     private PlayerComponent player;
     private MeshRenderer mesh;
-    public int layermask;
+    private int layermask;
 
 	void Start(){
         player = GameObject.FindWithTag("Player").GetComponent<PlayerComponent>();

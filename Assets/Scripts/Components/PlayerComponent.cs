@@ -33,7 +33,7 @@ public class PlayerComponent : Actor {
         moving  = false;
 
         // Setup actor plane
-        playerPlane = new Plane(Vector3.down, characterController.transform.position.y/* + PlayerPlaneOffset*/);
+        playerPlane = new Plane(Vector3.down, characterController.transform.position.y + PlayerPlaneOffset);
 
         playerUI = GameObject.FindWithTag("PlayerUI");
 	}
@@ -55,7 +55,7 @@ public class PlayerComponent : Actor {
             if(Input.GetButton("Fire2") && steerable){
                 Vector3 terrainIntersection = MouseIntersectionWithPlayerPlane();
 
-                if((terrainIntersection - transform.position).magnitude >= 1.2f){
+                if((terrainIntersection - transform.position).magnitude >= 0.5f){
                     targetPosition = terrainIntersection;
                 }
             }
@@ -108,7 +108,7 @@ public class PlayerComponent : Actor {
     }
 
     protected Vector3 MouseIntersectionWithPlayerPlane(){
-        playerPlane.distance = characterController.transform.position.y - 1.0f/*+ PlayerPlaneOffset /* not sure about this bad boy yet */;
+        playerPlane.distance = characterController.transform.position.y + PlayerPlaneOffset;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         float rayDistance;
@@ -122,6 +122,8 @@ public class PlayerComponent : Actor {
     }
 
     public int GetPlayerTerrainLayer(){
-        return 1 << (int)(transform.position.y / TerrainLayerHeight);
+        int terrainHeight = (int)(transform.position.y / TerrainLayerHeight);
+        terrainHeight = Mathf.Clamp(terrainHeight, 0, 7);
+        return 1 << terrainHeight;
     }
 }
