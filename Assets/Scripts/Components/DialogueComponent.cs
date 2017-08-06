@@ -3,27 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogueComponent : MonoBehaviour {
-
-    public const int DialogueCollisionMask = 1 << 9;
+public class DialogueComponent : Interactable {
 
     public Strings.LocalizedString text;
 
     private bool dialogueInUse;
     private GameObject player;
-    public PlayerUIController playerUIController;
+    private PlayerUIController playerUIController;
 
     void Start(){
         player = GameObject.FindWithTag("Player");
+        playerUIController = GameObject.FindWithTag("PlayerUI").GetComponent<PlayerUIController>();
         dialogueInUse = false;
     }
 
     void Update(){
-        if(dialogueInUse && playerUIController){
-            if((transform.position - player.transform.position).magnitude > PlayerComponent.DialogueDistance){
+        if(dialogueInUse){
+            if(!NearPlayer()){
                 playerUIController.DisableDialogueUI();
                 dialogueInUse = false;
             }
+        }
+    }
+
+    private bool NearPlayer(){
+        return (transform.position - player.transform.position).magnitude <= PlayerComponent.DialogueDistance;
+    }
+
+    override public void NotifyClicked(){
+        if(NearPlayer()){
+            dialogueInUse = true;
+            playerUIController.EnableDialogueUI(gameObject);
         }
     }
 

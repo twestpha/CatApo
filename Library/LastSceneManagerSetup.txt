@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Game/Desolation.unity
+- path: Assets/Scenes/Test/test_poi.unity
   isLoaded: 1
   isActive: 1

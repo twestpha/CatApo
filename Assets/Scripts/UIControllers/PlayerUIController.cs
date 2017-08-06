@@ -165,8 +165,6 @@ public class PlayerUIController : MonoBehaviour {
 	}
 
     public void EnableDialogueUI(GameObject dialogueObject){
-        dialogueObject.GetComponent<DialogueComponent>().playerUIController = this;
-
         dialogueCanvasController.EnableDialogueUI(dialogueObject);
     }
 

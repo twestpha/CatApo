@@ -33,7 +33,7 @@ public class DialogueUIController : MonoBehaviour {
         dialogueLightComponent = dialogueLight.GetComponent<Light>();
 
         state = DialogueState.Disabled;
-        fadeTimer = new Timer(1.0f);
+        fadeTimer = new Timer(0.2f);
     }
 
     void Update(){
@@ -62,18 +62,21 @@ public class DialogueUIController : MonoBehaviour {
                     dialogueLightComponent.enabled = false;
                     GetComponent<Canvas>().enabled = false;
 
-                    dialogueObject.GetComponent<DialogueComponent>().NotifyBeingUsedByUI();
+                    dialogueObject.GetComponent<DialogueComponent>().NotifyNotBeingUsedByUI();
                     dialogueObject = null;
+
+                    state = DialogueState.Disabled;
                 } else {
-                    oldDialogueObject.GetComponent<DialogueComponent>().NotifyBeingUsedByUI();
+                    oldDialogueObject.GetComponent<DialogueComponent>().NotifyNotBeingUsedByUI();
+                    dialogueObject.GetComponent<DialogueComponent>().NotifyBeingUsedByUI();
 
                     dialogueText.GetComponent<Text>().text = dialogueObject.GetComponent<DialogueComponent>().GetString();
+
+                    oldDialogueObject = null;
 
                     state = DialogueState.FadingIn;
                     fadeTimer.Start();
                 }
-
-                state = DialogueState.Disabled;
             }
         } else if(state == DialogueState.Enabled){
             transform.position = Camera.main.WorldToScreenPoint(dialogueObject.transform.position) + dialogueOffset;
@@ -104,12 +107,14 @@ public class DialogueUIController : MonoBehaviour {
             state = DialogueState.FadingOutIn;
         } else {
             state = DialogueState.FadingIn;
+            dialogueText.GetComponent<Text>().text = newDialogueObject.GetComponent<DialogueComponent>().GetString();
         }
 
         oldDialogueObject = dialogueObject;
         dialogueObject = newDialogueObject;
 
         fadeTimer.Start();
+
         GetComponent<Canvas>().enabled = true;
         dialogueLightComponent.enabled = true;
     }

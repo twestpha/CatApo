@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\Components\FireLightComponent.cs" />
     <Compile Include="Assets\Scripts\Components\FullscreenSunComponent.cs" />
     <Compile Include="Assets\Scripts\Components\FullscreenSunVolumeComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\Interact Components\LeverInteractComponent.cs" />
     <Compile Include="Assets\Scripts\Components\InventoryComponent.cs" />
     <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Components\SplatComponent.cs" />
