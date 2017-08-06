@@ -8581,9 +8581,6 @@ See Also: WWW.assetBundle, WWW.LoadFromCacheOrDownload.</param>
       <param name="expiration"></param>
     </member>
     <member name="M:UnityEngine.Caching.Authorize(System.String,System.String,System.Int32,System.String)">
-      <summary>
-        <para>TODO.</para>
-      </summary>
       <param name="name"></param>
       <param name="domain"></param>
       <param name="size"></param>

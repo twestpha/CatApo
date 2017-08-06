@@ -17458,16 +17458,12 @@ See Also: MaterialLightmapFlags.</para>
     </member>
     <member name="M:UnityEditor.MaterialEditor.TextureScaleOffsetProperty(UnityEngine.Rect,UnityEngine.Vector4)">
       <summary>
-        <para>TODO.</para>
       </summary>
       <param name="position"></param>
       <param name="scaleOffset"></param>
       <param name="partOfTexturePropertyControl"></param>
     </member>
     <member name="M:UnityEditor.MaterialEditor.TextureScaleOffsetProperty(UnityEngine.Rect,UnityEngine.Vector4,System.Boolean)">
-      <summary>
-        <para>TODO.</para>
-      </summary>
       <param name="position"></param>
       <param name="scaleOffset"></param>
       <param name="partOfTexturePropertyControl"></param>
