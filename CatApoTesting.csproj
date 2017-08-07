@@ -121,9 +121,12 @@
   <ItemGroup>
     <None Include="Assets\Shaders\BilateralBlur.shader" />
     <None Include="Assets\Shaders\BlitAdd.shader" />
+    <None Include="Assets\Shaders\PBR_IntersectionMask.shader" />
     <None Include="Assets\Shaders\SkinShader.shader" />
     <None Include="Assets\Shaders\Splat.shader" />
+    <None Include="Assets\Shaders\Standard-FirstPass Blend.shader" />
     <None Include="Assets\Shaders\StandardNonOccluding.shader" />
+    <None Include="Assets\Shaders\TerrainSplatmapCommonBlend.cginc" />
     <None Include="Assets\Shaders\VolumetricLight.shader" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
