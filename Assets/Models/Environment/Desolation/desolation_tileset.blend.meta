@@ -26,6 +26,7 @@ ModelImporter:
     100036: castle_wall_2_5
     100038: parapet_small
     100040: castle_door
+    100042: desert_bush_tall
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
@@ -47,6 +48,7 @@ ModelImporter:
     400036: castle_wall_2_5
     400038: parapet_small
     400040: castle_door
+    400042: desert_bush_tall
     2300000: Cube_000
     2300002: Cube_001
     2300004: Cube_002
@@ -67,6 +69,7 @@ ModelImporter:
     2300034: castle_wall_2_5
     2300036: parapet_small
     2300038: castle_door
+    2300040: desert_bush_tall
     3300000: Cube_000
     3300002: Cube_001
     3300004: Cube_002
@@ -87,6 +90,7 @@ ModelImporter:
     3300034: castle_wall_2_5
     3300036: parapet_small
     3300038: castle_door
+    3300040: desert_bush_tall
     4300000: Cube_002
     4300002: Cube_000
     4300004: Cube_001
@@ -107,6 +111,7 @@ ModelImporter:
     4300034: castle_wall_2_5
     4300036: parapet_small
     4300038: castle_door
+    4300040: desert_bush_tall
   materials:
     importMaterials: 1
     materialName: 0
