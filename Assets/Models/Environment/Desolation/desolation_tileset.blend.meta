@@ -16,6 +16,16 @@ ModelImporter:
     100016: pillar_base_dirty
     100018: pillar_center
     100020: pillar_top
+    100022: pillar_center_dirty
+    100024: Cube
+    100026: test_corner
+    100028: pillar_base_dirty_001
+    100030: castle_corner
+    100032: test_parapet
+    100034: test_parapet_001
+    100036: castle_wall_2_5
+    100038: parapet_small
+    100040: castle_door
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
@@ -27,6 +37,16 @@ ModelImporter:
     400016: pillar_base_dirty
     400018: pillar_center
     400020: pillar_top
+    400022: pillar_center_dirty
+    400024: Cube
+    400026: test_corner
+    400028: pillar_base_dirty_001
+    400030: castle_corner
+    400032: test_parapet
+    400034: test_parapet_001
+    400036: castle_wall_2_5
+    400038: parapet_small
+    400040: castle_door
     2300000: Cube_000
     2300002: Cube_001
     2300004: Cube_002
@@ -37,6 +57,16 @@ ModelImporter:
     2300014: pillar_base_dirty
     2300016: pillar_center
     2300018: pillar_top
+    2300020: pillar_center_dirty
+    2300022: Cube
+    2300024: test_corner
+    2300026: pillar_base_dirty_001
+    2300028: castle_corner
+    2300030: test_parapet
+    2300032: test_parapet_001
+    2300034: castle_wall_2_5
+    2300036: parapet_small
+    2300038: castle_door
     3300000: Cube_000
     3300002: Cube_001
     3300004: Cube_002
@@ -47,6 +77,16 @@ ModelImporter:
     3300014: pillar_base_dirty
     3300016: pillar_center
     3300018: pillar_top
+    3300020: pillar_center_dirty
+    3300022: Cube
+    3300024: test_corner
+    3300026: pillar_base_dirty_001
+    3300028: castle_corner
+    3300030: test_parapet
+    3300032: test_parapet_001
+    3300034: castle_wall_2_5
+    3300036: parapet_small
+    3300038: castle_door
     4300000: Cube_002
     4300002: Cube_000
     4300004: Cube_001
@@ -57,6 +97,16 @@ ModelImporter:
     4300014: pillar_top
     4300016: pillar_center
     4300018: pillar_base
+    4300020: pillar_center_dirty
+    4300022: Cube
+    4300024: test_corner
+    4300026: pillar_base_dirty_001
+    4300028: castle_corner
+    4300030: test_parapet
+    4300032: test_parapet_001
+    4300034: castle_wall_2_5
+    4300036: parapet_small
+    4300038: castle_door
   materials:
     importMaterials: 1
     materialName: 0
