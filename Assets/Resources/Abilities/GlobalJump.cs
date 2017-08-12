@@ -6,12 +6,14 @@ public class GlobalJump : Ability {
 
     override protected void Setup(){
         type = AbilityType.onHotkey;
-        cooldown = 1000.0f;
-        jumpSpeed = 14.0f;
+        cooldown = 500.0f;
+        jumpSpeed = 18.0f;
     }
 
     override protected void AlwaysCast(){
-
+        if(GetGrounded(selfActor)){
+            End();
+        }
     }
 
     override protected void SequentialCast(){

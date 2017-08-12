@@ -95,6 +95,7 @@
     <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
     <Compile Include="Assets\Scripts\Components\DialogueComponent.cs" />
     <Compile Include="Assets\Scripts\Components\FireLightComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\FoliageComponent.cs" />
     <Compile Include="Assets\Scripts\Components\FullscreenSunComponent.cs" />
     <Compile Include="Assets\Scripts\Components\FullscreenSunVolumeComponent.cs" />
     <Compile Include="Assets\Scripts\Components\Interact Components\LeverInteractComponent.cs" />
