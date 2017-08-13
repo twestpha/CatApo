@@ -6,7 +6,7 @@ public class PlayerComponent : Actor {
 
     // Constants
     private const float PlayerPlaneOffset = -1.0f;
-    public const float DialogueDistance = 4.0f;
+    public const float InteractDistance = 4.0f;
     public const float TerrainLayerHeight = 5.0f;
 
     public enum UIState {
@@ -92,7 +92,7 @@ public class PlayerComponent : Actor {
 
         if(Physics.Raycast(ray, out hit, Mathf.Infinity, Interactable.InteractableCollisionMask)){
             Interactable interactable = hit.collider.gameObject.GetComponent<Interactable>();
-            if(interactable){
+            if(interactable && (interactable.gameObject.transform.position - transform.position).magnitude <= InteractDistance){
                 interactable.NotifyClicked();
             }
         }

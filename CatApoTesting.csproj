@@ -104,6 +104,7 @@
     <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Components\SplatComponent.cs" />
     <Compile Include="Assets\Scripts\Components\TerrainLayerComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\TerrainMultipleLayerComponent.cs" />
     <Compile Include="Assets\Scripts\Components\TestComponent.cs" />
     <Compile Include="Assets\Scripts\Equipment\Equipment.cs" />
     <Compile Include="Assets\Scripts\Libs\Actor.cs" />

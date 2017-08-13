@@ -7,7 +7,7 @@ public class GlobalJump : Ability {
     override protected void Setup(){
         type = AbilityType.onHotkey;
         cooldown = 500.0f;
-        jumpSpeed = 18.0f;
+        jumpSpeed = 10.0f;
     }
 
     override protected void AlwaysCast(){

@@ -41,7 +41,7 @@ public class DialogueUIController : MonoBehaviour {
             SetDialogueFade(fadeTimer.Parameterized());
 
             transform.position = Camera.main.WorldToScreenPoint(dialogueObject.transform.position) + dialogueOffset;
-            dialogueLight.transform.position = dialogueObject.transform.position;
+            dialogueLight.transform.position = dialogueObject.transform.position + Vector3.up;
 
             if(fadeTimer.Finished()){
                 state = DialogueState.Enabled;
@@ -51,10 +51,10 @@ public class DialogueUIController : MonoBehaviour {
 
             if(oldDialogueObject){
                 transform.position = Camera.main.WorldToScreenPoint(oldDialogueObject.transform.position) + dialogueOffset;
-                dialogueLight.transform.position = oldDialogueObject.transform.position;
+                dialogueLight.transform.position = oldDialogueObject.transform.position + Vector3.up;
             } else {
                 transform.position = Camera.main.WorldToScreenPoint(dialogueObject.transform.position) + dialogueOffset;
-                dialogueLight.transform.position = dialogueObject.transform.position;
+                dialogueLight.transform.position = dialogueObject.transform.position + Vector3.up;
             }
 
             if(fadeTimer.Finished()){
@@ -80,7 +80,7 @@ public class DialogueUIController : MonoBehaviour {
             }
         } else if(state == DialogueState.Enabled){
             transform.position = Camera.main.WorldToScreenPoint(dialogueObject.transform.position) + dialogueOffset;
-            dialogueLight.transform.position = dialogueObject.transform.position;
+            dialogueLight.transform.position = dialogueObject.transform.position + Vector3.up;
         } else if(state == DialogueState.Disabled){
 
         }

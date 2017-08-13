@@ -27,7 +27,7 @@ public class DialogueComponent : Interactable {
     }
 
     private bool NearPlayer(){
-        return (transform.position - player.transform.position).magnitude <= PlayerComponent.DialogueDistance;
+        return (transform.position - player.transform.position).magnitude <= PlayerComponent.InteractDistance;
     }
 
     override public void NotifyClicked(){
