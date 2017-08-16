@@ -12,18 +12,23 @@ public class SandInteractComponent : Interactable {
     private bool dropping;
     private float previousHeight;
 
+    private AudioSource audioSource;
+
     public void Start(){
         dropTimer = new Timer(dropDuration);
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Update(){
         if(dropping){
-
             transform.position = new Vector3(transform.position.x, previousHeight - dropTimer.Parameterized() * dropDistance, transform.position.z);
+            audioSource.volume = 1.0f - Mathf.Pow((dropTimer.Parameterized()), 3.0f);
 
             if(dropTimer.Finished()){
                 dropping = false;
+                audioSource.Stop();
             }
+
         }
     }
 
@@ -31,5 +36,6 @@ public class SandInteractComponent : Interactable {
         dropping = true;
         previousHeight = transform.position.y;
         dropTimer.Start();
+        audioSource.Play();
     }
 }

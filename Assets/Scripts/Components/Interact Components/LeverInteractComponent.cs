@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent (typeof (AudioSource))]
 public class LeverInteractComponent : Interactable {
 
     public bool lockOnWhenClicked;
@@ -19,12 +20,12 @@ public class LeverInteractComponent : Interactable {
 
     private Timer leverTimer;
 
-    private float rotationAmount = 60.0f;
+    private float rotationAmount = 80.0f;
     private float startRotation;
 
     public void Start(){
         state = LeverState.Off;
-        leverTimer = new Timer(0.3f);
+        leverTimer = new Timer(0.35f);
         startRotation = leverModelObject.transform.eulerAngles.x;
     }
 
@@ -38,7 +39,7 @@ public class LeverInteractComponent : Interactable {
             }
         } else if(state == LeverState.MovingOff){
 
-            leverModelObject.transform.rotation = Quaternion.Euler(-startRotation + (leverTimer.Parameterized() * rotationAmount), 90.0f, 0.0f);
+            leverModelObject.transform.rotation = Quaternion.Euler(startRotation - rotationAmount + (leverTimer.Parameterized() * rotationAmount), 90.0f, 0.0f);
 
             if(leverTimer.Finished()){
                 state = LeverState.Off;
@@ -60,6 +61,7 @@ public class LeverInteractComponent : Interactable {
             }
 
             leverTimer.Start();
+            GetComponent<AudioSource>().Play();
         }
     }
 }

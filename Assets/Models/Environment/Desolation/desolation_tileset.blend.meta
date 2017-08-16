@@ -29,6 +29,10 @@ ModelImporter:
     100042: desert_bush_tall
     100044: castle_floor
     100046: castle_rags
+    100048: desolation_skull
+    100050: desolation_cactus
+    100052: desolation_lever
+    100054: desolation_lever_base
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
@@ -53,6 +57,10 @@ ModelImporter:
     400042: desert_bush_tall
     400044: castle_floor
     400046: castle_rags
+    400048: desolation_skull
+    400050: desolation_cactus
+    400052: desolation_lever
+    400054: desolation_lever_base
     2300000: Cube_000
     2300002: Cube_001
     2300004: Cube_002
@@ -76,6 +84,10 @@ ModelImporter:
     2300040: desert_bush_tall
     2300042: castle_floor
     2300044: castle_rags
+    2300046: desolation_skull
+    2300048: desolation_cactus
+    2300050: desolation_lever
+    2300052: desolation_lever_base
     3300000: Cube_000
     3300002: Cube_001
     3300004: Cube_002
@@ -99,6 +111,10 @@ ModelImporter:
     3300040: desert_bush_tall
     3300042: castle_floor
     3300044: castle_rags
+    3300046: desolation_skull
+    3300048: desolation_cactus
+    3300050: desolation_lever
+    3300052: desolation_lever_base
     4300000: Cube_002
     4300002: Cube_000
     4300004: Cube_001
@@ -122,6 +138,10 @@ ModelImporter:
     4300040: desert_bush_tall
     4300042: castle_floor
     4300044: castle_rags
+    4300046: desolation_skull
+    4300048: desolation_cactus
+    4300050: desolation_lever
+    4300052: desolation_lever_base
   materials:
     importMaterials: 1
     materialName: 0

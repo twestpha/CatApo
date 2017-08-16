@@ -43,9 +43,9 @@ public static class Strings {
     static string[] stringDatabase = new string[]{
         "Default String",
         // Desolation
-        "History of Caer Tanisan, season of the Jaguar\nDuring routine patrols in the Osin desert to the east, soldiers reported strange shifts in the sand, as if something we moving far below. The men are growing strange from isolation, I fear.",
-        "History of Caer Tanisan, season of the Owl\nThere have been reports of strange noises in the night, of trinkets missing and food stolen. No soldiers have yet confessed, but I remain wary.",
-        "History of Caer Tanisan, season of the Manticore\nAt last, rain! Praise be to Shano, Keeper of the Heavens. Thus ends a too long and thirsty year. I think it odd, last years supply should have lasted long into next season. Thirsty is the desert, forsooth.",
+        "History of Fort Tanisan, season of the Jaguar\nDuring routine patrols in the Osin desert to the east, soldiers reported strange shifts in the sand, as if something was moving far below. The men are growing strange from isolation, I fear.",
+        "History of Fort Tanisan, season of the Owl\nThere have been reports of strange noises coming from the dungeon, of trinkets missing and food stolen. No soldiers have yet confessed, but I remain wary.",
+        "History of Fort Tanisan, season of the Manticore\nAt last, rain! Praise be to Shano, Keeper of the Heavens. Thus ends a too long and thirsty year. I think it odd, last years supply should have lasted long into next season. Thirsty is the desert, forsooth.",
     };
 
     public static string GetString(LocalizedString stringEnum){
