@@ -45,7 +45,8 @@ public static class Strings {
         // Desolation
         "History of Fort Tanisan, season of the Jaguar\nDuring routine patrols in the Osin desert to the east, soldiers reported strange shifts in the sand, as if something was moving far below. The men are growing strange from isolation, I fear.",
         "History of Fort Tanisan, season of the Owl\nThere have been reports of strange noises coming from the dungeon, of trinkets missing and food stolen. No soldiers have yet confessed, but I remain wary.",
-        "History of Fort Tanisan, season of the Manticore\nAt last, rain! Praise be to Shano, Keeper of the Heavens. Thus ends a too long and thirsty year. I think it odd, last years supply should have lasted long into next season. Thirsty is the desert, forsooth.",
+        "History of Fort Tanisan, season of the Manticore\nAt last, rain! Praise be to Shano, Keeper of the Heavens. Thus ends a too long and thirsty year. I think it odd, last years supply should have lasted long into next season. Thirsty is the desert, indeed.",
+        "Patrol Report for Fort Tanisan\nOur partrol found several giant craters in the sand. It may yet be related to the strange shifting of dunes we sometimes see in the distance. We should secure the hidden dungeons of Tanisan forthwith. Praise Shano, and the City She Lives In, The City Of Angels",
     };
 
     public static string GetString(LocalizedString stringEnum){
