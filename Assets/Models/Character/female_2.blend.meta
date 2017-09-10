@@ -11,30 +11,60 @@ ModelImporter:
     100006: female_001
     100008: female_002
     100010: Sphere
+    100012: female_003
+    100014: female_body
+    100016: female_hair
+    100018: female_eyes
+    100020: female_000
+    100022: test_shirt
     400000: //RootNode
     400002: Cube
     400004: female
     400006: female_001
     400008: female_002
     400010: Sphere
+    400012: female_003
+    400014: female_body
+    400016: female_hair
+    400018: female_eyes
+    400020: female_000
+    400022: test_shirt
     2300000: //RootNode
     2300002: Cube
     2300004: female
     2300006: female_001
     2300008: female_002
     2300010: Sphere
+    2300012: female_003
+    2300014: female_body
+    2300016: female_hair
+    2300018: female_eyes
+    2300020: female_000
+    2300022: test_shirt
     3300000: //RootNode
     3300002: Cube
     3300004: female
     3300006: female_001
     3300008: female_002
     3300010: Sphere
+    3300012: female_003
+    3300014: female_body
+    3300016: female_hair
+    3300018: female_eyes
+    3300020: female_000
+    3300022: test_shirt
     4300000: objobject3
     4300002: female
     4300004: Cube
     4300006: female_001
     4300008: female_002
     4300010: Sphere
+    4300012: female_003
+    4300014: female_body
+    4300016: female_hair
+    4300018: female_eyes
+    4300020: female_000
+    4300022: test_shirt
     7400000: Default Take
     9500000: //RootNode
   materials:
