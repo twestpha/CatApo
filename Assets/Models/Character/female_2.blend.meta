@@ -17,6 +17,14 @@ ModelImporter:
     100018: female_eyes
     100020: female_000
     100022: test_shirt
+    100024: Cube_001
+    100026: Cylinder_001
+    100028: Cylinder_002
+    100030: Cylinder_003
+    100032: hunter_forest_buckles
+    100034: hunter_forest_pauldrons
+    100036: hunter_forest_shirt
+    100038: hunter_forest_hood
     400000: //RootNode
     400002: Cube
     400004: female
@@ -29,6 +37,14 @@ ModelImporter:
     400018: female_eyes
     400020: female_000
     400022: test_shirt
+    400024: Cube_001
+    400026: Cylinder_001
+    400028: Cylinder_002
+    400030: Cylinder_003
+    400032: hunter_forest_buckles
+    400034: hunter_forest_pauldrons
+    400036: hunter_forest_shirt
+    400038: hunter_forest_hood
     2300000: //RootNode
     2300002: Cube
     2300004: female
@@ -41,6 +57,14 @@ ModelImporter:
     2300018: female_eyes
     2300020: female_000
     2300022: test_shirt
+    2300024: Cube_001
+    2300026: Cylinder_001
+    2300028: Cylinder_002
+    2300030: Cylinder_003
+    2300032: hunter_forest_buckles
+    2300034: hunter_forest_pauldrons
+    2300036: hunter_forest_shirt
+    2300038: hunter_forest_hood
     3300000: //RootNode
     3300002: Cube
     3300004: female
@@ -53,6 +77,14 @@ ModelImporter:
     3300018: female_eyes
     3300020: female_000
     3300022: test_shirt
+    3300024: Cube_001
+    3300026: Cylinder_001
+    3300028: Cylinder_002
+    3300030: Cylinder_003
+    3300032: hunter_forest_buckles
+    3300034: hunter_forest_pauldrons
+    3300036: hunter_forest_shirt
+    3300038: hunter_forest_hood
     4300000: objobject3
     4300002: female
     4300004: Cube
@@ -65,6 +97,14 @@ ModelImporter:
     4300018: female_eyes
     4300020: female_000
     4300022: test_shirt
+    4300024: Cylinder_003
+    4300026: Cylinder_002
+    4300028: Cylinder_001
+    4300030: Cube_001
+    4300032: hunter_forest_shirt
+    4300034: hunter_forest_pauldrons
+    4300036: hunter_forest_buckles
+    4300038: hunter_forest_hood
     7400000: Default Take
     9500000: //RootNode
   materials:

@@ -1,10 +1,10 @@
 Shader "Custom/SkinShader" {
   Properties {
-    _MainTex ("Texture", 2D) = "white" {}
-    //_SkinColor ("Skin Color", COLOR) = (1,1,1,1)
+    _SkinColor ("Skin Color", COLOR) = (1,1,1,1)
     _ScatterColor ("Subsurface Scatter Color", COLOR) = (1,1,1,1) // can we automate scatter color?
     _Strength ("Subsurface Attenuation", Range(100.0, 0.1)) = 8.0
     _Glossiness ("Smoothness", Range(0.0, 1.0)) = 0.5
+    _MainTex ("Clothing Texture", 2D) = "white" {}
   }
   SubShader {
     Tags { "RenderType" = "Opaque" }
@@ -23,16 +23,17 @@ Shader "Custom/SkinShader" {
             half diff = max(0, dot(s.Normal, lightDir));
 
             // scatter = e ^ -strength * (parallel - 0.5)^2
-            half scatter = s.Gloss * pow(2.71828, -_Strength * pow((parallel - 0.5), 2.0));
+            half scatter = pow(2.71828, -_Strength * pow((parallel - 0.5), 2.0));
 
             half3 lighttoview = normalize(lightDir + viewDir);
             float reflect = max(0, dot (s.Normal, lighttoview));
             float spec = pow(reflect, 6.0);
 
             half4 c;
-            half3 skinColor = ((1.0 - scatter) * s.Albedo) + (scatter * _ScatterColor.rgb);
+            half3 skinColor = ((1.0 - scatter) * _SkinColor) + (scatter * _ScatterColor.rgb);
+            skinColor.rgb = ((1.0 - s.Gloss) * skinColor) + (s.Gloss * s.Albedo.rgb);
             c.rgb = ((skinColor * _LightColor0.rgb * parallelclamp) + (_LightColor0.rgb * spec * _Glossiness)) * atten;
-            c.rgb += UNITY_LIGHTMODEL_AMBIENT * s.Albedo;
+            c.rgb += UNITY_LIGHTMODEL_AMBIENT * _SkinColor;
             return c;
         }
 
