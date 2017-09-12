@@ -103,6 +103,10 @@ public class DialogueUIController : MonoBehaviour {
     }
 
     public void EnableDialogueUI(GameObject newDialogueObject){
+        if(newDialogueObject == dialogueObject){
+            return;
+        }
+
         if(dialogueObject){
             state = DialogueState.FadingOutIn;
         } else {

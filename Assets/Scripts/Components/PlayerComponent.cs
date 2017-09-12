@@ -14,12 +14,16 @@ public class PlayerComponent : Actor {
         InventoryOpen
     }
 
-    public bool moving;
+    public bool usingtimer;
+
     private bool jumpUnreleased;
     public bool jumping;
     public bool dashing;
 
     public UIState uiState;
+
+    private float moveTime = 0.3f;
+    private Timer moveTimer;
 
     // Actor Plane
     protected Plane playerPlane;
@@ -30,7 +34,8 @@ public class PlayerComponent : Actor {
         base.Start();
 
         // Setting initial states
-        moving  = false;
+        usingtimer = false;
+        moveTimer = new Timer(moveTime);
 
         // Setup actor plane
         playerPlane = new Plane(Vector3.down, characterController.transform.position.y + PlayerPlaneOffset);
@@ -52,27 +57,33 @@ public class PlayerComponent : Actor {
     override public void HandleInputs(){
         if(uiState == UIState.InventoryHidden){
             // Movement
-            if(Input.GetButton("Fire2") && steerable){
+            bool rmbdown = Input.GetButton("Fire2");
+
+            if(rmbdown && steerable){
                 Vector3 terrainIntersection = MouseIntersectionWithPlayerPlane();
 
-                if((terrainIntersection - transform.position).magnitude >= 0.5f){
+                if((terrainIntersection - transform.position).magnitude >= kMoveDistanceNear){
+                    if(!usingtimer){
+                        usingtimer = true;
+                        moveTimer.Start();
+                    }
                     targetPosition = terrainIntersection;
                 }
+            }
+
+            // if released before timer expires, continue moving. if released after, stop.
+            if(usingtimer && moveTimer.Finished()){
+                if(!rmbdown){
+                    usingtimer = false;
+                    targetPosition = transform.position;
+                }
+            } else if(!rmbdown){
+                usingtimer = false;
             }
 
             // Dialogue
             if(Input.GetMouseButtonDown(0)){
                 MouseIntersectionWithInteract();
-
-                // GameObject dialogueObject = MouseIntersectionWithDialogue();
-                //
-                // PlayerUIController uicontroller = playerUI.GetComponent<PlayerUIController>();
-                //
-                // if(dialogueObject && (dialogueObject.transform.position - transform.position).magnitude <= DialogueDistance){
-                //     uicontroller.EnableDialogueUI(dialogueObject);
-                // } else {
-                //     uicontroller.DisableDialogueUI();
-                // }
             }
         } else {
 

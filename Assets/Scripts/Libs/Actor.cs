@@ -7,6 +7,7 @@ public class Actor : MonoBehaviour {
 
     // Constants
     protected const int kTerrainCollisionMask = 1 << 8;
+    protected const float kMoveDistanceNear = 0.1f;
 
     [Header("Base Actor Properties")]
 
@@ -74,7 +75,7 @@ public class Actor : MonoBehaviour {
         float moveDistance = moveVector.magnitude;
         moveVector.Normalize();
 
-        if(moveDistance > 0.1f){
+        if(moveDistance > kMoveDistanceNear){
             movementVelocity += moveVector * currentMoveSpeed;
 
             float angle = Mathf.Rad2Deg * Mathf.Atan2(velocity.x, velocity.z);

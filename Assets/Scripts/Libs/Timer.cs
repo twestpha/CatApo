@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public class Timer {
-    private bool started;
     private float duration;
     private float startTime;
     private bool finishedLastFrame;
