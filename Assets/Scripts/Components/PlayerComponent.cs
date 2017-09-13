@@ -30,6 +30,8 @@ public class PlayerComponent : Actor {
 
     private GameObject playerUI;
 
+    public GameObject movementMarker;
+
 	new void Start(){
         base.Start();
 
@@ -68,6 +70,8 @@ public class PlayerComponent : Actor {
                         moveTimer.Start();
                     }
                     targetPosition = terrainIntersection;
+
+                    movementMarker.GetComponent<MovementMarkerComponent>().ShowMovementMarker();
                 }
             }
 

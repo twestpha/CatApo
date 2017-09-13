@@ -83,7 +83,7 @@ public class AbilityPlacement : ScriptableObject {
         }
 
         Vector3 splatPos = startPosition + mouseDir * mouseDirMag;
-        splatPos.y = caster.transform.position.y - playerPlaneOffset;
+        splatPos.y = caster.transform.position.y + playerPlaneOffset;
         splat.transform.position = splatPos;
     }
 

@@ -58,7 +58,7 @@ SubShader {
 			{
 				fixed4 col = tex2D(_MainTex, i.texcoord);
 				UNITY_APPLY_FOG(i.fogCoord, col);
-                col.a = 0.3f * col.a;
+                col.a = 0.3 * col.a;
 				return col;
 			}
 		ENDCG
