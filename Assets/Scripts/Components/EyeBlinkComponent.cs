@@ -19,7 +19,7 @@ public class EyeBlinkComponent : MonoBehaviour {
 	void Start(){
         open = true;
         openTimer = new Timer(Random.Range(minBlinkTime, maxBlinkTime));
-        closedTimer = new Timer(0.2f);
+        closedTimer = new Timer(0.1f);
         mesh = GetComponent<MeshRenderer>();
 
         openTimer.Start();

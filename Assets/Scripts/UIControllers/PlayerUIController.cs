@@ -29,7 +29,6 @@ public class PlayerUIController : MonoBehaviour {
 
     private AbilityCastComponent castComponent;
 
-
     [Header("Health Bars")]
     private int lastHealth;
     private int lastArmor;

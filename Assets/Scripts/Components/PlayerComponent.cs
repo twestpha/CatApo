@@ -29,6 +29,7 @@ public class PlayerComponent : Actor {
     protected Plane playerPlane;
 
     private GameObject playerUI;
+    private GameObject playerModel;
 
     public GameObject movementMarker;
 
@@ -43,6 +44,7 @@ public class PlayerComponent : Actor {
         playerPlane = new Plane(Vector3.down, characterController.transform.position.y + PlayerPlaneOffset);
 
         playerUI = GameObject.FindWithTag("PlayerUI");
+        playerModel = GameObject.FindWithTag("PlayerModel");
 	}
 
     new void Update(){
@@ -85,7 +87,7 @@ public class PlayerComponent : Actor {
                 usingtimer = false;
             }
 
-            // Dialogue
+            // Interact clicking
             if(Input.GetMouseButtonDown(0)){
                 MouseIntersectionWithInteract();
             }
@@ -143,5 +145,9 @@ public class PlayerComponent : Actor {
         int terrainHeight = (int)(transform.position.y / TerrainLayerHeight);
         terrainHeight = Mathf.Clamp(terrainHeight, 0, 7);
         return 1 << terrainHeight;
+    }
+
+    public GameObject GetPlayerModel(){
+        return playerModel;
     }
 }

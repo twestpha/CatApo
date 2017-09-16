@@ -24,8 +24,10 @@ public class Equipment : Castable {
     [Header("Item Models")]
     public GameObject modelPrefab;
     public string attachJoint;
-    public Vector3 offset;
+    public Vector3 translateoffset;
+    public Vector3 rotationoffset;
     public Material characterMaterial;
+    public bool hidesHair;
 
     [Header("Casting Objects")]
     public GameObject spawnablePrefab;
