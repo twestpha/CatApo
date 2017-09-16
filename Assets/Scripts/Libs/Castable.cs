@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Castable : ScriptableObject {
+    // Any "item" able to be equipped and "cast" as an ability (even if it's passive)
 
     public enum Rarity {
         Common,
@@ -12,9 +13,8 @@ public class Castable : ScriptableObject {
         Singular,
     };
 
-    [Header("Equipment Information")]
-    public Strings.LocalizedString title;
-    public string description;
+    [Header("Base Castable Information")]
+    public string debugName;
     public Rarity rarity;
     public Sprite icon;
 

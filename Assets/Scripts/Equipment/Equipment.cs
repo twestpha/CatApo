@@ -15,20 +15,24 @@ public class Equipment : Castable {
         Arrow,
         Sword,
         Shield,
+        Armor,
     };
 
-
+    [Header("Equipment Type")]
     public EquipmentType type;
 
-    [Header("Game Objects")]
-    public GameObject weaponModel;
+    [Header("Item Models")]
+    public GameObject modelPrefab;
     public string attachJoint;
-    public GameObject spawnableModel;
+    public Vector3 offset;
+    public Material characterMaterial;
 
-    // probably some references to icons
+    [Header("Casting Objects")]
+    public GameObject spawnablePrefab;
+    public GameObject effectsPrefab;
 
-    [Header("Equipment Ability Effects")]
+    // [Header("Equipment Ability Effects")]
     // public List<AbilityEffect> effects;
     // public List<float> effectsTiming;
-    private int effectsIndex;
+    // private int effectsIndex;
 }

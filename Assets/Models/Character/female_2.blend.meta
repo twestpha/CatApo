@@ -25,6 +25,7 @@ ModelImporter:
     100034: hunter_forest_pauldrons
     100036: hunter_forest_shirt
     100038: hunter_forest_hood
+    100040: chest
     400000: //RootNode
     400002: Cube
     400004: female
@@ -45,6 +46,7 @@ ModelImporter:
     400034: hunter_forest_pauldrons
     400036: hunter_forest_shirt
     400038: hunter_forest_hood
+    400040: chest
     2300000: //RootNode
     2300002: Cube
     2300004: female
@@ -65,6 +67,7 @@ ModelImporter:
     2300034: hunter_forest_pauldrons
     2300036: hunter_forest_shirt
     2300038: hunter_forest_hood
+    2300040: chest
     3300000: //RootNode
     3300002: Cube
     3300004: female
@@ -85,6 +88,7 @@ ModelImporter:
     3300034: hunter_forest_pauldrons
     3300036: hunter_forest_shirt
     3300038: hunter_forest_hood
+    3300040: chest
     4300000: objobject3
     4300002: female
     4300004: Cube
@@ -105,6 +109,7 @@ ModelImporter:
     4300034: hunter_forest_pauldrons
     4300036: hunter_forest_buckles
     4300038: hunter_forest_hood
+    4300040: chest
     7400000: Default Take
     9500000: //RootNode
   materials:
