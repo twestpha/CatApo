@@ -34,5 +34,10 @@ public class TerrainLayerComponent : MonoBehaviour {
 
 	void Update(){
         mesh.enabled = (player.GetPlayerTerrainLayer() & layermask) > 0;
+
+        if(gameObject.layer == Interactable.InteractableCollisionMask &&
+            gameObject.GetComponent<Interactable>()){
+            gameObject.GetComponent<Interactable>().Toggle();
+        }
 	}
 }

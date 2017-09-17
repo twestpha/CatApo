@@ -33,6 +33,10 @@ public class SandInteractComponent : Interactable {
     }
 
     override public void NotifyClicked(){
+        if(!enabled){
+            return;
+        }
+
         dropping = true;
         previousHeight = transform.position.y;
         dropTimer.Start();

@@ -48,6 +48,10 @@ public class LeverInteractComponent : Interactable {
     }
 
     override public void NotifyClicked(){
+        if(!enabled){
+            return;
+        }
+
         if((state == LeverState.On && !lockOnWhenClicked) || state == LeverState.Off){
             Interactable interact = interactToNotify.GetComponent<Interactable>();
             if(interact){

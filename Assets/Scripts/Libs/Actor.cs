@@ -21,6 +21,7 @@ public class Actor : MonoBehaviour {
     [Header("Movement")]
     public float maxMoveSpeed;
     public float currentMoveSpeed;
+    public float turnSpeed = 15.0f;
 
     public Vector3 targetPosition;
     public Vector3 velocity;
@@ -78,8 +79,10 @@ public class Actor : MonoBehaviour {
         if(moveDistance > kMoveDistanceNear){
             movementVelocity += moveVector * currentMoveSpeed;
 
-            float angle = Mathf.Rad2Deg * Mathf.Atan2(velocity.x, velocity.z);
-            transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+            // rotate towards velocity
+            float step = turnSpeed * Time.deltaTime;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, moveVector, step, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
         }
 
         movementVelocity.y = velocity.y;
