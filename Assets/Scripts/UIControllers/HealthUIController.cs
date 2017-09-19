@@ -23,7 +23,7 @@ public class HealthUIController : MonoBehaviour {
     private int lastHealth;
     private int lastArmor;
 
-    private Vector3 healthBarOffset = new Vector3(0.0f, 70.0f);
+    private Vector3 healthBarOffset = new Vector3(0.0f, 80.0f);
 
 	public void CreateHearts(){
         targetActor = target.GetComponent<Actor>();
