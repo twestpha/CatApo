@@ -124,7 +124,9 @@
     <None Include="Assets\Shaders\SkinShader.shader" />
     <None Include="Assets\Shaders\Splat.shader" />
     <None Include="Assets\Shaders\Standard-FirstPass Blend.shader" />
+    <None Include="Assets\Shaders\Standard.shader" />
     <None Include="Assets\Shaders\StandardNonOccluding.shader" />
+    <None Include="Assets\Shaders\StandardScrolling.shader" />
     <None Include="Assets\Shaders\TerrainSplatmapCommonBlend.cginc" />
     <None Include="Assets\Shaders\VolumetricLight.shader" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
