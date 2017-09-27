@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
     <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
     <Compile Include="Assets\Scripts\Components\DialogueComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\DustParticleComponent.cs" />
     <Compile Include="Assets\Scripts\Components\EyeBlinkComponent.cs" />
     <Compile Include="Assets\Scripts\Components\FireLightComponent.cs" />
     <Compile Include="Assets\Scripts\Components\FoliageComponent.cs" />
