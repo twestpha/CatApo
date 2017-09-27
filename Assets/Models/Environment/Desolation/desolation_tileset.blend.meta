@@ -34,6 +34,10 @@ ModelImporter:
     100052: desolation_lever
     100054: desolation_lever_base
     100056: castle_sand
+    100058: desolation_skeleton_arm
+    100060: desolation_skeleton_leg
+    100062: desolation_skeleton_ribcage
+    100064: desolation_skeleton_skull
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
@@ -63,6 +67,10 @@ ModelImporter:
     400052: desolation_lever
     400054: desolation_lever_base
     400056: castle_sand
+    400058: desolation_skeleton_arm
+    400060: desolation_skeleton_leg
+    400062: desolation_skeleton_ribcage
+    400064: desolation_skeleton_skull
     2300000: Cube_000
     2300002: Cube_001
     2300004: Cube_002
@@ -91,6 +99,10 @@ ModelImporter:
     2300050: desolation_lever
     2300052: desolation_lever_base
     2300054: castle_sand
+    2300056: desolation_skeleton_arm
+    2300058: desolation_skeleton_leg
+    2300060: desolation_skeleton_ribcage
+    2300062: desolation_skeleton_skull
     3300000: Cube_000
     3300002: Cube_001
     3300004: Cube_002
@@ -119,6 +131,10 @@ ModelImporter:
     3300050: desolation_lever
     3300052: desolation_lever_base
     3300054: castle_sand
+    3300056: desolation_skeleton_arm
+    3300058: desolation_skeleton_leg
+    3300060: desolation_skeleton_ribcage
+    3300062: desolation_skeleton_skull
     4300000: Cube_002
     4300002: Cube_000
     4300004: Cube_001
@@ -147,6 +163,10 @@ ModelImporter:
     4300050: desolation_lever
     4300052: desolation_lever_base
     4300054: castle_sand
+    4300056: desolation_skeleton_leg
+    4300058: desolation_skeleton_arm
+    4300060: desolation_skeleton_ribcage
+    4300062: desolation_skeleton_skull
   materials:
     importMaterials: 1
     materialName: 0
