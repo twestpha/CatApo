@@ -85,14 +85,11 @@ public class Actor : MonoBehaviour {
             transform.rotation = Quaternion.LookRotation(newDirection);
         }
 
-        movementVelocity.y = velocity.y;
-        velocity = movementVelocity;
-
         if(!characterController.isGrounded){
-            velocity.y -= gravity;
+            velocity.y += gravity * Time.deltaTime;
         }
 
-        characterController.Move(velocity * Time.deltaTime);
+        characterController.Move((velocity + movementVelocity) * Time.deltaTime);
     }
 
     //##########################################################################

@@ -6,12 +6,12 @@ using UnityEngine;
 public class Interactable : MonoBehaviour {
     public const int InteractableCollisionMask = 1 << 9;
 
-    public bool enabled = true;
+    public bool interactenabled = true;
 
     public virtual void NotifyClicked(){}
 
     public void Toggle(){
-        enabled = !enabled;
-        gameObject.layer = enabled ? InteractableCollisionMask : 0;
+        interactenabled = !interactenabled;
+        gameObject.layer = interactenabled ? InteractableCollisionMask : 0;
     }
 }

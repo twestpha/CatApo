@@ -7,7 +7,7 @@ public class GlobalJump : Ability {
     override protected void Setup(){
         type = AbilityType.onHotkey;
         cooldown = 500.0f;
-        jumpSpeed = 10.0f;
+        jumpSpeed = 8.0f;
     }
 
     override protected void AlwaysCast(){
@@ -17,6 +17,7 @@ public class GlobalJump : Ability {
     }
 
     override protected void SequentialCast(){
+        Debug.Log("Casting global jump");
         if(!GetGrounded(selfActor)){
             return;
         }

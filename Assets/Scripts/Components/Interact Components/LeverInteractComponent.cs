@@ -48,7 +48,7 @@ public class LeverInteractComponent : Interactable {
     }
 
     override public void NotifyClicked(){
-        if(!enabled){
+        if(!interactenabled){
             return;
         }
 
