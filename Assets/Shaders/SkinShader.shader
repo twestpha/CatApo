@@ -32,8 +32,8 @@ Shader "Custom/SkinShader" {
             half4 c;
             half3 skinColor = ((1.0 - scatter) * _SkinColor) + (scatter * _ScatterColor.rgb);
             skinColor.rgb = ((1.0 - s.Gloss) * skinColor) + (s.Gloss * s.Albedo.rgb);
-            c.rgb = ((skinColor * _LightColor0.rgb * parallelclamp) + (_LightColor0.rgb * spec * _Glossiness)) * atten;
-            c.rgb += UNITY_LIGHTMODEL_AMBIENT * _SkinColor;
+            c.rgb = ((skinColor * _LightColor0.rgb * parallelclamp) + (_LightColor0.rgb * spec * _Glossiness)) * (atten + UNITY_LIGHTMODEL_AMBIENT);
+            //c.rgb += UNITY_LIGHTMODEL_AMBIENT * _SkinColor;
             return c;
         }
 
