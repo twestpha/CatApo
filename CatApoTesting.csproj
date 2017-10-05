@@ -104,6 +104,7 @@
     <Compile Include="Assets\Scripts\Components\Interact Components\SandInteractComponent.cs" />
     <Compile Include="Assets\Scripts\Components\InventoryComponent.cs" />
     <Compile Include="Assets\Scripts\Components\MovementMarkerComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\ParticleVolumeComponent.cs" />
     <Compile Include="Assets\Scripts\Components\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Components\SplatComponent.cs" />
     <Compile Include="Assets\Scripts\Components\TerrainLayerComponent.cs" />
