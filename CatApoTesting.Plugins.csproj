@@ -120,6 +120,7 @@
   <ItemGroup>
     <None Include="Assets\Shaders\BilateralBlur.shader" />
     <None Include="Assets\Shaders\BlitAdd.shader" />
+    <None Include="Assets\Shaders\Highlight.shader" />
     <None Include="Assets\Shaders\PBR_IntersectionMask.shader" />
     <None Include="Assets\Shaders\Particle Alpha Blend.shader" />
     <None Include="Assets\Shaders\SkinShader.shader" />
