@@ -92,6 +92,7 @@
     <Compile Include="Assets\Scripts\Abilities\AbilityPlacement.cs" />
     <Compile Include="Assets\Scripts\Abilities\Spell.cs" />
     <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\BotComponent.cs" />
     <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
     <Compile Include="Assets\Scripts\Components\DialogueComponent.cs" />
     <Compile Include="Assets\Scripts\Components\DustParticleComponent.cs" />

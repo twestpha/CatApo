@@ -17,7 +17,6 @@ public class GlobalJump : Ability {
     }
 
     override protected void SequentialCast(){
-        Debug.Log("Casting global jump");
         if(!GetGrounded(selfActor)){
             return;
         }
