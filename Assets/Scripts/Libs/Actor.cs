@@ -26,7 +26,7 @@ public class Actor : MonoBehaviour {
     public Vector3 targetPosition;
     public Vector3 velocity;
 
-    public float gravity = 9.8f;
+    public float gravity = -9.8f;
 
     [Header("Statuses")]
     public bool steerable = true;
