@@ -39,6 +39,11 @@ ModelImporter:
     100062: desolation_skeleton_ribcage
     100064: desolation_skeleton_skull
     100066: castle_broken_wall
+    100068: castle_broken_ground
+    100070: castle_broken_ground_sparse
+    100072: pillar_base_dirty_002
+    100074: castle_sand_door
+    100076: castle_timber
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
@@ -73,6 +78,11 @@ ModelImporter:
     400062: desolation_skeleton_ribcage
     400064: desolation_skeleton_skull
     400066: castle_broken_wall
+    400068: castle_broken_ground
+    400070: castle_broken_ground_sparse
+    400072: pillar_base_dirty_002
+    400074: castle_sand_door
+    400076: castle_timber
     2300000: Cube_000
     2300002: Cube_001
     2300004: Cube_002
@@ -106,6 +116,11 @@ ModelImporter:
     2300060: desolation_skeleton_ribcage
     2300062: desolation_skeleton_skull
     2300064: castle_broken_wall
+    2300066: castle_broken_ground
+    2300068: castle_broken_ground_sparse
+    2300070: pillar_base_dirty_002
+    2300072: castle_sand_door
+    2300074: castle_timber
     3300000: Cube_000
     3300002: Cube_001
     3300004: Cube_002
@@ -139,6 +154,11 @@ ModelImporter:
     3300060: desolation_skeleton_ribcage
     3300062: desolation_skeleton_skull
     3300064: castle_broken_wall
+    3300066: castle_broken_ground
+    3300068: castle_broken_ground_sparse
+    3300070: pillar_base_dirty_002
+    3300072: castle_sand_door
+    3300074: castle_timber
     4300000: Cube_002
     4300002: Cube_000
     4300004: Cube_001
@@ -172,6 +192,11 @@ ModelImporter:
     4300060: desolation_skeleton_ribcage
     4300062: desolation_skeleton_skull
     4300064: castle_broken_wall
+    4300066: castle_broken_ground
+    4300068: castle_broken_ground_sparse
+    4300070: pillar_base_dirty_002
+    4300072: castle_sand_door
+    4300074: castle_timber
   materials:
     importMaterials: 1
     materialName: 0
