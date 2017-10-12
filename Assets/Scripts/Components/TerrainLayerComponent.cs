@@ -17,6 +17,7 @@ public class TerrainLayerComponent : MonoBehaviour {
     private PlayerComponent player;
     private MeshRenderer mesh;
     private int layermask;
+    private bool prevenabled;
 
 	void Start(){
         player = GameObject.FindWithTag("Player").GetComponent<PlayerComponent>();
@@ -33,11 +34,15 @@ public class TerrainLayerComponent : MonoBehaviour {
 	}
 
 	void Update(){
-        mesh.enabled = (player.GetPlayerTerrainLayer() & layermask) > 0;
+        bool enabled = (player.GetPlayerTerrainLayer() & layermask) > 0;
+        if(enabled != prevenabled){
+            mesh.enabled = enabled;
 
-        if(gameObject.layer == Interactable.InteractableCollisionMask &&
-            gameObject.GetComponent<Interactable>()){
-            gameObject.GetComponent<Interactable>().Toggle();
+            if(gameObject.layer == Interactable.InteractableCollisionMask &&
+                gameObject.GetComponent<Interactable>()){
+                gameObject.GetComponent<Interactable>().Toggle();
+            }
         }
+        prevenabled = enabled;
 	}
 }
