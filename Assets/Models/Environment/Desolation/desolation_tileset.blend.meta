@@ -44,6 +44,9 @@ ModelImporter:
     100072: pillar_base_dirty_002
     100074: castle_sand_door
     100076: castle_timber
+    100078: castle_stairs
+    100080: castle_stairs_long
+    100082: castle_wall_1
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
@@ -83,6 +86,9 @@ ModelImporter:
     400072: pillar_base_dirty_002
     400074: castle_sand_door
     400076: castle_timber
+    400078: castle_stairs
+    400080: castle_stairs_long
+    400082: castle_wall_1
     2300000: Cube_000
     2300002: Cube_001
     2300004: Cube_002
@@ -121,6 +127,9 @@ ModelImporter:
     2300070: pillar_base_dirty_002
     2300072: castle_sand_door
     2300074: castle_timber
+    2300076: castle_stairs
+    2300078: castle_stairs_long
+    2300080: castle_wall_1
     3300000: Cube_000
     3300002: Cube_001
     3300004: Cube_002
@@ -159,6 +168,9 @@ ModelImporter:
     3300070: pillar_base_dirty_002
     3300072: castle_sand_door
     3300074: castle_timber
+    3300076: castle_stairs
+    3300078: castle_stairs_long
+    3300080: castle_wall_1
     4300000: Cube_002
     4300002: Cube_000
     4300004: Cube_001
@@ -197,6 +209,9 @@ ModelImporter:
     4300070: pillar_base_dirty_002
     4300072: castle_sand_door
     4300074: castle_timber
+    4300076: castle_stairs
+    4300078: castle_stairs_long
+    4300080: castle_wall_1
   materials:
     importMaterials: 1
     materialName: 0
