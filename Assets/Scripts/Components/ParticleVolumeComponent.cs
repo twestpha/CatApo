@@ -10,7 +10,8 @@ public class ParticleVolumeComponent : MonoBehaviour {
 
 	void Start(){
         particles = GetComponent<ParticleSystem>();
-        particles.Pause();
+        particles.Stop();
+        particles.Clear();
 	}
 
 	void OnTriggerEnter(Collider other){
@@ -21,7 +22,8 @@ public class ParticleVolumeComponent : MonoBehaviour {
 
     void OnTriggerExit(Collider other){
         if(other.tag == "Player"){
-            particles.Pause();
+            particles.Stop();
+            particles.Clear();
         }
     }
 }

@@ -24,6 +24,7 @@ public class TerrainLayerComponent : MonoBehaviour {
         player = GameObject.FindWithTag("Player").GetComponent<PlayerComponent>();
         mesh = GetComponent<MeshRenderer>();
         terrain = GetComponent<Terrain>();
+        prevenabled = true;
 
         layermask  = ((layer7 ? 1 : 0) << 7);
         layermask += ((layer6 ? 1 : 0) << 6);
