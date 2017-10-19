@@ -7,9 +7,9 @@ public class GlobalDash : Ability {
 
     override protected void Setup(){
         type = AbilityType.onHotkey;
-        cooldown = 10150.0f;
+        cooldown = 3000.0f;
 
-        dashSpeed = 30.0f;
+        dashSpeed = 20.0f;
         dashTime = 150.0f;
     }
 

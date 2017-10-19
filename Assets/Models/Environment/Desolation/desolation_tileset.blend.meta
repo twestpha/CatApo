@@ -52,6 +52,7 @@ ModelImporter:
     100088: castle_door_skirt
     100090: castle_wall_2_window
     100092: castle_wall_window_lights
+    100094: castle_bookself
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
@@ -99,6 +100,7 @@ ModelImporter:
     400088: castle_door_skirt
     400090: castle_wall_2_window
     400092: castle_wall_window_lights
+    400094: castle_bookself
     2300000: Cube_000
     2300002: Cube_001
     2300004: Cube_002
@@ -145,6 +147,7 @@ ModelImporter:
     2300086: castle_door_skirt
     2300088: castle_wall_2_window
     2300090: castle_wall_window_lights
+    2300092: castle_bookself
     3300000: Cube_000
     3300002: Cube_001
     3300004: Cube_002
@@ -191,6 +194,7 @@ ModelImporter:
     3300086: castle_door_skirt
     3300088: castle_wall_2_window
     3300090: castle_wall_window_lights
+    3300092: castle_bookself
     4300000: Cube_002
     4300002: Cube_000
     4300004: Cube_001
@@ -237,6 +241,7 @@ ModelImporter:
     4300086: castle_door_skirt
     4300088: castle_wall_2_window
     4300090: castle_wall_window_lights
+    4300092: castle_bookself
   materials:
     importMaterials: 1
     materialName: 0
