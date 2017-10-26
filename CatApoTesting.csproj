@@ -91,7 +91,10 @@
     <Compile Include="Assets\Scripts\Abilities\Ability.cs" />
     <Compile Include="Assets\Scripts\Abilities\AbilityPlacement.cs" />
     <Compile Include="Assets\Scripts\Abilities\Spell.cs" />
+    <Compile Include="Assets\Scripts\Animation\AnimationPose.cs" />
+    <Compile Include="Assets\Scripts\Animation\AnimationPoseRequest.cs" />
     <Compile Include="Assets\Scripts\Components\AbilityCastComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\AnimationComponent.cs" />
     <Compile Include="Assets\Scripts\Components\BotComponent.cs" />
     <Compile Include="Assets\Scripts\Components\CameraComponent.cs" />
     <Compile Include="Assets\Scripts\Components\DialogueComponent.cs" />
@@ -116,6 +119,7 @@
     <Compile Include="Assets\Scripts\Libs\Castable.cs" />
     <Compile Include="Assets\Scripts\Libs\FullscreenSettings.cs" />
     <Compile Include="Assets\Scripts\Libs\Interactable.cs" />
+    <Compile Include="Assets\Scripts\Libs\Mathfx.cs" />
     <Compile Include="Assets\Scripts\Libs\Strings.cs" />
     <Compile Include="Assets\Scripts\Libs\Timer.cs" />
     <Compile Include="Assets\Scripts\PostProcessing\Highlight.cs" />
@@ -123,6 +127,7 @@
     <Compile Include="Assets\Scripts\UIControllers\HealthUIController.cs" />
     <Compile Include="Assets\Scripts\UIControllers\MouseUIController.cs" />
     <Compile Include="Assets\Scripts\UIControllers\PlayerUIController.cs" />
+    <Compile Include="Assets\Scripts\Utilities\AnimationRecordUtility.cs" />
     <Compile Include="Assets\Scripts\Volumetric Lighting\VolumetricLight.cs" />
     <Compile Include="Assets\Scripts\Volumetric Lighting\VolumetricLightRenderer.cs" />
   </ItemGroup>
