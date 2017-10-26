@@ -27,6 +27,44 @@ ModelImporter:
     100038: hunter_forest_hood
     100040: chest
     100042: Plane
+    100044: Armature
+    100046: Bone
+    100048: Bone_001
+    100050: Bone_002
+    100052: Bone_003
+    100054: Bone_004
+    100056: Bone_005
+    100058: Bone_006
+    100060: Bone_007
+    100062: Bone_008
+    100064: Bone_009
+    100066: Bone_010
+    100068: Bone_011
+    100070: Bone_012
+    100072: Bone_013
+    100074: Bone_014
+    100076: Bone_015
+    100078: Bone_016
+    100080: female_bone_arm_l
+    100082: female_bone_arm_r
+    100084: female_bone_chest
+    100086: female_bone_hand_l
+    100088: female_bone_hand_r
+    100090: female_bone_head
+    100092: female_bone_hip_l
+    100094: female_bone_hip_r
+    100096: female_bone_neck
+    100098: female_bone_shin_l
+    100100: female_bone_shin_r
+    100102: female_bone_shoulder_l
+    100104: female_bone_shoulder_r
+    100106: female_bone_thigh_l
+    100108: female_bone_thigh_r
+    100110: female_bone_wrist_l
+    100112: female_bone_wrist_r
+    100114: female_skeleton
+    100116: female_bone_foot_l
+    100118: female_bone_foot_r
     400000: //RootNode
     400002: Cube
     400004: female
@@ -49,6 +87,44 @@ ModelImporter:
     400038: hunter_forest_hood
     400040: chest
     400042: Plane
+    400044: Armature
+    400046: Bone
+    400048: Bone_001
+    400050: Bone_002
+    400052: Bone_003
+    400054: Bone_004
+    400056: Bone_005
+    400058: Bone_006
+    400060: Bone_007
+    400062: Bone_008
+    400064: Bone_009
+    400066: Bone_010
+    400068: Bone_011
+    400070: Bone_012
+    400072: Bone_013
+    400074: Bone_014
+    400076: Bone_015
+    400078: Bone_016
+    400080: female_bone_arm_l
+    400082: female_bone_arm_r
+    400084: female_bone_chest
+    400086: female_bone_hand_l
+    400088: female_bone_hand_r
+    400090: female_bone_head
+    400092: female_bone_hip_l
+    400094: female_bone_hip_r
+    400096: female_bone_neck
+    400098: female_bone_shin_l
+    400100: female_bone_shin_r
+    400102: female_bone_shoulder_l
+    400104: female_bone_shoulder_r
+    400106: female_bone_thigh_l
+    400108: female_bone_thigh_r
+    400110: female_bone_wrist_l
+    400112: female_bone_wrist_r
+    400114: female_skeleton
+    400116: female_bone_foot_l
+    400118: female_bone_foot_r
     2300000: //RootNode
     2300002: Cube
     2300004: female
@@ -117,6 +193,7 @@ ModelImporter:
     4300042: Plane
     7400000: Default Take
     9500000: //RootNode
+    13700000: female_body
   materials:
     importMaterials: 1
     materialName: 0

@@ -1,0 +1,161 @@
+fileFormatVersion: 2
+guid: 435f08dc8d50c414d88d8230fa2a51b6
+timeCreated: 1508994174
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Bone
+    100004: Bone_001
+    100006: Bone_002
+    100008: Bone_003
+    100010: Bone_004
+    100012: Bone_005
+    100014: Bone_006
+    100016: Bone_007
+    100018: Bone_008
+    100020: Bone_009
+    100022: Bone_010
+    100024: Bone_011
+    100026: Bone_012
+    100028: Bone_013
+    100030: Bone_014
+    100032: Bone_015
+    100034: Bone_016
+    100036: chest
+    100038: Cube
+    100040: female_000
+    100042: female_body
+    100044: female_eyes
+    100046: female_hair
+    100048: //RootNode
+    100050: hunter_forest_buckles
+    100052: hunter_forest_pauldrons
+    100054: hunter_forest_shirt
+    400000: Armature
+    400002: Bone
+    400004: Bone_001
+    400006: Bone_002
+    400008: Bone_003
+    400010: Bone_004
+    400012: Bone_005
+    400014: Bone_006
+    400016: Bone_007
+    400018: Bone_008
+    400020: Bone_009
+    400022: Bone_010
+    400024: Bone_011
+    400026: Bone_012
+    400028: Bone_013
+    400030: Bone_014
+    400032: Bone_015
+    400034: Bone_016
+    400036: chest
+    400038: Cube
+    400040: female_000
+    400042: female_body
+    400044: female_eyes
+    400046: female_hair
+    400048: //RootNode
+    400050: hunter_forest_buckles
+    400052: hunter_forest_pauldrons
+    400054: hunter_forest_shirt
+    2300000: chest
+    2300002: Cube
+    2300004: female_000
+    2300006: female_eyes
+    2300008: female_hair
+    2300010: hunter_forest_buckles
+    2300012: hunter_forest_pauldrons
+    2300014: hunter_forest_shirt
+    3300000: chest
+    3300002: Cube
+    3300004: female_000
+    3300006: female_eyes
+    3300008: female_hair
+    3300010: hunter_forest_buckles
+    3300012: hunter_forest_pauldrons
+    3300014: hunter_forest_shirt
+    4300000: chest
+    4300002: hunter_forest_shirt
+    4300004: hunter_forest_pauldrons
+    4300006: hunter_forest_buckles
+    4300008: Cube
+    4300010: female_eyes
+    4300012: female_000
+    4300014: female_body
+    4300016: female_hair
+    7400000: Default Take
+    9500000: //RootNode
+    13700000: female_body
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

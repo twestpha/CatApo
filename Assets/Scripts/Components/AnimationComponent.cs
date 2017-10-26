@@ -15,6 +15,7 @@ public class AnimationComponent : MonoBehaviour {
     }
 
     public AnimationPose initialPose;
+    public AnimationPose testPose;
 
     private Queue<AnimationPoseRequest> requests;
     private AnimationPoseRequest currentRequest;
@@ -24,10 +25,12 @@ public class AnimationComponent : MonoBehaviour {
         animationTimer = new Timer(0.0f);
         animationTimer.Start();
 
-        currentRequest = new AnimationPoseRequest(previousPose, CurveType.Linear, 0.0f, false, false);
         previousPose = initialPose;
+        currentRequest = new AnimationPoseRequest(previousPose, CurveType.Linear, 0.0f, false, false);
 
         requests = new Queue<AnimationPoseRequest>();
+
+        RequestAnimation(new AnimationPoseRequest(testPose, CurveType.Spring, 5.0f, false, false));
     }
 
     public void Update(){
