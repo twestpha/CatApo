@@ -9,7 +9,7 @@ public class AbilityPlacement : ScriptableObject {
     public bool debug;
 
     private const int maxTargets = 16;
-    private const float playerPlaneOffset = -1.0f;
+    private const float playerPlaneOffset = -0.9f;
 
     private Actor caster;
     private Ability ability;

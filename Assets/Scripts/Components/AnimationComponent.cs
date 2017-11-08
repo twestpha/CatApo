@@ -16,6 +16,9 @@ public class AnimationComponent : MonoBehaviour {
 
     public AnimationPose initialPose;
     public AnimationPose testPose;
+    public AnimationPose testPose2;
+    public AnimationPose testPose3;
+    public AnimationPose testPose4;
 
     private Queue<AnimationPoseRequest> requests;
     private AnimationPoseRequest currentRequest;
@@ -30,7 +33,10 @@ public class AnimationComponent : MonoBehaviour {
 
         requests = new Queue<AnimationPoseRequest>();
 
-        RequestAnimation(new AnimationPoseRequest(testPose, CurveType.Spring, 5.0f, false, false));
+        RequestAnimation(new AnimationPoseRequest(testPose, CurveType.EaseIn, 0.3f, false, true));
+        RequestAnimation(new AnimationPoseRequest(testPose2, CurveType.EaseOut, 0.3f, false, true));
+        RequestAnimation(new AnimationPoseRequest(testPose3, CurveType.EaseIn, 0.3f, false, true));
+        RequestAnimation(new AnimationPoseRequest(testPose4, CurveType.EaseOut, 0.3f, false, true));
     }
 
     public void Update(){
