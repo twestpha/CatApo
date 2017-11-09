@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AnimationComponent))]
 public class PlayerComponent : Actor {
 
     // Constants
@@ -14,7 +15,8 @@ public class PlayerComponent : Actor {
         InventoryOpen
     }
 
-    public bool usingtimer;
+    [Header("Other Stuff Fix Me")]
+    public bool usingTimer;
 
     private bool jumpUnreleased;
     public bool jumping;
@@ -33,11 +35,29 @@ public class PlayerComponent : Actor {
 
     public GameObject movementMarker;
 
+
+    [Header("Animation Poses")]
+    public AnimationPose runPose0;
+    public AnimationPose runPose1;
+    public AnimationPose runPose2;
+    public AnimationPose runPose3;
+
+    public AnimationPose idlePose0;
+
+    private AnimationComponent animationComponent;
+
+    public enum AnimationState {
+        Idling,
+        Moving,
+    };
+
+    public AnimationState animState;
+
 	new void Start(){
         base.Start();
 
         // Setting initial states
-        usingtimer = false;
+        usingTimer = false;
         moveTimer = new Timer(moveTime);
 
         // Setup actor plane
@@ -45,6 +65,9 @@ public class PlayerComponent : Actor {
 
         playerUI = GameObject.FindWithTag("PlayerUI");
         playerModel = GameObject.FindWithTag("PlayerModel");
+
+        animState = AnimationState.Idling;
+        animationComponent = GetComponent<AnimationComponent>();
 	}
 
     new void Update(){
@@ -52,6 +75,7 @@ public class PlayerComponent : Actor {
 
         HandleInputs();
         HandleMove();
+        HandleAnimation();
     }
 
     void FixedUpdate(){
@@ -67,8 +91,8 @@ public class PlayerComponent : Actor {
                 Vector3 terrainIntersection = MouseIntersectionWithPlayerPlane();
 
                 if((terrainIntersection - transform.position).magnitude >= kMoveDistanceNear){
-                    if(!usingtimer){
-                        usingtimer = true;
+                    if(!usingTimer){
+                        usingTimer = true;
                         moveTimer.Start();
                     }
                     targetPosition = terrainIntersection;
@@ -78,13 +102,13 @@ public class PlayerComponent : Actor {
             }
 
             // if released before timer expires, continue moving. if released after, stop.
-            if(usingtimer && moveTimer.Finished()){
+            if(usingTimer && moveTimer.Finished()){
                 if(!rmbdown){
-                    usingtimer = false;
+                    usingTimer = false;
                     targetPosition = transform.position;
                 }
             } else if(!rmbdown){
-                usingtimer = false;
+                usingTimer = false;
             }
 
             // Interact clicking
@@ -93,6 +117,30 @@ public class PlayerComponent : Actor {
             }
         } else {
 
+        }
+    }
+
+    public void HandleAnimation(){
+        AnimationState prevState = animState;
+
+        if(moving){
+            animState = AnimationState.Moving;
+        } else {
+            animState = AnimationState.Idling;
+        }
+
+        if(prevState != animState){
+            switch(animState){
+            case AnimationState.Idling:
+                animationComponent.RequestAnimation(idlePose0, AnimationComponent.CurveType.Linear, 0.3f, true, false);
+            break;
+            case AnimationState.Moving:
+                animationComponent.RequestAnimation(runPose0, AnimationComponent.CurveType.Linear, 0.3f, true, true);
+                animationComponent.RequestAnimation(runPose1, AnimationComponent.CurveType.Linear, 0.3f, false, true);
+                animationComponent.RequestAnimation(runPose2, AnimationComponent.CurveType.Linear, 0.3f, false, true);
+                animationComponent.RequestAnimation(runPose3, AnimationComponent.CurveType.Linear, 0.3f, false, true);
+            break;
+            }
         }
     }
 

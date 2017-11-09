@@ -30,6 +30,7 @@ public class Actor : MonoBehaviour {
 
     [Header("Statuses")]
     public bool steerable = true;
+    public bool moving = true;
 
     // Component References
     protected CharacterController characterController;
@@ -77,12 +78,15 @@ public class Actor : MonoBehaviour {
         moveVector.Normalize();
 
         if(moveDistance > kMoveDistanceNear){
+            moving = true;
             movementVelocity += moveVector * currentMoveSpeed;
 
             // rotate towards velocity
             float step = turnSpeed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(transform.forward, moveVector, step, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDirection);
+        } else {
+            moving = false;
         }
 
         if(!characterController.isGrounded){

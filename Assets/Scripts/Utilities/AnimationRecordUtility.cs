@@ -1,55 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class AnimationRecordUtility : MonoBehaviour {
-    public bool record;
-    public bool load;
-    public bool mirror;
+public class AnimationRecordUtility : EditorWindow {
+    [MenuItem ("Window/My Window")]
 
-    public AnimationPose recordPose;
-
-    public GameObject[] bones;
-
-    public int[] mirrorIndices;
-
-    public void Start(){
-        record = false;
-        load = false;
+    public static void  ShowWindow () {
+        EditorWindow.GetWindow(typeof(AnimationRecordUtility));
     }
 
-    public void Update(){
-        if(record){
-            for(int i = 0; i < bones.Length; ++i){
-                recordPose.joints[i] = bones[i].transform.rotation;
-            }
-            record = false;
-        }
-
-        if(load){
-            for(int i = 0; i < bones.Length; ++i){
-                bones[i].transform.rotation = recordPose.joints[i];
-            }
-            load = false;
-        }
-
-        if(mirror){
-            Quaternion[] newBonesrotation = new Quaternion[bones.Length];
-
-            for(int i = 0; i < bones.Length; ++i){
-                Quaternion oldrot = bones[mirrorIndices[i]].transform.rotation;
-
-                oldrot.w *= -1.0f;
-                oldrot.y *= -1.0f;
-
-                newBonesrotation[i] = oldrot;
-            }
-
-            for(int i = 0; i < bones.Length; ++i){
-                bones[i].transform.rotation = newBonesrotation[i];
-            }
-
-            mirror = false;
-        }
+    void OnGUI() {
+        if (GUI.Button(new Rect(10, 70, 50, 30), "Click"))
+            Debug.Log("Clicked the button with text");
     }
 }
+
+// public class AnimationRecordUtility : MonoBehaviour {
+//     public bool record;
+//     public bool load;
+//     public bool mirror;
+//
+//     public AnimationPose recordPose;
+//
+//     public GameObject[] bones;
+//
+//     public int[] mirrorIndices;
+//
+//     public void Start(){
+//         record = false;
+//         load = false;
+//         mirror = false;
+//
+//         recordPose = null;
+//     }
+//
+//     public void Update(){
+//         if(record){
+//             Debug.Log("SAVING POSE");
+//             for(int i = 0; i < bones.Length; ++i){ // something's fucked up with this...
+//                 recordPose.joints[i] = bones[i].transform.localRotation;
+//             }
+//
+//             SetDirty(recordPose);
+//             recordPose = null;
+//
+//             record = false;
+//         }
+//
+//         if(load){
+//             Debug.Log("LOADING POSE");
+//
+//             AnimationPose newPose = ScriptableObject.Instantiate(recordPose);
+//
+//             for(int i = 0; i < bones.Length; ++i){
+//                 bones[i].transform.localRotation = newPose.joints[i];
+//             }
+//             load = false;
+//         }
+//
+//         // if(mirror){
+//         //     Debug.Log("MIRRORING POSE");
+//         //     Quaternion[] newBonesrotation = new Quaternion[bones.Length];
+//         //
+//         //     for(int i = 0; i < bones.Length; ++i){
+//         //         Quaternion oldrot = bones[mirrorIndices[i]].transform.localRotation;
+//         //
+//         //         oldrot.w *= -1.0f;
+//         //         oldrot.y *= -1.0f;
+//         //
+//         //         newBonesrotation[i] = oldrot;
+//         //     }
+//         //
+//         //     for(int i = 0; i < bones.Length; ++i){
+//         //         bones[i].transform.localRotation = newBonesrotation[i];
+//         //     }
+//         //
+//         //     mirror = false;
+//         // }
+//     }
+// }

@@ -15,10 +15,6 @@ public class AnimationComponent : MonoBehaviour {
     }
 
     public AnimationPose initialPose;
-    public AnimationPose testPose;
-    public AnimationPose testPose2;
-    public AnimationPose testPose3;
-    public AnimationPose testPose4;
 
     private Queue<AnimationPoseRequest> requests;
     private AnimationPoseRequest currentRequest;
@@ -28,15 +24,10 @@ public class AnimationComponent : MonoBehaviour {
         animationTimer = new Timer(0.0f);
         animationTimer.Start();
 
-        previousPose = initialPose;
-        currentRequest = new AnimationPoseRequest(previousPose, CurveType.Linear, 0.0f, false, false);
-
         requests = new Queue<AnimationPoseRequest>();
 
-        RequestAnimation(new AnimationPoseRequest(testPose, CurveType.EaseIn, 0.3f, false, true));
-        RequestAnimation(new AnimationPoseRequest(testPose2, CurveType.EaseOut, 0.3f, false, true));
-        RequestAnimation(new AnimationPoseRequest(testPose3, CurveType.EaseIn, 0.3f, false, true));
-        RequestAnimation(new AnimationPoseRequest(testPose4, CurveType.EaseOut, 0.3f, false, true));
+        previousPose = ScriptableObject.Instantiate(initialPose);
+        currentRequest = new AnimationPoseRequest(previousPose, CurveType.Linear, 0.0f, false, false);
     }
 
     public void Update(){
@@ -77,16 +68,35 @@ public class AnimationComponent : MonoBehaviour {
         }
 
         for(int i = 0; i < bones.Length; ++i){
-            bones[i].transform.rotation = Quaternion.SlerpUnclamped(previousPose.joints[i], currentRequest.pose.joints[i], tvalue);
+            bones[i].transform.localRotation = Quaternion.SlerpUnclamped(previousPose.joints[i], currentRequest.pose.joints[i], tvalue);
         }
-
     }
 
-    public void RequestAnimation(AnimationPoseRequest request){
+    public void RequestAnimation(AnimationPose pose, CurveType curvetype, float duration, bool immediate, bool requeueWhenFinished){
+        RequestAnimation(new AnimationPoseRequest(ScriptableObject.Instantiate(pose), curvetype, duration, immediate, requeueWhenFinished));
+    }
+
+    private void RequestAnimation(AnimationPoseRequest request){
         if(request.immediate){
             requests.Clear();
+
+            // finish old pose
+            animationTimer.SetDuration(0.0f);
+            animationTimer.Start();
+
+            // cache pose where previous animation paused
+            for(int i = 0; i < bones.Length; ++i){
+                currentRequest.pose.joints[i] = bones[i].transform.localRotation;
+            }
+
+            // old animation can't requeue
+            currentRequest.requeueWhenFinished = false;
+
+            // dont want it to requeue as immediate
+            request.immediate = false;
         }
 
         requests.Enqueue(request);
+        Debug.Log("QUEUE SIZE: " + requests.Count);
     }
 }

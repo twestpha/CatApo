@@ -40,6 +40,9 @@ public class InventoryComponent : MonoBehaviour {
 
     void Start(){
         playerModel = GameObject.FindWithTag("PlayerModel");
+        if(!playerModel){
+            Debug.LogError("CANNOT FIND PLAYER MODEL");
+        }
 
         for(int i = 0; i < backpackCastables.Length; ++i){
             if(backpackCastables[i]){
@@ -48,15 +51,15 @@ public class InventoryComponent : MonoBehaviour {
         }
 
         // debug shit for me :D
-        Equip(backpackCastables[0], 0);
-        debugTimer = new Timer(5.0f);
-        debugTimer.Start();
+        // Equip(backpackCastables[0], 0);
+        // debugTimer = new Timer(5.0f);
+        // debugTimer.Start();
     }
 
     void Update(){
-        if(debugTimer.Finished()){
-            Unequip(0);
-        }
+        // if(debugTimer.Finished()){
+        //     Unequip(0);
+        // }
     }
 
     public void Equip(Castable castable, int slot){
@@ -83,7 +86,7 @@ public class InventoryComponent : MonoBehaviour {
         // TODO attach model to bones
 
         // create material and attach to player
-        MeshRenderer playermesh = playerModel.GetComponent<MeshRenderer>();
+        SkinnedMeshRenderer playermesh = playerModel.GetComponent<SkinnedMeshRenderer>();
         if(equipment.characterMaterial){
             playermesh.material = equipment.characterMaterial;
             materialSlot = slot;
@@ -95,7 +98,7 @@ public class InventoryComponent : MonoBehaviour {
 
         // remove player material if we're using it
         if(materialSlot == slot){
-            MeshRenderer playermesh = playerModel.GetComponent<MeshRenderer>();
+            SkinnedMeshRenderer playermesh = playerModel.GetComponent<SkinnedMeshRenderer>();
             playermesh.material = defaultMaterial;
         }
     }
