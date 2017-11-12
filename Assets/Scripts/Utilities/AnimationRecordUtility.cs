@@ -26,13 +26,14 @@ public class AnimationRecordUtility : MonoBehaviour {
     public void Update(){
         if(record){
             Debug.Log("SAVING POSE");
-            for(int i = 0; i < bones.Length; ++i){ // something's fucked up with this...
+            for(int i = 0; i < bones.Length; ++i){
                 if(i == 0){
                     Debug.Log(bones[i].transform.localRotation);
                 }
                 recordPose.joints[i] = bones[i].transform.localRotation;
             }
-            
+
+            AssetDatabase.SaveAssets();
             recordPose = null;
             record = false;
         }
