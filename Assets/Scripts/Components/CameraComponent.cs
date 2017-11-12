@@ -29,12 +29,12 @@ public class CameraComponent : MonoBehaviour {
         transform.position = Vector3.SmoothDamp(transform.position, targetObject.transform.position + cameraOffset + new Vector3(xtrans, 0.0f, ytrans), ref velocity, positionSmoothTime);
 
         // cast ray from camera to  player, get occluding objects, enable the non-occlusion shader
-        RaycastHit hit;
-        Vector3 direction = targetObject.transform.position - transform.position;
-        if(Physics.Raycast(transform.position, direction, out hit, direction.magnitude, 1 << 12)){
-            if(hit.collider){
-                hit.collider.GetComponent<TestComponent>().EnableNonOcclusion();
-            }
-        }
+        // RaycastHit hit;
+        // Vector3 direction = targetObject.transform.position - transform.position;
+        // if(Physics.Raycast(transform.position, direction, out hit, direction.magnitude, 1 << 12)){
+        //     if(hit.collider){
+        //         hit.collider.GetComponent<TestComponent>().EnableNonOcclusion();
+        //     }
+        // }
 	}
 }

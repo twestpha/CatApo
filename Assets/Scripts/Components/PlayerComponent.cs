@@ -19,8 +19,6 @@ public class PlayerComponent : Actor {
     public bool usingTimer;
 
     private bool jumpUnreleased;
-    public bool jumping;
-    public bool dashing;
 
     public UIState uiState;
 
@@ -44,11 +42,19 @@ public class PlayerComponent : Actor {
 
     public AnimationPose idlePose0;
 
+    public AnimationPose jumpPose0;
+    public AnimationPose jumpPose1;
+
+    public AnimationPose dashPose0;
+    public AnimationPose dashPose1;
+
     private AnimationComponent animationComponent;
 
     public enum AnimationState {
         Idling,
         Moving,
+        Jumping,
+        Dashing,
     };
 
     public AnimationState animState;
@@ -123,8 +129,14 @@ public class PlayerComponent : Actor {
     public void HandleAnimation(){
         AnimationState prevState = animState;
 
-        if(moving){
-            animState = AnimationState.Moving;
+        if(!characterController.isGrounded){
+            animState = AnimationState.Jumping;
+        } else if(moving){
+             if(dashing){
+                animState = AnimationState.Dashing;
+            } else {
+                animState = AnimationState.Moving;
+            }
         } else {
             animState = AnimationState.Idling;
         }
@@ -139,6 +151,14 @@ public class PlayerComponent : Actor {
                 animationComponent.RequestAnimation(runPose1, AnimationComponent.CurveType.EaseOut, 0.2f, false, true);
                 animationComponent.RequestAnimation(runPose2, AnimationComponent.CurveType.EaseIn, 0.15f, false, true);
                 animationComponent.RequestAnimation(runPose3, AnimationComponent.CurveType.EaseOut, 0.2f, false, true);
+            break;
+            case AnimationState.Jumping:
+                animationComponent.RequestAnimation(jumpPose0, AnimationComponent.CurveType.EaseInOut, 0.3f, true, true);
+                animationComponent.RequestAnimation(jumpPose1, AnimationComponent.CurveType.EaseInOut, 0.3f, false, true);
+            break;
+            case AnimationState.Dashing:
+                animationComponent.RequestAnimation(dashPose0, AnimationComponent.CurveType.Linear, 0.05f, true, false);
+                animationComponent.RequestAnimation(dashPose1, AnimationComponent.CurveType.Linear, 0.05f, false, false);
             break;
             }
         }

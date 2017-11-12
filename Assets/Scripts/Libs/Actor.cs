@@ -31,6 +31,7 @@ public class Actor : MonoBehaviour {
     [Header("Statuses")]
     public bool steerable = true;
     public bool moving = true;
+    public bool dashing = false;
 
     // Component References
     protected CharacterController characterController;

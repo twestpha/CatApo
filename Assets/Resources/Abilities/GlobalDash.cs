@@ -29,6 +29,7 @@ public class GlobalDash : Ability {
         dashDirection.Normalize();
 
         SetSteerable(selfActor, false);
+        SetDashing(selfActor, true);
 
         SetTarget(selfActor, oldPosition + dashDirection * 100.0f);
         SetSpeed(selfActor, GetSpeed(selfActor) + dashSpeed);
@@ -39,6 +40,7 @@ public class GlobalDash : Ability {
         SetTarget(selfActor, GetPosition(selfActor) + dashDirection * 5.0f);
 
         SetSteerable(selfActor, true);
+        SetDashing(selfActor, false);
 
         Delay(cooldown - dashTime);
 

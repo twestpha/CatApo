@@ -220,6 +220,14 @@ public class Ability : ScriptableObject {
         return actor.steerable;
     }
 
+    protected bool GetDashing(Actor actor){
+        return actor.dashing;
+    }
+
+    protected void SetDashing(Actor actor, bool dashing){
+        actor.dashing = dashing;
+    }
+
     //##########################################################################
     // Vector Attribute Getters and Setters
     //##########################################################################
