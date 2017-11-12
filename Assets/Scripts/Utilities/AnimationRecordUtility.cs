@@ -33,8 +33,9 @@ public class AnimationRecordUtility : MonoBehaviour {
                 recordPose.joints[i] = bones[i].transform.localRotation;
             }
 
+            EditorUtility.SetDirty(recordPose);
             AssetDatabase.SaveAssets();
-            recordPose = null;
+
             record = false;
         }
 

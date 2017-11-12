@@ -135,10 +135,10 @@ public class PlayerComponent : Actor {
                 animationComponent.RequestAnimation(idlePose0, AnimationComponent.CurveType.Linear, 0.3f, true, false);
             break;
             case AnimationState.Moving:
-                animationComponent.RequestAnimation(runPose0, AnimationComponent.CurveType.Linear, 0.3f, true, true);
-                animationComponent.RequestAnimation(runPose1, AnimationComponent.CurveType.Linear, 0.3f, false, true);
-                animationComponent.RequestAnimation(runPose2, AnimationComponent.CurveType.Linear, 0.3f, false, true);
-                animationComponent.RequestAnimation(runPose3, AnimationComponent.CurveType.Linear, 0.3f, false, true);
+                animationComponent.RequestAnimation(runPose0, AnimationComponent.CurveType.EaseIn, 0.15f, true, true);
+                animationComponent.RequestAnimation(runPose1, AnimationComponent.CurveType.EaseOut, 0.2f, false, true);
+                animationComponent.RequestAnimation(runPose2, AnimationComponent.CurveType.EaseIn, 0.15f, false, true);
+                animationComponent.RequestAnimation(runPose3, AnimationComponent.CurveType.EaseOut, 0.2f, false, true);
             break;
             }
         }

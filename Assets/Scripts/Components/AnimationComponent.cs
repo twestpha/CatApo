@@ -97,6 +97,5 @@ public class AnimationComponent : MonoBehaviour {
         }
 
         requests.Enqueue(request);
-        Debug.Log("QUEUE SIZE: " + requests.Count);
     }
 }
