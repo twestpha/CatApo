@@ -33,12 +33,18 @@ public class Actor : MonoBehaviour {
     public bool moving = true;
     public bool dashing = false;
 
+    public SyncVariable<Vector3> mtPosition;
+    public SyncVariable<bool> mtGrounded;
+
     // Component References
     protected CharacterController characterController;
 
 	protected void Start(){
         // currentHealth = maxHealth;
         currentMoveSpeed = maxMoveSpeed;
+
+        mtPosition = new SyncVariable<Vector3>();
+        mtGrounded = new SyncVariable<bool>();
 
         characterController = GetComponent<CharacterController>();
         targetPosition = characterController.transform.position;
@@ -52,13 +58,11 @@ public class Actor : MonoBehaviour {
 	}
 
     protected void LateUpdate(){
-        if(mtPositionChanged){
-            mtPositionChanged = false;
-            transform.position = mtPosition;
-        }
+        // read/write multithreaded variables
+        transform.position = mtPosition.Synchronize(transform.position);
 
-        mtPosition = transform.position;
-        mtGrounded = characterController.isGrounded;
+        // write-only multithreaded variables
+        mtGrounded.Synchronize(characterController.isGrounded);
     }
 
     //##########################################################################
@@ -95,28 +99,6 @@ public class Actor : MonoBehaviour {
         }
 
         characterController.Move((velocity + movementVelocity) * Time.deltaTime);
-    }
-
-    //##########################################################################
-    // Thread safe interface
-    // These are necessary for reading and writing to the Unity API from the
-    // ability scripts, because they're threaded
-    //##########################################################################
-    private Vector3 mtPosition;
-    private bool mtPositionChanged;
-    private bool mtGrounded;
-
-    public void SetMTPosition(Vector3 position){
-        mtPositionChanged = true;
-        mtPosition = position;
-    }
-
-    public Vector3 GetMTPosition(){
-        return mtPosition;
-    }
-
-    public bool GetMTGrounded(){
-        return mtGrounded;
     }
 
     //##########################################################################

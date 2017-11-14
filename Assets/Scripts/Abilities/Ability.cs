@@ -209,7 +209,7 @@ public class Ability : ScriptableObject {
     }
 
     protected bool GetGrounded(Actor actor){
-        return actor.GetMTGrounded();
+        return actor.mtGrounded.GetValue();
     }
 
     protected void SetSteerable(Actor actor, bool steerable){
@@ -232,11 +232,11 @@ public class Ability : ScriptableObject {
     // Vector Attribute Getters and Setters
     //##########################################################################
     protected void SetPosition(Actor actor, Vector3 position){
-        actor.SetMTPosition(position);
+        actor.mtPosition.SetValue(position);
     }
 
     protected Vector3 GetPosition(Actor actor){
-        return actor.GetMTPosition();
+        return actor.mtPosition.GetValue();
     }
 
     protected void SetTarget(Actor actor, Vector3 position){
