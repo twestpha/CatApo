@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using System;
 
 public class Ability : ScriptableObject {
     // Ability is the base class for ability scripts to descend from and implement custom behavior
@@ -13,6 +14,8 @@ public class Ability : ScriptableObject {
     public bool castable = true;
 
     public KeyCode hotkey;
+
+    public ScriptUpdater scriptUpdater;
 
     private enum MouseButton {
         Right,
@@ -48,7 +51,7 @@ public class Ability : ScriptableObject {
 
     // Cooldown
     protected float cooldown;
-    private Stopwatch cooldownStopwatch;
+    private Stopwatch cooldownStopwatch; // Because the timer lib needs main thread
 
     // Threads
     System.Threading.Thread alwaysCastThread = null;
@@ -56,6 +59,8 @@ public class Ability : ScriptableObject {
 
     public void SetupAbility(){
         placementNames = new List<string>();
+
+        scriptUpdater = GameObject.FindWithTag("ScriptUpdater").GetComponent<ScriptUpdater>();
 
         Setup();
 
@@ -253,6 +258,27 @@ public class Ability : ScriptableObject {
 
     protected Vector3 GetVelocity(Actor actor){
         return actor.velocity;
+    }
+
+    //##########################################################################
+    // Actor Methods
+    //##########################################################################
+    protected void PlaySound(Actor actor, AudioClip clip, bool looping){
+        scriptUpdater.actionQueue += (() => DeferredPlaySound(actor, clip, looping));
+    }
+
+    private void DeferredPlaySound(Actor actor, AudioClip clip, bool looping){
+        AudioSource source = actor.GetComponent<AudioSource>();
+        source.clip = clip;
+        source.Play();
+    }
+
+    protected void Damage(Actor actor, int amount){
+        actor.Damage(amount);
+    }
+
+    protected void Heal(Actor actor, int amount){
+        actor.Heal(amount);
     }
 
     //##########################################################################

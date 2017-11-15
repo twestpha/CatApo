@@ -1,10 +1,14 @@
 fileFormatVersion: 2
 guid: 1923996ce71ba1e408c878123e53b992
-timeCreated: 1496960942
+timeCreated: 1510782631
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - selfActor: {instanceID: 0}
+  - castComponent: {instanceID: 0}
+  - testUpdater: {instanceID: 0}
+  - jumpSound: {fileID: 8300000, guid: fd479d34602dc6544abe7d37370cfc5b, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
