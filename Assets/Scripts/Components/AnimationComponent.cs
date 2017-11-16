@@ -67,6 +67,7 @@ public class AnimationComponent : MonoBehaviour {
             break;
         }
 
+        bones[0].transform.localPosition = Vector3.Lerp(previousPose.zerojoint, currentRequest.pose.zerojoint, tvalue);
         for(int i = 0; i < bones.Length; ++i){
             bones[i].transform.localRotation = Quaternion.SlerpUnclamped(previousPose.joints[i], currentRequest.pose.joints[i], tvalue);
         }
@@ -85,6 +86,7 @@ public class AnimationComponent : MonoBehaviour {
             animationTimer.Start();
 
             // cache pose where previous animation paused
+            currentRequest.pose.zerojoint = bones[0].transform.localPosition;
             for(int i = 0; i < bones.Length; ++i){
                 currentRequest.pose.joints[i] = bones[i].transform.localRotation;
             }

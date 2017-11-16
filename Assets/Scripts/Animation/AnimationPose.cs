@@ -7,5 +7,6 @@ using System;
 [CreateAssetMenu()]
 [Serializable]
 public class AnimationPose : ScriptableObject {
+    public Vector3 zerojoint;
     public Quaternion[] joints;
 }

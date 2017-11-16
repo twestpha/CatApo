@@ -26,10 +26,10 @@ public class AnimationRecordUtility : MonoBehaviour {
     public void Update(){
         if(record){
             Debug.Log("SAVING POSE");
+
+            recordPose.zerojoint = bones[0].transform.localPosition;
+
             for(int i = 0; i < bones.Length; ++i){
-                if(i == 0){
-                    Debug.Log(bones[i].transform.localRotation);
-                }
                 recordPose.joints[i] = bones[i].transform.localRotation;
             }
 
@@ -42,6 +42,8 @@ public class AnimationRecordUtility : MonoBehaviour {
         if(load){
             Debug.Log("LOADING POSE");
 
+            bones[0].transform.localPosition = recordPose.zerojoint;
+            
             for(int i = 0; i < bones.Length; ++i){
                 bones[i].transform.localRotation = recordPose.joints[i];
             }
